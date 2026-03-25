@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+.main-content {
+    // flex: 1;
+    // padding-top: 1rem; 
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+.container {
+    max-width: 1600px;
+    margin: 1rem auto;
+    // padding: 1rem;
+
+    // @media (max-width: 576px) {
+    //     padding: 1rem;
+    // }
+}
+
+.form-section {
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    // margin-bottom: 1rem;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+
+    &--highlight {
+        border-left: 5px solid var(--bs-primary);
+    }
+
+    &--compact {
+        padding: 0.5rem;
+        background-color: #fcfcfc;
+    }
+}
