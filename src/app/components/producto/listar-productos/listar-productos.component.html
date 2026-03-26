@@ -8,21 +8,15 @@
                     {{item.nombre}}
                     <div>
                         <button class="btn btn-danger me-2" (click)="eliminarProductoPorCodigo(item.codigo)"><i class="fa-solid fa-trash"></i></button> <!-- Eliminar -->
-                        <button class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></button> <!-- Editar -->
+                        <button class="btn btn-warning" (click)="actualizarProductoPorCodigo(item.codigo)"><i class="fa-solid fa-pen-to-square"></i></button> <!-- Editar -->
                     </div>
                     
                 </div>
                 <ul class="list-group list-group-flush">
-                    <div class="input-group">
+                    <!-- <div class="input-group">
                             <span class="input-group-text">Descripcion</span>
                             <input class="form-control" type="text">
-                    </div>
-                    <li class="list-group-item p-0">
-                        <div class="input-group">
-                            <span class="input-group-text">Descripcion</span>
-                            <input class="form-control" type="text">
-                        </div>
-                    </li>
+                    </div> -->
                     <li class="list-group-item">{{item.descripcion}}</li>
                     <li class="list-group-item">{{item.precioVenta}}</li>
                     <li class="list-group-item">{{item.proveedor}}</li>
@@ -34,3 +28,10 @@
         }
     </div>
 </div>
+
+<app-actualizar-producto
+  *ngIf="mostrarActualizarProducto"
+  [productoActualizar]="productoActualizar"
+  [mostrarActualizarProducto]="mostrarActualizarProducto"
+  (cerrarModal)="cerrarModal()"
+></app-actualizar-producto>

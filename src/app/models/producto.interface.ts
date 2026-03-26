@@ -13,6 +13,21 @@ export interface Producto {
   fechaCreacion: string;
 }
 
+// producto.interface.ts
+export interface ProductoDto {
+  id: number;
+  codigo: string;
+  nombre: string;
+  descripcion?: string;
+  precioCompra: number;
+  precioVenta: number;
+  stock: number;
+  stockMinimo: number;
+  categoria?: string;
+  proveedor?: string;
+}
+
+
 // datos-mock.ts - COMPLETO con precios de compra/venta
 export const productosMock: Producto[] = [
   {

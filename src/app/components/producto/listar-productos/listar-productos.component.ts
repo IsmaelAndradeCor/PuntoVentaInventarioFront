@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { productosMock, Producto } from '../../../models/producto.interface';
+import { ActualizarProductoComponent } from '../actualizar-producto/actualizar-producto.component';
+import { CommonModule } from '@angular/common';
 
 // // Simular API
 // const fetchProductos = async (): Promise<Producto[]> => {
@@ -8,7 +10,7 @@ import { productosMock, Producto } from '../../../models/producto.interface';
 
 @Component({
   selector: 'app-listar-productos',
-  imports: [],
+  imports: [CommonModule ,ActualizarProductoComponent],
   templateUrl: './listar-productos.component.html',
   styleUrl: './listar-productos.component.scss'
 })
@@ -16,6 +18,8 @@ import { productosMock, Producto } from '../../../models/producto.interface';
 export class ListarProductosComponent implements OnInit {
 
   productos: Producto[] = productosMock;
+  productoActualizar: Producto | null = null;;
+  mostrarActualizarProducto: boolean = false;
 
   productosPorCodigo: Map<string, Producto> = new Map();  // ← Tu diccionario
   
@@ -35,6 +39,18 @@ export class ListarProductosComponent implements OnInit {
     // 2. Recrear el array sin ese producto
     this.productos = this.productos.filter(x => x.codigo !== codigo);
 
-    alert('Producto Eliminado')
+    console.log('Producto Eliminado');
   }
+
+  actualizarProductoPorCodigo(codigo: string): void {
+    // Busca y asigna el producto
+    this.productoActualizar = this.productos.find(p => p.codigo === codigo) || null;
+    this.mostrarActualizarProducto = true;
+  }
+
+  cerrarModal(): void {
+    this.mostrarActualizarProducto = false;
+    this.productoActualizar = null;
+  }
+
 }
