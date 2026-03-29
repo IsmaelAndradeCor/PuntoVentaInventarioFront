@@ -1,6 +1,64 @@
 <h2>Crear Producto</h2>
 <div class="form-section">
-    <div class="row">
-
+    <div class="row row-cols-sm-1 row-cols-md-6 row-cols-lg-4 g-3 mb-3">
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Codigo</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.codigo">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Nombre</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.nombre">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Descripcion</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.descripcion">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Precio Compra</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.precioCompra">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Precio Venta</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.precioVenta">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Stock</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.stock">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Stock Minimo</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.stockMinimo">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Categoria</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.categoria">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Proveedor</span>
+                <input class="form-control" type="text" [(ngModel)]="producto.proveedor">
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-sm-1 row-cols-md-6 row-cols-lg-4 g-3 d-flex justify-content-end">
+        <div class="col">
+            <button class="btn btn-primary w-100" type="button" (click)="agregarProducto()">Cargar Producto</button>
+        </div>
     </div>
 </div>
