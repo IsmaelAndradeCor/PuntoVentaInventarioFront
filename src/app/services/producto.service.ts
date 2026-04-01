@@ -14,23 +14,27 @@ export class ProductoService {
   private http = inject(HttpClient);
   private urlBase = environment.apiURL + '/Producto';
 
-  public postProducto(producto: ProductoDto): Observable<void> {
-    return this.http.post<void>(this.urlBase + '/producto', producto);
+  public getProductos(): Observable<ProductoDto[]> {
+    return this.http.get<ProductoDto[]>(this.urlBase + '/listar_productos');
   }
 
-  public getProductos(): Observable<ProductoDto[]> {
-    return this.http.get<ProductoDto[]>(this.urlBase + '/productos');
+  public getProductosStockMinimo(): Observable<ProductoDto[]> {
+    return this.http.get<ProductoDto[]>(this.urlBase + '/stock_minimo');
   }
 
   public getProductoPorCodigo(codigo: string): Observable<ProductoDto> {
-    return this.http.get<ProductoDto>(`${this.urlBase}/codigo/${codigo}`);
+    return this.http.get<ProductoDto>(`${this.urlBase}/producto_codigo/${codigo}`);
+  }
+
+  public postProducto(producto: ProductoDto): Observable<void> {
+    return this.http.post<void>(this.urlBase + '/crear_producto', producto);
   }
 
   public putProducto(codigo: string, producto: ProductoDto): Observable<void> {
-    return this.http.put<void>(`${this.urlBase}/producto/${codigo}`, producto);
+    return this.http.put<void>(`${this.urlBase}/actualizar_producto/${codigo}`, producto);
   }
 
   public deleteProducto(codigo: string): Observable<void> {
-    return this.http.delete<void>(`${this.urlBase}/producto/${codigo}`);
+    return this.http.delete<void>(`${this.urlBase}/eliminar_producto/${codigo}`);
   }
 }

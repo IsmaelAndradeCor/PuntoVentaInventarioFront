@@ -1,4 +1,29 @@
-<h2>Home Works!</h2>
+<h2>Bienvenido, Usuario!</h2>
 <div class="form-section">
-    <label for="">Home Works!</label>
+    <h5>Stock Minimo</h5>
+    <table class="table table-sm table-danger table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th style="text-align: center; white-space: nowrap; width: 5%;">Precio Compra</th>
+                <th style="text-align: center; white-space: nowrap; width: 5%;">Precio Venta</th>
+                <th style="text-align: center; white-space: nowrap; width: 5%;">Stock</th>
+                <th style="text-align: center; white-space: nowrap; width: 5%;">Stock Minimo</th>
+                <th>Proveedor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let i of productos; index as j">
+                <td>{{i.codigo}}</td>
+                <td>{{i.nombre}}</td>
+                <td style="text-align: center;">{{i.precioCompra | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td style="text-align: center;">{{i.precioVenta | currency:'USD':'symbol':'1.2-2' }}</td>
+                <!-- <td style="text-align: center;">{{i.precioVenta | currency:'MXN':'symbol':'1.2-2' }}</td> -->
+                <td style="text-align: center;">{{i.stock}}</td>
+                <td style="text-align: center;">{{i.stockMinimo}}</td>
+                <td>{{i.proveedor}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

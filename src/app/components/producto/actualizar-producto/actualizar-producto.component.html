@@ -25,14 +25,45 @@
       </div>
       <div class="modal-body">
         <form *ngIf="productoActualizar" #form="ngForm">
-          <input [(ngModel)]="productoActualizar.nombre" name="nombre" class="form-control mb-2" placeholder="Nombre">
-          <input type="number" [(ngModel)]="productoActualizar.precioVenta" name="precioVenta" class="form-control mb-2" placeholder="Precio Venta">
-          <!-- Más campos aquí -->
+          <!-- <input [(ngModel)]="productoActualizar.nombre" name="nombre" class="form-control mb-2" placeholder="Nombre">
+          <input type="number" [(ngModel)]="productoActualizar.precioVenta" name="precioVenta" class="form-control mb-2" placeholder="Precio Venta"> -->
+          <div class="input-group">
+            <span class="input-group-text">Nombre</span>
+            <input class="form-control" type="text" [(ngModel)]="productoActualizar.nombre" name="nombre">
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">Descripción</span>
+            <input class="form-control" type="text" [(ngModel)]="productoActualizar.descripcion" name="descripcion">
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">Precio Compra</span>
+            <input class="form-control" type="number" [(ngModel)]="productoActualizar.precioCompra" name="precioCompra">
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">Precio Venta</span>
+            <input class="form-control" type="number" [(ngModel)]="productoActualizar.precioVenta" name="precioVenta">
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">Ganancia</span>
+            <input class="form-control" type="number" [value]="productoActualizar.precioVenta - productoActualizar.precioCompra" name="ganancia" disabled>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">Stock</span>
+            <input class="form-control" type="number" [(ngModel)]="productoActualizar.stock" name="stock">
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">Stock Minimo</span>
+            <input class="form-control" type="number" [(ngModel)]="productoActualizar.stockMinimo" name="stockMinimo">
+          </div>
+          <div class="input-group">
+            <span class="input-group-text">Proveedor</span>
+            <input class="form-control" type="text" [(ngModel)]="productoActualizar.proveedor" name="proveedor">
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="cerrar()">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar</button>
+        <button type="button" class="btn btn-danger" (click)="cerrar()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="guardarCambios()">Guardar</button>
       </div>
     </div>
   </div>

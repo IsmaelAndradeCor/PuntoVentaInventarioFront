@@ -1,4 +1,4 @@
-<h2>Listado de Productos</h2>
+<!-- <h2>Listado de Productos</h2>
 <div class="form-section">
     <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3">
         @for (item of productosDto; track $index) {
@@ -7,18 +7,14 @@
                 <div class="card-header d-flex align-items-center justify-content-between">
                     {{item.nombre}}
                     <div>
-                        <button class="btn btn-danger me-2" (click)="eliminarProductoPorCodigo(item.codigo)"><i class="fa-solid fa-trash"></i></button> <!-- Eliminar -->
-                        <button class="btn btn-warning" (click)="abrirModalActualizarProductoPorCodigo(item.codigo)"><i class="fa-solid fa-pen-to-square"></i></button> <!-- Editar -->
+                        <button class="btn btn-danger me-2" (click)="eliminarProductoPorCodigo(item.codigo)"><i class="fa-solid fa-trash"></i></button> 
+                        <button class="btn btn-warning" (click)="abrirModalActualizarProductoPorCodigo(item.codigo)"><i class="fa-solid fa-pen-to-square"></i></button> 
                     </div>
                     
                 </div>
                 <ul class="list-group list-group-flush">
-                    <!-- <div class="input-group">
-                            <span class="input-group-text">Descripcion</span>
-                            <input class="form-control" type="text">
-                    </div> -->
                     <li class="list-group-item">{{item.descripcion}}</li>
-                    <li class="list-group-item">{{item.precioVenta}}</li>
+                    <li class="list-group-item">{{item.precioVenta | currency:'MXN':'symbol':'1.2-2' }}</li>
                     <li class="list-group-item">{{item.proveedor}}</li>
                     <li class="list-group-item">{{item.categoria}}</li>
                     <li class="list-group-item">{{item.stock}}</li>
@@ -27,7 +23,44 @@
         </div>
         }
     </div>
+</div> -->
+
+<h3>Listado de Productos</h3>
+<div class="form-section">
+    <table class="table table-sm table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Precio Compra</th>
+                <th>Precio Venta</th>
+                <th>Ganancia</th>
+                <th>Stock</th>
+                <th>Stock Minimo</th>
+                <th>Proveedor</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let i of productosDto; index as j">
+                <td>{{i.codigo}}</td>
+                <td>{{i.nombre}}</td>
+                <td>{{i.precioCompra | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td>{{i.precioVenta | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td>{{i.precioVenta - i.precioCompra | currency:'USD':'symbol':'1.2-2' }}</td>
+                <!-- <td style="text-align: center;">{{i.precioVenta | currency:'MXN':'symbol':'1.2-2' }}</td> -->
+                <td [ngClass]="{'table-danger' : i.stock <= i.stockMinimo}">{{i.stock}}</td>
+                <td>{{i.stockMinimo}}</td>
+                <td>{{i.proveedor}}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning me-2" (click)="abrirModalActualizarProductoPorCodigo(i.codigo)"><i class="fa-solid fa-pen-to-square"></i></button>                     
+                    <button class="btn btn-sm btn-danger" (click)="eliminarProductoPorCodigo(i.codigo)"><i class="fa-solid fa-trash"></i></button> 
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
 
 <app-actualizar-producto
   *ngIf="mostrarActualizarProducto"
