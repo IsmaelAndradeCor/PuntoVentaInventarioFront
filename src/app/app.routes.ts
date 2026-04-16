@@ -5,6 +5,7 @@ import { ActualizarProductoComponent } from './components/producto/actualizar-pr
 import { CrearProductoComponent } from './components/producto/crear-producto/crear-producto.component';
 import { EliminarProductoComponent } from './components/producto/eliminar-producto/eliminar-producto.component';
 import { RealizarVentaComponent } from './components/venta/realizar-venta/realizar-venta.component';
+import { CrearMarcaComponent } from './components/marca/crear-marca/crear-marca.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -16,5 +17,8 @@ export const routes: Routes = [
     {path: 'producto/listar-productos', component: ListarProductosComponent},
 
     // Ventas
-    {path: 'venta/realizar-venta', component: RealizarVentaComponent}
+    {path: 'venta/realizar-venta', component: RealizarVentaComponent},
+
+    // Marcas
+    {path: 'marca/crear-marca', component: CrearMarcaComponent}
 ];

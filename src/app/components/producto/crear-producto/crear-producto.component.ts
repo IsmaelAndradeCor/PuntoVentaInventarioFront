@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductoDto } from '../../../models/producto.interface';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductoService } from '../../../services/producto.service';
 import { ToastrService } from 'ngx-toastr';
+import { MarcaService } from '../../../services/marca.service';
+import { MarcaResponseDto } from '../../../models/dtos/responses/marca-response-dto';
+import { ProductoUpsertDto } from '../../../models/dtos/requests/producto-upsert-dto';
 
 @Component({
   selector: 'app-crear-producto',
@@ -11,12 +14,17 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './crear-producto.component.html',
   styleUrl: './crear-producto.component.scss'
 })
-export class CrearProductoComponent {
+export class CrearProductoComponent implements OnInit {
 
   constructor(
     private productoService: ProductoService,
+    private marcaService: MarcaService,
     private toastrService: ToastrService
   ){}
+
+  ngOnInit(): void {
+    this.getMarcas();
+  }
 
   producto: ProductoDto = {
     id: 0,
@@ -30,6 +38,32 @@ export class CrearProductoComponent {
     categoria: '',
     proveedor: ''
   };
+
+  productoUpsertDto: ProductoUpsertDto = {
+    codigo: '',
+    nombre: '',
+    descripcion: '',
+    costo: 0,
+    precio: 0,
+    stock: 0,
+    stockMinimo: 0,
+    idCategoria: 0,
+    idMarca: 0,
+    idUnidadMedida: 0,
+    idsProveedores: []
+  }
+
+  marcas: MarcaResponseDto[] = [];
+
+  getMarcas(): void {
+    this.marcaService.getMarcas().subscribe({
+      next:(response) => {
+        this.marcas = response;
+      },
+      error:() =>
+        this.toastrService.error('Ocurrió un error al cargar las Marcas, por favor contacta al Administrador.')
+    })
+  }
 
   agregarProducto(): void {
     this.productoService.postProducto(this.producto).subscribe({

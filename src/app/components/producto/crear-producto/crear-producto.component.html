@@ -4,55 +4,66 @@
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Codigo</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.codigo">
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.codigo">
             </div>
         </div>
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Nombre</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.nombre">
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.nombre">
             </div>
         </div>
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Descripcion</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.descripcion">
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.descripcion">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Marca</span>
+                <select class="form-select" name="selectMarca" id="selectMarca" [(ngModel)]="productoUpsertDto.idMarca">
+                    <option value="{{productoUpsertDto.idMarca}}" selected>Selecciona Marca</option>
+                    @for (m of marcas; track $index) {
+                    <option [ngValue]="m.id">{{m.nombre}}</option>
+                    }
+                </select>            
             </div>
         </div>
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Precio Compra</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.precioCompra">
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.costo">
             </div>
         </div>
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Precio Venta</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.precioVenta">
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.precio">
             </div>
         </div>
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Stock</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.stock">
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.stock">
             </div>
         </div>
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Stock Minimo</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.stockMinimo">
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.stockMinimo">
             </div>
         </div>
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Categoria</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.categoria">
+                <input class="form-control" type="text" autocomplete="off" >
             </div>
         </div>
         <div class="col">
             <div class="input-group">
                 <span class="input-group-text">Proveedor</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="producto.proveedor">
+                <input class="form-control" type="text" autocomplete="off" >
             </div>
         </div>
     </div>
