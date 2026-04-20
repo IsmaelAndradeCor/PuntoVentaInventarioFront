@@ -59,6 +59,7 @@ export class CrearProductoComponent implements OnInit {
 
   marcas: MarcaResponseDto[] = [];
   proveedores: ProveedorResponsetDto[] = [];
+  
 
   selectedProveedor: number = 0;
 
