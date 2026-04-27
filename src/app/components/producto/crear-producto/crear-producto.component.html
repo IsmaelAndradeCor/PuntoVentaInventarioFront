@@ -1,114 +1,119 @@
 <h2>Crear Producto</h2>
-<div class="form-section">
-    <div class="row row-cols-sm-1 row-cols-md-6 row-cols-lg-4 g-3 mb-3">
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Codigo</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.codigo">
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Nombre</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.nombre">
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Descripcion</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.descripcion">
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Marca</span>
+<div class="row">
+    <div class="col-9">
+        <div class="form-section">
+            <div class="row row-cols-sm-1 row-cols-md-6 row-cols-lg-3 g-3 mb-3">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Codigo</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.codigo">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Nombre</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.nombre">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Descripcion</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.descripcion">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Marca</span>
 
-                <input class="form-control" type="text" name="marca" list="listaMarcas" [(ngModel)]="marcaTexto" (input)="onMarcaInput()" placeholder="Escribe o selecciona una marca" autocomplete="off">
+                        <input class="form-control" type="text" name="marca" list="listaMarcas" [(ngModel)]="marcaTexto" (input)="onMarcaInput()" placeholder="Escribe o selecciona una marca" autocomplete="off">
 
-                <datalist id="listaMarcas">
-                    @for (m of marcas; track m.id) {
-                        <option [value]="m.nombre"></option>
-                    }
-                </datalist>
+                        <datalist id="listaMarcas">
+                            @for (m of marcas; track m.id) {
+                                <option [value]="m.nombre"></option>
+                            }
+                        </datalist>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Costo</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.costo">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Precio</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.precio">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Stock</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.stock">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Stock Minimo</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.stockMinimo">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Categoria</span>
+                        <select class="form-select" name="selectCategoria" id="selectCategoria" [(ngModel)]="productoUpsertDto.idCategoria">
+                            <option [ngValue]="0" selected>Selecciona Categoria</option>
+                            @for (c of categorias; track $index) {
+                            <option [ngValue]="c.id">{{c.nombre}}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Unidad Medida</span>
+                        <select class="form-select" name="selectUnidadMedida" id="selectUnidadMedida" [(ngModel)]="productoUpsertDto.idUnidadMedida">
+                            <option [ngValue]="0" selected>Selecciona Unidad Medida</option>
+                            @for (u of unidadesMedida; track $index) {
+                            <option [ngValue]="u.id">{{u.nombre}}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
             </div>
-        </div>
-        <!-- <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Marca</span>
-                <select class="form-select" name="selectMarca" id="selectMarca" [(ngModel)]="productoUpsertDto.idMarca">
-                    <option [ngValue]="0" selected>Selecciona Marca</option>
-                    @for (m of marcas; track $index) {
-                    <option [ngValue]="m.id">{{m.nombre}}</option>
-                    }
-                </select>            
+            <div class="row row-cols-sm-1 row-cols-md-6 row-cols-lg-4 g-3 d-flex justify-content-end">
+                <div class="col">
+                    <button class="btn btn-success w-100" type="button" (click)="agregarProducto()">Cargar Producto</button>
+                </div>
             </div>
-        </div> -->
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Costo</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.costo">
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Precio</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.precio">
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Stock</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.stock">
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Stock Minimo</span>
-                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.stockMinimo">
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Categoria</span>
-                <select class="form-select" name="selectCategoria" id="selectCategoria" [(ngModel)]="productoUpsertDto.idCategoria">
-                    <option [ngValue]="0" selected>Selecciona Categoria</option>
-                    @for (c of categorias; track $index) {
-                    <option [ngValue]="c.id">{{c.nombre}}</option>
-                    }
-                </select>            
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Unidad Medida</span>
-                <select class="form-select" name="selectUnidadMedida" id="selectUnidadMedida" [(ngModel)]="productoUpsertDto.idUnidadMedida">
-                    <option [ngValue]="0" selected>Selecciona Unidad Medida</option>
-                    @for (u of unidadesMedida; track $index) {
-                    <option [ngValue]="u.id">{{u.nombre}}</option>
-                    }
-                </select>            
-            </div>
-        </div>
-        <div class="col">
-            <div class="input-group">
-                <span class="input-group-text">Proveedor</span>
-                <select class="form-select" name="selectProveedor" id="selectProveedor" [(ngModel)]="selectedProveedor">
-                    <option [ngValue]="0" selected>Selecciona Proveedor</option>
-                    @for (m of proveedores; track $index) {
-                    <option [ngValue]="m.id">{{m.nombre}}</option>
-                    }
-                </select>            
-            </div>
-        </div>
-        <div class="col">
-            <button class="btn btn-primary w-100" type="button" (click)="agregarProveedor()">Agregar Proveedor</button>
         </div>
     </div>
-    <div class="row row-cols-sm-1 row-cols-md-6 row-cols-lg-4 g-3 d-flex justify-content-end">
-        <div class="col">
-            <button class="btn btn-success w-100" type="button" (click)="agregarProducto()">Cargar Producto</button>
+    <div class="col-3">
+        <div class="form-section">
+            <div class="row row-cols-12 g-3">
+                <div class="col-12">
+                    <div class="input-group">
+                        <span class="input-group-text">Proveedor</span>
+                        <select class="form-select" name="selectProveedor" id="selectProveedor" (ngModelChange)="agregarProveedor($event)" [(ngModel)]="selectedProveedor">
+                            <option [ngValue]="0">Selecciona Proveedor</option>
+                            @for (m of proveedores; track $index) {
+                            <option [ngValue]="m.id">{{m.nombre}}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                @for (p of productoUpsertDto.idsProveedores; track $index) {
+                <div class="col-12">
+                    <div class="input-group">
+                    <div class="form-control">{{nombreProveedor(p)}}</div>
+                    <button type="button" class="btn btn-danger" (click)="quitarProveedor(p)"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+                }
+            </div>
         </div>
     </div>
 </div>
 
-<pre>{{productoUpsertDto | json}}</pre>
+<!-- <pre>{{selectedProveedor}}</pre>
+<pre>{{productoUpsertDto | json}}</pre> -->

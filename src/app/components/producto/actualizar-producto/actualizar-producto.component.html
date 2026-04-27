@@ -51,6 +51,28 @@
                   </select>            
               </div>
           </div>
+          <div class="col">
+              <div class="input-group">
+                  <span class="input-group-text">Marca</span>
+                  <select class="form-select" name="selectMarca" id="selectMarca" [(ngModel)]="productoActualizar.marca.id">
+                      <option [ngValue]="0" selected>Selecciona Marca</option>
+                      @for (m of marcas; track $index) {
+                      <option [ngValue]="m.id">{{m.nombre}}</option>
+                      }
+                  </select>            
+              </div>
+          </div>
+          <div class="col">
+              <div class="input-group">
+                  <span class="input-group-text">Unidad Medida</span>
+                  <select class="form-select" name="selectUnidadMedida" id="selectUnidadMedida" [(ngModel)]="productoActualizar.unidadMedida.id">
+                      <option [ngValue]="0" selected>Selecciona Unidad Medida</option>
+                      @for (u of unidadesMedida; track $index) {
+                      <option [ngValue]="u.id">{{u.nombre}}</option>
+                      }
+                  </select>            
+              </div>
+          </div>
             <div class="col">
               <div class="input-group">
                 <span class="input-group-text">Precio Compra</span>

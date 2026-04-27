@@ -55,6 +55,8 @@ export class CrearProductoComponent implements OnInit {
   marcas: MarcaResponseDto[] = [];
   unidadesMedida: UnidadMedidaResponseDto[] = [];
   proveedores: ProveedorResponsetDto[] = [];
+
+  proveedoresPorId: Map<number, ProveedorResponsetDto> = new Map();  // ← Tu diccionario
   
   marcaTexto: string = '';
   selectedProveedor: number = 0;
@@ -93,6 +95,10 @@ export class CrearProductoComponent implements OnInit {
     this.proveedorService.getProveedores().subscribe({
       next:(response) => {
         this.proveedores = response;
+
+        this.proveedoresPorId = new Map(
+        this.proveedores.map(proveedor => [proveedor.id, proveedor])
+        );
       },
       error:() =>
         this.toastrService.error('Ocurrió un error al cargar los Proveedores, por favor contacta al Administrador.')
@@ -207,17 +213,32 @@ export class CrearProductoComponent implements OnInit {
     });
   }
 
-  agregarProveedor(): void {
-    if (this.productoUpsertDto.idsProveedores.includes(this.selectedProveedor)) {
-      this.toastrService.error('Ya agregó este proveedor.');
-      this.selectedProveedor = 0;
-      return;
-    } else if (this.selectedProveedor == 0) {
+
+  nombreProveedor(id: number): string {
+    return this.proveedoresPorId.get(id)?.nombre ?? 'Proveedor no encontrado';
+  }
+
+  agregarProveedor(id: number): void {
+    if (id === 0) {
       this.toastrService.error('Debe seleccionar un Proveedor.');
-      return
+      return;
     }
-    this.productoUpsertDto.idsProveedores.push(this.selectedProveedor);
-    this.selectedProveedor = 0;
+
+    if (this.productoUpsertDto.idsProveedores.includes(id)) {
+      this.toastrService.error('Ya agregó este proveedor.');
+      setTimeout(() => this.selectedProveedor = 0);
+      return;
+    }
+
+    this.productoUpsertDto.idsProveedores.push(id);
+    setTimeout(() => this.selectedProveedor = 0);
+  }
+
+  quitarProveedor(id: number): void {
+    this.productoUpsertDto.idsProveedores =
+      this.productoUpsertDto.idsProveedores.filter(p => p !== id);
+      setTimeout(() => this.selectedProveedor = 0);
+
   }
 
 }

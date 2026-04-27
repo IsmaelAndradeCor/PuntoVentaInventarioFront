@@ -53,8 +53,8 @@
                 <td>{{i.stockMinimo}}</td>
                 <td>@for (p of i.proveedores; track $index) { {{p.nombre}} }</td>
                 <td>
-                    <button class="btn btn-sm btn-warning me-2" (click)="abrirModalActualizarProductoPorCodigo(i.codigo)"><i class="fa-solid fa-pen-to-square"></i></button>                     
-                    <button class="btn btn-sm btn-danger" (click)="mostrarModalConfirmarEliminar(i.codigo)"><i class="fa-solid fa-trash"></i></button> 
+                    <button class="btn btn-sm btn-warning me-2" type="button" (click)="abrirModalActualizarProductoPorCodigo(i.codigo)"><i class="fa-solid fa-pen-to-square"></i></button>                     
+                    <button class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarEliminar(i.codigo)"><i class="fa-solid fa-trash"></i></button> 
                 </td>
             </tr>
         </tbody>
@@ -66,6 +66,8 @@
   *ngIf="mostrarActualizarProducto"
   [productoActualizar]="productoActualizar"
   [categorias]="categorias"
+  [marcas]="marcas"
+  [unidadesMedida]="unidadesMedida"
   [mostrarActualizarProducto]="mostrarActualizarProducto"
   (cerrarModal)="cerrarModalActualizar()"
 ></app-actualizar-producto>

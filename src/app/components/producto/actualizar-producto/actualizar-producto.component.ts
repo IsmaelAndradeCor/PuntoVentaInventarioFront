@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ProductoResponseDto } from '../../../models/dtos/responses/producto-response-dto';
 import { CategoriaResponseDto } from '../../../models/dtos/responses/categoria-response-dto';
 import { ProductoUpsertDto } from '../../../models/dtos/requests/producto-upsert-dto';
+import { MarcaResponseDto } from '../../../models/dtos/responses/marca-response-dto';
+import { UnidadMedidaResponseDto } from '../../../models/dtos/responses/unidad-medida-response-dto';
 
 @Component({
   selector: 'app-actualizar-producto',
@@ -23,6 +25,9 @@ export class ActualizarProductoComponent {
 
   @Input() productoActualizar: ProductoResponseDto | null = null;  // Quita required si inicializas
   @Input() categorias: CategoriaResponseDto[] = [];
+  @Input() marcas: MarcaResponseDto[] = []; 
+  @Input() unidadesMedida: UnidadMedidaResponseDto[] = [];
+  @Input()   
   @Input() mostrarActualizarProducto = false;
 
   @Output() cerrarModal = new EventEmitter<void>();  // ← Output correcto para cerrar

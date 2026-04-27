@@ -39,6 +39,10 @@ export class RealizarVentaComponent implements OnInit {
   carrito: ItemCarrito[] = [];
 
   ngOnInit() {
+    this.getProductos();
+  }
+
+  getProductos(): void {
     this.productoService.getProductos().subscribe({
       next:(prodcutosResponse) => {
         this.productos = prodcutosResponse;
