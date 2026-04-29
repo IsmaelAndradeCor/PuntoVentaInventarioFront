@@ -97,7 +97,7 @@ export class CrearProductoComponent implements OnInit {
         this.proveedores = response;
 
         this.proveedoresPorId = new Map(
-        this.proveedores.map(proveedor => [proveedor.id, proveedor])
+          this.proveedores.map(proveedor => [proveedor.id, proveedor])
         );
       },
       error:() =>
