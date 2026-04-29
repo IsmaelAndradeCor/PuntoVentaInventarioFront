@@ -10,26 +10,26 @@
     </div>
 </div>
 
-<div class="form-section mb-3">
+<div class="form-section mb-3 overflow-auto" style="max-height: 350px;">
     @for (producto of carrito; track $index) {
     <div class="row">
-        <div class="col">
+        <div class="col-1 border align-content-center">
             <!-- Botón eliminar (pasa el índice) -->
-            <button (click)="disminuirCantidad($index)" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+            <button (click)="disminuirCantidad($index)" class="btn btn-sm btn-danger w-100"><i class="fa-solid fa-trash"></i></button>
         </div>
-        <div class="col">
-            <p>x{{producto.cantidad}}</p>
+        <div class="col-1 border d-flex justify-content-center align-items-center">
+            <p class="mb-0">x{{ producto.cantidad }}</p>
         </div>
-        <div class="col">
+        <div class="col-4 border">
             <p>{{producto.producto.nombre}}</p>
         </div>
-        <div class="col">
+        <div class="col-4 border">
             <p>{{producto.producto.descripcion}}</p>
         </div>
-        <div class="col">
+        <div class="col-1 border text-center">
             <p>{{ producto.producto.precio | currency:'MXN':'symbol':'1.2-2' }}</p>
         </div>
-        <div class="col">
+        <div class="col-1 border text-center">
             <p>{{ producto.producto.precio * producto.cantidad | currency:'MXN':'symbol':'1.2-2' }}</p>
         </div>
     </div>
