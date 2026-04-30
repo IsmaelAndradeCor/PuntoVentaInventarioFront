@@ -104,12 +104,27 @@ export class RealizarVentaComponent implements OnInit {
         codigo = partes[1].trim();
       } else {
         this.toastrService.error('Multiplicación incorrecta para código de producto.');
+        // Limpiar input para próximo escaneo
+        this.codigoProducto = '';
+        this.enfocarInputCodigo();
         return;
       }
     }
 
     if (codigo && this.productosPorCodigo.has(codigo)) {
       const producto = this.productosPorCodigo.get(codigo)!;
+
+      //Ya validamos que existe el producto y se intenta agregar una cantidad especifica de productos, validamos si la cantidad es decimal, el producto igual debe ser decimal, y viceversa
+      const esEntero = Number.isInteger(cantidad);
+      const permiteDecimales = producto.unidadMedida.permiteDecimales;
+
+      if (!permiteDecimales && !esEntero) {
+        this.toastrService.error('El Producto no es fraccionario.');
+        // Limpiar input para próximo escaneo
+        this.codigoProducto = '';
+        this.enfocarInputCodigo();
+        return;
+      }
       // Agregar al carrito individual
       this.agregarAlCarrito(producto, cantidad);
     } else {

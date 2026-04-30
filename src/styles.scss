@@ -1,20 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+// /* You can add global styles to this file, and also import other style files */
+// .main-content {
+//     min-height: 100dvh;
+//     display: grid;
+//     grid-template-rows: auto 1fr auto;
+// }
+
+// .container {
+//     max-width: 1600px;
+//     margin: 1rem auto;
+// }
+
+// .contenedor-scroll {
+//   height: 600px; /* Altura límite */
+// //   height: 800px; /* Altura límite - Pantalla full HD 16:9 */
+//   overflow-y: auto; /* Scroll vertical */
+//   overflow-x: hidden; /* Oculta scroll horizontal */
+// }
+
+// .form-section {
+//     padding: 1rem;
+//     border: 1px solid gray;
+//     // border: 1px solid #dee2e6;
+//     border-radius: 8px;
+//     // margin-bottom: 1rem;
+//     // background-color: #fdfdfd;
+//     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+
+//     &--highlight {
+//         border-left: 5px solid var(--bs-primary);
+//     }
+
+//     &--compact {
+//         padding: 0.5rem;
+//         background-color: #fcfcfc;
+//     }
+// }
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}
+
 .main-content {
-    min-height: 100dvh;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
 }
 
-.container {
-    max-width: 1600px;
-    margin: 1rem auto;
-}
-
-.contenedor-scroll {
-  height: 600px; /* Altura límite */
-//   height: 800px; /* Altura límite - Pantalla full HD 16:9 */
-  overflow-y: auto; /* Scroll vertical */
-  overflow-x: hidden; /* Oculta scroll horizontal */
+.app-content {
+  width: 100%;
+  max-width: 1600px;
+  min-height: 0;
+  margin: 0 auto;
+  padding: 1rem;
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 .form-section {

@@ -1,4 +1,12 @@
-<h3>Realizar Venta</h3>
+<div class="realizar-venta-page">
+<div class="row">
+    <div class="col-6">
+        <h3>Realizar Venta</h3> 
+    </div>
+    <div class="col-6 text-end">
+        <h3>Total: {{ calcularTotal() | currency:'USD':'symbol':'1.2-2' }}</h3>
+    </div>
+</div>
 <div class="form-section mb-3">
     <div class="row">
         <div class="col">
@@ -10,54 +18,60 @@
     </div>
 </div>
 
-<div class="form-section mb-3 overflow-auto" style="max-height: 350px;">
+<div class="form-section form-section-fill mb-3">
     @for (producto of carrito; track $index) {
     <div class="row">
-        <div class="col-1 border align-content-center">
+        <div class="col-sm-1 col-md-1 col-lg-1 p-0 d-flex justify-content-center align-items-center">
             <!-- Botón eliminar (pasa el índice) -->
-            <button (click)="disminuirCantidad($index)" class="btn btn-sm btn-danger w-100"><i class="fa-solid fa-trash"></i></button>
+            <button (click)="disminuirCantidad($index)" class="btn btn-sm btn-danger w-50 m-2"><i class="fa-solid fa-trash"></i></button>
         </div>
-        <div class="col-1 border d-flex justify-content-center align-items-center">
-            <p class="mb-0">x{{ producto.cantidad }}</p>
+        <div class="col-sm-1 col-md-1 col-lg-1 p-0 d-flex align-items-center justify-content-center">
+            <p class="m-2">{{ producto.cantidad }} x</p>
         </div>
-        <div class="col-4 border">
-            <p>{{producto.producto.nombre}}</p>
+        <div class="col-sm-8 col-md-6 col-lg-4 p-0 d-flex align-items-center">
+            <p class="m-2">{{producto.producto.nombre}}</p>
         </div>
-        <div class="col-4 border">
-            <p>{{producto.producto.descripcion}}</p>
+        <div class="                  col-lg-4 p-0 d-flex align-items-center d-none d-lg-block">
+            <p class="m-2">{{producto.producto.descripcion}}</p>
         </div>
-        <div class="col-1 border text-center">
-            <p>{{ producto.producto.precio | currency:'MXN':'symbol':'1.2-2' }}</p>
+        <div class="         col-md-2 col-lg-1 p-0 d-flex align-items-center justify-content-center d-none d-md-block">
+            <p class="m-2">{{ producto.producto.precio | currency:'USD':'symbol':'1.2-2' }}</p>
         </div>
-        <div class="col-1 border text-center">
-            <p>{{ producto.producto.precio * producto.cantidad | currency:'MXN':'symbol':'1.2-2' }}</p>
+        <div class="col-sm-2 col-md-2 col-lg-1 p-0 d-flex align-items-center justify-content-center">
+            <p class="m-2">{{ producto.producto.precio * producto.cantidad | currency:'USD':'symbol':'1.2-2' }}</p>
         </div>
     </div>
     }
     <div class="row">
         <div class="col-2 offset-10">
             <!-- Mostrar total -->
-            <p class="text-end">Total: {{ calcularTotal() | currency:'MXN':'symbol':'1.2-2' }}</p>
+            <p class="text-end">Total: {{ calcularTotal() | currency:'USD':'symbol':'1.2-2' }}</p>
         </div>
     </div>
 </div>
 
 <div class="form-section mb-3">
-    <div class="row">
-        <div class="col-2">
+    <div class="row g-3">
+        <div class="col-sm-6 col-md-3 col-lg-2">
+            <div class="input-group">
+                <span class="input-group-text">Total</span>
+                <input class="form-control" type="text" [value]="calcularTotal() | currency:'USD':'symbol':'1.2-2'" disabled placeholder="Dinero recibido">
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-2">
             <div class="input-group">
                 <span class="input-group-text">Recibe</span>
                 <input #inputCambio class="form-control" type="number" [(ngModel)]="dineroRecibido" placeholder="Dinero recibido">
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-sm-6 col-md-3 col-lg-2">
             <div class="input-group">
                 <span class="input-group-text">Cambio</span>
                 <input class="form-control" type="number" [value]="calcularCambio()" disabled placeholder="Dar cambio">
                 <!-- <span class="input-group-text">{{calcularCambio()}}</span> -->
             </div>
         </div>
-        <div class="col-2 offset-6">
+        <div class="col-sm-6 col-md-3 col-lg-2 offset-lg-4">
             <button class="btn btn-success w-100" type="button" (click)="finalizarVenta()">Finalizar Venta</button>
         </div>
     </div>
@@ -71,3 +85,4 @@
 <!-- <div class="form-section">
     <pre>{{carrito | json}}</pre>
 </div> -->
+</div>
