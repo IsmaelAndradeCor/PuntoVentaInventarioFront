@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment.development';
 import { Observable } from 'rxjs';
 import { ProductoUpsertDto } from '../models/dtos/requests/producto-upsert-dto';
 import { ProductoResponseDto } from '../models/dtos/responses/producto-response-dto';
+import { ProductoSimpleResponseDto } from '../models/dtos/responses/producto-simple-response-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class ProductoService {
 
   public getProductosActivos(): Observable<ProductoResponseDto[]> {
     return this.http.get<ProductoResponseDto[]>(this.urlBase + '/listar_productos_activos');
+  }
+
+  public getProductosVenta(): Observable<ProductoSimpleResponseDto[]> {
+    return this.http.get<ProductoSimpleResponseDto[]>(this.urlBase + '/listar_productos_venta');
   }
 
   public getProductosInactivos(): Observable<ProductoResponseDto[]> {

@@ -53,5 +53,9 @@ export class NavbarComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
+  
+  esAdmin(): boolean {
+    console.log(this.authService)
+    return this.authService.hasRole('Administrador');
+  }
 }

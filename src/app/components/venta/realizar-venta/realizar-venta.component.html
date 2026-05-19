@@ -4,7 +4,7 @@
             <h3>Realizar Venta</h3> 
         </div>
         <div class="col-6 text-end">
-            <h3>Total: {{ calcularTotal() | currency:'USD':'symbol':'1.2-2' }}</h3>
+            <h3>Total: {{ calcularTotal() | currency:'USD':'symbol':'1.2-2' }} | Cambio: {{ calcularCambio() | currency:'USD':'symbol':'1.2-2' }}</h3>
         </div>
     </div>
     <div class="form-section mb-3">
@@ -12,7 +12,12 @@
             <div class="col">
                 <div class="input-group">
                     <span class="input-group-text">Escanea</span>
-                    <input #inputCodigo class="form-control" type="text" [(ngModel)]="codigoProducto" (keyup.enter)="agregarProductoPorCodigo()" placeholder="Escanear código o escribir">
+                    <input #inputCodigo class="form-control" list="listaProductos" type="text" [(ngModel)]="codigoProducto" (keyup.enter)="agregarProductoPorCodigo()" placeholder="Escanear código o escribir nombre">
+                    <datalist id="listaProductos">
+                        @for (p of productos; track p.id) {
+                            <option [value]="p.codigo" [label]="p.nombre"></option>
+                        }
+                    </datalist>
                 </div>
             </div>
         </div>
@@ -26,14 +31,32 @@
                 <button (click)="disminuirCantidad($index)" class="btn btn-sm btn-danger w-50"><i class="fa-solid fa-trash"></i></button>
             </div>
             <div class=" col-sm-1 col-md-1 col-lg-1 p-0 d-flex align-items-center justify-content-center">
-                <p class="m-2">{{ producto.cantidad }} x</p>
+                <!-- <p class="m-2">{{ producto.cantidad }} x</p> -->
+                 <div class="input-group">
+                     <!-- <input class="form-control" type="number" min="0" max="{{producto.producto.stock}}" step="1" [(ngModel)]="producto.cantidad"> -->
+                    <input
+                    class="form-control"
+                    type="number"
+                    [min]="producto.producto.unidadMedida.permiteDecimales ? '0.00' : '1'"
+                    [max]="obtenerMaximoPermitido(producto.producto.codigo, $index)"
+                    [step]="producto.producto.unidadMedida.permiteDecimales ? '0.05' : '1'"
+                    [ngModel]="producto.cantidad"
+                    (ngModelChange)="actualizarCantidadItem($index, $event)"
+                    >  
+             
+                </div>
+            </div>
+            <div class="col d-flex align-items-center">
+                    <small class="text-muted">
+                    Disponible: {{ obtenerStockDisponible(producto.producto.codigo) + producto.cantidad }}
+                    </small>  
             </div>
             <div class=" col-sm-8 col-md-6 col-lg-4 p-0 d-flex align-items-center">
                 <p class="m-2">{{producto.producto.nombre}}</p>
             </div>
-            <div class="                   col-lg-4 p-0 align-items-center d-none d-lg-flex">
+            <!-- <div class="                   col-lg-4 p-0 align-items-center d-none d-lg-flex">
                 <p class="m-2">{{producto.producto.descripcion}}</p>
-            </div>
+            </div> -->
             <div class="          col-md-2 col-lg-1 p-0 align-items-center justify-content-center d-none d-md-flex">
                 <p class="m-2">{{ producto.producto.precio | currency:'USD':'symbol':'1.2-2' }}</p>
             </div>
@@ -42,6 +65,7 @@
             </div>
         </div>
         }
+        <!-- <pre>{{productosOriginal | json}}</pre> -->
         <!-- <div class="row">
             <div class=" p-0 col-3 offset-9 d-flex justify-content-end">
                 <p class="m-2 me-3">Total: {{ calcularTotal() | currency:'USD':'symbol':'1.2-2' }}</p>
@@ -66,22 +90,12 @@
             <div class="col-sm-6 col-md-3 col-lg-2">
                 <div class="input-group">
                     <span class="input-group-text">Cambio</span>
-                    <input class="form-control" type="number" [value]="calcularCambio()" disabled placeholder="Dar cambio">
-                    <!-- <span class="input-group-text">{{calcularCambio()}}</span> -->
+                    <input class="form-control" type="number" min="0" [value]="calcularCambio()" disabled placeholder="Dar cambio">
                 </div>
             </div>
             <div class="col-sm-6 col-md-3 col-lg-2 offset-lg-4">
                 <button class="btn btn-success w-100" type="button" (click)="finalizarVenta()">Finalizar Venta</button>
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col">
-                <pre>{{carrito | json}}</pre>
-            </div>
-        </div> -->
     </div>
-
-<!-- <div class="form-section">
-    <pre>{{carrito | json}}</pre>
-</div> -->
 </div>

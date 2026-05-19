@@ -1,16 +1,18 @@
 <div class="component-page">
-    <app-crear-unidad-medida
-        (objetoCreado)="unidadMedidaCreada($event)"
-    ></app-crear-unidad-medida>
+    <!-- Componente para crear una unidad de medida -->
+    <app-crear-unidad-medida (objetoCreado)="unidadMedidaCreada($event)"></app-crear-unidad-medida>
 
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2 mt-3">
-        <h3 class="mb-0">Listado de Unidades de Medida</h3>
+    <div class="form-section mt-3 list-section">
+    <!-- Titulo e input de busqueda de una unidad de medida -->
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h4 class="mb-0">Listado de Unidades de Medida</h4>
         <div class="input-group" style="max-width: 350px;">
             <input type="text" class="form-control" placeholder="Buscar por nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
             <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()"><i class="fa-solid fa-eraser"></i></button>
         </div>
     </div>
-    <div class="form-section form-section-fill">
+    <!-- Tabla con las unidades de medida existentes -->
+    <div class="form-section-fill">
         @if (textoBusqueda && !unidadesMedidaFiltradas.length) {
         <p>No existen Unidades de Medida con ese nombre.</p>
         }
@@ -18,28 +20,31 @@
         <p>No existen Unidades de Medida</p>
         }
         @else if (unidadesMedidaFiltradas) {
-        <table class="table table-sm table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Clave</th>
-                    <th>Permite decimales</th>
-                    <th style="width: 10%; text-align: center;">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let i of unidadesMedidaFiltradas; index as j">
-                    <td>{{i.nombre}}</td>
-                    <td>{{i.clave}}</td>
-                    <td>{{i.permiteDecimales}}</td>
-                    <td style="width: 10%; text-align: center;">
-                        <button class="btn btn-sm btn-warning me-3" type="button" (click)="mostrarModalActualizarPorId(i.id)"><i class="fa-solid fa-pen-to-square"></i></button>                     
-                        <button class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(i.id)"><i class="fa-solid fa-trash"></i></button> 
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-scroll">
+            <table class="table table-sm table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Clave</th>
+                        <th>Permite decimales</th>
+                        <th style="width: 10%; text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let i of unidadesMedidaFiltradas; index as j">
+                        <td>{{i.nombre}}</td>
+                        <td>{{i.clave}}</td>
+                        <td>{{i.permiteDecimales}}</td>
+                        <td style="width: 10%; text-align: center;">
+                            <button class="btn btn-sm btn-warning me-3" type="button" (click)="mostrarModalActualizarPorId(i.id)"><i class="fa-solid fa-pen-to-square"></i></button>                     
+                            <button class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(i.id)"><i class="fa-solid fa-trash"></i></button> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         }
+    </div>
     </div>
 </div>
 

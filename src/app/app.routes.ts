@@ -7,11 +7,13 @@ import { ListarCategoriaComponent } from './components/categoria/listar-categori
 import { ListarUnidadesMedidaComponent } from './components/unidadMedida/listar-unidades-medida/listar-unidades-medida.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { authGuard } from './core/auth/auth.guard';
+import { roleGuard } from './core/auth/role.guard';
 import { permissionGuard } from './core/auth/permission.guard';
 import { SinAccesoComponent } from './components/sin-acceso/sin-acceso.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { ListarProveedoresComponent } from './components/Proveedor/listar-proveedores/listar-proveedores.component';
+import { ListarProveedoresComponent } from './components/proveedor/listar-proveedores/listar-proveedores.component';
 import { PaginaProductosComponent } from './components/producto/pagina-productos/pagina-productos.component';
+import { PaginaConfiguracionComponent } from './components/configuracion/pagina-configuracion/pagina-configuracion.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -64,6 +66,12 @@ export const routes: Routes = [
     component: ListarProveedoresComponent,
     canActivate: [authGuard, permissionGuard],
     data: { Permissions: ['proveedores.ver']}
+  },
+  {
+    path: 'configuracion/pagina-configuracion',
+    component: PaginaConfiguracionComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['Administrador']}
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '404', component: NotFoundComponent },

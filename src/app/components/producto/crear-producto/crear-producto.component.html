@@ -1,7 +1,7 @@
 <!-- <div class="d-flex justify-content-start align-items-center mb-3 flex-wrap gap-3">
     <h3 class="mb-0">Crear Producto</h3>
 </div> -->
-<div class="form-section">
+<div class="">
     <div class="row mb-3">
         <div class="col-8">
             <div class="row row-cols-2 g-3">
@@ -26,9 +26,7 @@
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text">Marca</span>
-
-                        <input class="form-control" type="text" name="marca" list="listaMarcas" [(ngModel)]="marcaTexto" (input)="onMarcaInput()" placeholder="Escribe o selecciona una marca" autocomplete="off">
-
+                        <input class="form-control" type="text" maxlength="20" name="marca" list="listaMarcas" [(ngModel)]="marcaTexto" (input)="onMarcaInput()" placeholder="Escribe o selecciona una marca" autocomplete="off">
                         <datalist id="listaMarcas">
                             @for (m of marcas; track m.id) {
                                 <option [value]="m.nombre"></option>
@@ -39,25 +37,25 @@
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text">Costo</span>
-                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.costo">
+                        <input class="form-control" type="number" min="0" step="1" autocomplete="off" [(ngModel)]="productoUpsertDto.costo">
                     </div>
                 </div>
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text">Precio</span>
-                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.precio">
+                        <input class="form-control" type="number" min="0" step="1" autocomplete="off" [(ngModel)]="productoUpsertDto.precio">
                     </div>
                 </div>
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text">Stock</span>
-                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.stock">
+                        <input class="form-control" type="number" min="0" step="1" autocomplete="off" [(ngModel)]="productoUpsertDto.stock">
                     </div>
                 </div>
                 <div class="col">
                     <div class="input-group">
                         <span class="input-group-text">Stock Minimo</span>
-                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="productoUpsertDto.stockMinimo">
+                        <input class="form-control" type="number" min="0" step="1" autocomplete="off" [(ngModel)]="productoUpsertDto.stockMinimo">
                     </div>
                 </div>
                 <div class="col">
@@ -108,6 +106,7 @@
             </div>
         </div>
     </div>
+    <hr>
     <div class="row d-flex justify-content-end">
         <div class="col-2">
             <button class="btn btn-success w-100" type="button" (click)="agregarProducto()">Cargar Producto</button>

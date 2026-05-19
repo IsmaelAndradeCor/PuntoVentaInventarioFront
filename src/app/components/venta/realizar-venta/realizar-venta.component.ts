@@ -6,7 +6,7 @@ import { ItemCarrito } from '../../../models/item-carrito';
 import { VentaDto } from '../../../models/venta';
 import { VentaService } from '../../../services/venta.service';
 import { ToastrService } from 'ngx-toastr';
-import { ProductoResponseDto } from '../../../models/dtos/responses/producto-response-dto';
+import { ProductoSimpleResponseDto } from '../../../models/dtos/responses/producto-simple-response-dto';
 
 @Component({
   selector: 'app-realizar-venta',
@@ -26,12 +26,13 @@ export class RealizarVentaComponent implements OnInit {
     private toastrService: ToastrService
   ){}
 
-  // productosDto: ProductoDto[] = [];
-  productos: ProductoResponseDto[] = [];
-  productosPorCodigo: Map<string, ProductoResponseDto> = new Map();  // ← Tu diccionario
+  productos: ProductoSimpleResponseDto[] = [];
+  productosOriginal: ProductoSimpleResponseDto[] = [];
+  productosPorCodigo: Map<string, ProductoSimpleResponseDto> = new Map();
+  stockOriginalPorCodigo: Map<string, number> = new Map();
   
   codigoProducto: string = '';
-  dineroRecibido: number | null = null;
+  dineroRecibido: number = 0;
   // cambioDar: number = 0;
 
   // carrito: ProductoDto[] = [];
@@ -39,19 +40,22 @@ export class RealizarVentaComponent implements OnInit {
   carrito: ItemCarrito[] = [];
 
   ngOnInit() {
-    this.getProductosActivos();
+    this.getProductosVenta();
   }
 
-  getProductosActivos(): void {
-    this.productoService.getProductosActivos().subscribe({
-      next:(prodcutosResponse) => {
-        this.productos = prodcutosResponse;
+  getProductosVenta(): void {
+    this.productoService.getProductosVenta().subscribe({
+      next:(productosResponse) => {
+        this.productosOriginal = productosResponse;
+        this.productos = productosResponse;
 
         this.productosPorCodigo = new Map(
           this.productos.map(producto => [producto.codigo, producto])
         );
-        
-        // console.log('Map creado con', this.productosPorCodigo.size, 'productos');
+
+        this.stockOriginalPorCodigo = new Map(
+          this.productosOriginal.map(producto => [producto.codigo, producto.stock])
+        );
       }
     });
   }
@@ -148,9 +152,10 @@ export class RealizarVentaComponent implements OnInit {
   //   this.enfocarInputCodigo();
   // }
 
-  agregarAlCarrito(producto: ProductoResponseDto, cantidad: number) {
-    const productoStock = this.productosPorCodigo.get(producto.codigo);
-    if (!productoStock || productoStock.stock <= 0) {
+  agregarAlCarrito(producto: ProductoSimpleResponseDto, cantidad: number) {
+    const stockDisponible = this.obtenerStockDisponible(producto.codigo);
+
+    if (stockDisponible <= 0) {
       this.toastrService.error('Sin inventario');
       return;
     }
@@ -160,41 +165,37 @@ export class RealizarVentaComponent implements OnInit {
       return;
     }
 
-    if (productoStock.stock < cantidad) {
-      this.toastrService.error('Inventario insuficiciente, la cantidad supera al stock.');
+    if (stockDisponible < cantidad) {
+      this.toastrService.error('Inventario insuficiente, la cantidad supera al stock.');
       return;
     }
 
-    const itemExistente = this.carrito.find(item => 
-      item.producto.codigo === producto.codigo  // Ahora existe producto.codigo
+    const itemExistente = this.carrito.find(
+      item => item.producto.codigo === producto.codigo
     );
 
-    productoStock.stock -= cantidad;
-
     if (itemExistente) {
-      itemExistente.cantidad += cantidad;  // itemExistente tiene cantidad
+      itemExistente.cantidad += cantidad;
     } else {
-      this.carrito.push({ 
-        producto: {...producto}, 
-        cantidad: cantidad 
-      });  // Crea ItemCarrito
+      this.carrito.push({
+        producto: { ...producto },
+        cantidad: cantidad
+      });
     }
   }
 
   disminuirCantidad(index: number) {
     const item = this.carrito[index];
-
     if (!item) return;
 
-    if (item.cantidad > 1) {
-      item.cantidad--;
+    const permiteDecimales = item.producto.unidadMedida.permiteDecimales;
+    const decremento = permiteDecimales ? 0.01 : 1;
+
+    if (item.cantidad > decremento) {
+      item.cantidad = Number((item.cantidad - decremento).toFixed(2));
     } else {
       this.carrito.splice(index, 1);
     }
-
-    // Agregamos la funcion de que cuando eliminamos un articulo del carrito aumente el stock
-    const productoStock = this.productosPorCodigo.get(item.producto.codigo);
-    productoStock!.stock ++;
 
     this.enfocarInputCodigo();
   }
@@ -208,7 +209,10 @@ export class RealizarVentaComponent implements OnInit {
   calcularCambio(): number {
     const totalVenta = this.calcularTotal();
 
-    return this.dineroRecibido ?? 0 - totalVenta;
+    if (this.dineroRecibido <= totalVenta) {
+      return 0;
+    }
+    return this.dineroRecibido - totalVenta;
   }
 
   private generarFolio(): string {
@@ -248,21 +252,71 @@ export class RealizarVentaComponent implements OnInit {
 
     this.ventaService.registrarVenta(venta).subscribe({
       next:(idVenta) => {
-        // console.log('Venta #' + idVenta + ' registrada exitosamente');
+        this.getProductosVenta();
         this.toastrService.success('Venta registrada con éxito!','Éxito!')
         this.carrito = [];
         this.codigoProducto = '';
         this.enfocarInputCodigo();
-        this.dineroRecibido = null;
+        this.dineroRecibido = 0;
       },
-      error:(error) => {
-        this.toastrService.warning('Ocurrió un error, por favor contacta al administrador.','Error');
+      error:() => {
         this.enfocarInputCodigo();
-        this.dineroRecibido = null;
-      },
-      complete:() => {
+        this.dineroRecibido = 0;
       }
     });
+  }
+  
+  private obtenerStockOriginal(codigo: string): number {
+    return this.stockOriginalPorCodigo.get(codigo) ?? 0;
+  }
+
+  private obtenerCantidadEnCarrito(codigo: string, excluirIndex?: number): number {
+    return this.carrito.reduce((total, item, index) => {
+      if (item.producto.codigo !== codigo) return total;
+      if (excluirIndex !== undefined && index === excluirIndex) return total;
+      return total + item.cantidad;
+    }, 0);
+  }
+
+  obtenerStockDisponible(codigo: string): number {
+    const stockOriginal = this.obtenerStockOriginal(codigo);
+    const cantidadEnCarrito = this.obtenerCantidadEnCarrito(codigo);
+    return stockOriginal - cantidadEnCarrito;
+  }
+
+  obtenerMaximoPermitido(codigo: string, index: number): number {
+    const stockOriginal = this.obtenerStockOriginal(codigo);
+    const cantidadOtros = this.obtenerCantidadEnCarrito(codigo, index);
+    return stockOriginal - cantidadOtros;
+  }
+
+  actualizarCantidadItem(index: number, nuevoValor: number | string): void {
+    const item = this.carrito[index];
+    if (!item) return;
+
+    const cantidad = Number(nuevoValor);
+    const producto = item.producto;
+    const permiteDecimales = producto.unidadMedida.permiteDecimales;
+    const maximo = this.obtenerMaximoPermitido(producto.codigo, index);
+
+    if (isNaN(cantidad) || cantidad <= 0) {
+      this.toastrService.error('Cantidad inválida');
+      item.cantidad = 1;
+      return;
+    }
+
+    if (!permiteDecimales && !Number.isInteger(cantidad)) {
+      this.toastrService.error('El producto no es fraccionario.');
+      return;
+    }
+
+    if (cantidad > maximo) {
+      this.toastrService.error('Inventario insuficiente, la cantidad supera al stock.');
+      item.cantidad = maximo > 0 ? maximo : 1;
+      return;
+    }
+
+    item.cantidad = cantidad;
   }
   
 }

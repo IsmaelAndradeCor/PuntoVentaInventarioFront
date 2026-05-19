@@ -42,6 +42,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         toastr.error('Recurso no encontrado.');
       }
 
+      else if (error.status === 409) {
+        if (error.error?.mensaje) {
+          toastr.error(error.error.mensaje);
+        } else {
+          toastr.error('Error de conflicto en la base de datos.');
+        }
+      }
+
       else if (error.status === 500) {
         toastr.error('Error interno del servidor.');
       }
