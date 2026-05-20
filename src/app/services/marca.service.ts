@@ -15,8 +15,12 @@ export class MarcaService {
   private http = inject(HttpClient);
   private urlBase = environment.apiURL + '/Marca';
 
-  public getMarcas() : Observable<MarcaResponseDto[]> { 
-    return this.http.get<MarcaResponseDto[]>(this.urlBase + '/listar_marcas');
+  public getMarcasActivas() : Observable<MarcaResponseDto[]> { 
+    return this.http.get<MarcaResponseDto[]>(this.urlBase + '/listar_marcas_activas');
+  }
+
+  public getMarcasInactivas() : Observable<MarcaResponseDto[]> { 
+    return this.http.get<MarcaResponseDto[]>(this.urlBase + '/listar_marcas_inactivas');
   }
 
   public getMarca(idMarca: number): Observable<MarcaResponseDto> {
@@ -31,8 +35,11 @@ export class MarcaService {
     return this.http.put<MarcaResponseDto>(`${this.urlBase}/actualizar_marca/${idMarca}`, marcaUpsertDto);
   }
 
-  public deleteMarca(idMarca: number): Observable<void> {
-    return this.http.delete<void>(this.urlBase + '/eliminar_marca/' + idMarca);
+  public activateMarca(idMarca: number): Observable<void> {
+    return this.http.put<void>(this.urlBase + '/activar_marca/' + idMarca, {});
   }
 
+  public deactivateMarca(idMarca: number): Observable<void> {
+    return this.http.delete<void>(this.urlBase + '/desactivar_marca/' + idMarca);
+  }
 }

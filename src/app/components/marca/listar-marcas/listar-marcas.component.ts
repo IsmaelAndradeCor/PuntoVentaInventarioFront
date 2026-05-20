@@ -33,11 +33,11 @@ export class ListarMarcasComponent implements OnInit {
   textoBusqueda: string = '';
 
   ngOnInit(): void {
-    this.getMarcas();
+    this.getMarcasActivas();
   }
 
-  getMarcas(): void {
-    this.marcaService.getMarcas().subscribe({
+  getMarcasActivas(): void {
+    this.marcaService.getMarcasActivas().subscribe({
       next:(response) => {
         this.marcas = response;
         this.marcasFiltradas = [... this.marcas];
@@ -81,7 +81,7 @@ export class ListarMarcasComponent implements OnInit {
   }
 
   desactivarPorId(idMarca: number): void {
-    this.marcaService.deleteMarca(idMarca).subscribe({
+    this.marcaService.deactivateMarca(idMarca).subscribe({
       next:() => {
         this.marcas = this.marcas.filter(x => x.id !== idMarca);
         this.filtrarTabla();

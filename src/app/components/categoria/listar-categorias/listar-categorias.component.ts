@@ -33,11 +33,11 @@ export class ListarCategoriaComponent implements OnInit {
   textoBusqueda: string = '';
 
   ngOnInit(): void {
-    this.getCategorias();
+    this.getCategoriasActivas();
   }
 
-  getCategorias(): void {
-    this.categoriaService.getCategorias().subscribe({
+  getCategoriasActivas(): void {
+    this.categoriaService.getCategoriasActivas().subscribe({
       next: (response) => {
         this.categorias = response;
         this.categoriasFiltradas = [...this.categorias];
@@ -81,7 +81,7 @@ export class ListarCategoriaComponent implements OnInit {
   }
 
   desactivarPorId(idCategoria: number): void {
-    this.categoriaService.deleteCategoria(idCategoria).subscribe({
+    this.categoriaService.deactivateCategoria(idCategoria).subscribe({
       next:() => {
         this.categorias = this.categorias.filter(x => x.id !== idCategoria);
         this.filtrarTabla();

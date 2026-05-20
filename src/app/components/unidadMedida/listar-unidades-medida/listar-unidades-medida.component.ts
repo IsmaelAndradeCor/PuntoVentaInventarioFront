@@ -33,11 +33,11 @@ export class ListarUnidadesMedidaComponent {
   textoBusqueda: string = '';
 
   ngOnInit(): void {
-    this.getUnidadesMedida();
+    this.getUnidadesMedidaActivas();
   }
 
-  getUnidadesMedida(): void {
-    this.unidadMedidaService.getUnidadesMedida().subscribe({
+  getUnidadesMedidaActivas(): void {
+    this.unidadMedidaService.getUnidadesMedidaActivas().subscribe({
       next: (response) => {
         this.unidadesMedida = response;
         this.unidadesMedidaFiltradas = [...this.unidadesMedida];
@@ -81,7 +81,7 @@ export class ListarUnidadesMedidaComponent {
   }
 
   desactivarPorId(idUnidadMedida: number): void {
-    this.unidadMedidaService.deleteUnidadMedida(idUnidadMedida).subscribe({
+    this.unidadMedidaService.deactivateUnidadMedida(idUnidadMedida).subscribe({
       next:() => {
         this.unidadesMedida = this.unidadesMedida.filter(x => x.id !== idUnidadMedida);
         this.filtrarTabla();

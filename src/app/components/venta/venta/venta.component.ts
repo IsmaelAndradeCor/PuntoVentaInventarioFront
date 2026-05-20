@@ -28,7 +28,7 @@ export class VentaComponent implements OnInit {
   }
 
   calcularTotalGanancias(): number {
-    console.log('calcularTotalGanancias()');
+    // console.log('calcularTotalGanancias()');
     return this.ventas.reduce((total, item) => 
       total + (item.ganancias), 0
     );

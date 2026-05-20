@@ -238,30 +238,26 @@ export class RealizarVentaComponent implements OnInit {
     }
 
     const venta: VentaDto = {
-      folio: this.generarFolio(),
-      total: this.calcularTotal(),
       detalles: this.carrito.map(item => ({
         idProducto: item.producto.id,
-        codigo: item.producto.codigo,
-        nombre: item.producto.nombre,
-        cantidad: item.cantidad,
-        costo: item.producto.costo,
-        precio: item.producto.precio
+        cantidad: item.cantidad
       }))
     };
 
     this.ventaService.registrarVenta(venta).subscribe({
-      next:(idVenta) => {
+      next: (response) => {
         this.getProductosVenta();
-        this.toastrService.success('Venta registrada con éxito!','Éxito!')
+        this.toastrService.success(`Venta ${response.folio} registrada con éxito!`, 'Éxito!');
         this.carrito = [];
         this.codigoProducto = '';
-        this.enfocarInputCodigo();
         this.dineroRecibido = 0;
+        this.enfocarInputCodigo();
+
+        console.log('Venta registrada:', response.idVenta, response.folio, response.total);
       },
-      error:() => {
-        this.enfocarInputCodigo();
+      error: () => {
         this.dineroRecibido = 0;
+        this.enfocarInputCodigo();
       }
     });
   }

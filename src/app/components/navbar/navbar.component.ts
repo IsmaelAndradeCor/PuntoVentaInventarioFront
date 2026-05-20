@@ -24,9 +24,10 @@ export class NavbarComponent {
     { label: 'Inicio', route: '/home', permissions: ['home.ver'] },
     { label: 'Venta', route: '/venta/realizar-venta', permissions: ['ventas.realizar'] },
     { label: 'Productos', route: '/producto/pagina-productos', permissions: ['productos.ver'] },
-    { label: 'Marcas', route: '/marca/listar-marcas', permissions: ['marcas.ver'] },
-    { label: 'Categorias', route: '/categoria/listar-categorias', permissions: ['categorias.ver'] },
-    { label: 'Unidades Medida', route: '/unidadMedida/listar-unidades-medida', permissions: ['unidadesmedida.ver'] },
+    { label: 'Marcas', route: '/marca/pagina-marcas', permissions: ['marcas.ver'] },
+    { label: 'Categorias', route: '/categoria/pagina-categorias', permissions: ['categorias.ver'] },
+    { label: 'Unidades Medida', route: '/unidadMedida/pagina-unidades-medida', permissions: ['unidadesmedida.ver'] },
+    { label: 'Proveedores', route: '/proveedor/pagina-proveedores', permissions: ['proveedores.ver'] },
     { label: 'Historial Ventas', route: '/venta/venta', permissions: ['ventas.historial.ver'] }
   ];
 
@@ -55,7 +56,7 @@ export class NavbarComponent {
   }
   
   esAdmin(): boolean {
-    console.log(this.authService)
+    // console.log(this.authService)
     return this.authService.hasRole('Administrador');
   }
 }

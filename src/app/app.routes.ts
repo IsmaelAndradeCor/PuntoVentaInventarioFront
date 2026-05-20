@@ -1,19 +1,19 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { RealizarVentaComponent } from './components/venta/realizar-venta/realizar-venta.component';
-import { ListarMarcasComponent } from './components/marca/listar-marcas/listar-marcas.component';
 import { VentaComponent } from './components/venta/venta/venta.component';
-import { ListarCategoriaComponent } from './components/categoria/listar-categorias/listar-categorias.component';
-import { ListarUnidadesMedidaComponent } from './components/unidadMedida/listar-unidades-medida/listar-unidades-medida.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { authGuard } from './core/auth/auth.guard';
 import { roleGuard } from './core/auth/role.guard';
 import { permissionGuard } from './core/auth/permission.guard';
 import { SinAccesoComponent } from './components/sin-acceso/sin-acceso.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { ListarProveedoresComponent } from './components/proveedor/listar-proveedores/listar-proveedores.component';
 import { PaginaProductosComponent } from './components/producto/pagina-productos/pagina-productos.component';
 import { PaginaConfiguracionComponent } from './components/configuracion/pagina-configuracion/pagina-configuracion.component';
+import { PaginaMarcasComponent } from './components/marca/pagina-marcas/pagina-marcas.component';
+import { PaginaProveedoresComponent } from './components/Proveedor/pagina-proveedores/pagina-proveedores.component';
+import { PaginaCategoriasComponent } from './components/categoria/pagina-categorias/pagina-categorias.component';
+import { PaginaUnidadesMedidaComponent } from './components/unidadMedida/pagina-unidades-medida/pagina-unidades-medida.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -44,26 +44,26 @@ export const routes: Routes = [
     data: { permissions: ['ventas.historial.ver'] }
   },
   {
-    path: 'marca/listar-marcas',
-    component: ListarMarcasComponent,
+    path: 'marca/pagina-marcas',
+    component: PaginaMarcasComponent,
     canActivate: [authGuard, permissionGuard],
     data: { permissions: ['marcas.ver'] }
   },
   {
-    path: 'categoria/listar-categorias',
-    component: ListarCategoriaComponent,
+    path: 'categoria/pagina-categorias',
+    component: PaginaCategoriasComponent,
     canActivate: [authGuard, permissionGuard],
     data: { permissions: ['categorias.ver'] }
   },
   {
-    path: 'unidadMedida/listar-unidades-medida',
-    component: ListarUnidadesMedidaComponent,
+    path: 'unidadMedida/pagina-unidades-medida',
+    component: PaginaUnidadesMedidaComponent,
     canActivate: [authGuard, permissionGuard],
     data: { permissions: ['unidadesmedida.ver'] }
   },
   {
-    path: 'proveedor/listar-proveedores',
-    component: ListarProveedoresComponent,
+    path: 'proveedor/pagina-proveedores',
+    component: PaginaProveedoresComponent,
     canActivate: [authGuard, permissionGuard],
     data: { Permissions: ['proveedores.ver']}
   },

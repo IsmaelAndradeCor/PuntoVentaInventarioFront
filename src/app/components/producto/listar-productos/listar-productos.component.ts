@@ -54,10 +54,10 @@ export class ListarProductosComponent implements OnInit {
   
   ngOnInit() {
     this.getProductosActivos();
-    this.getCategorias();
-    this.getMarcas();
-    this.getUnidadesMedida();
-    this.getProveedores();
+    this.getCategoriasActivas();
+    this.getMarcasActivas();
+    this.getUnidadesMedidaActivas();
+    this.getProveedoresActivos();
   }
 
 
@@ -77,8 +77,8 @@ export class ListarProductosComponent implements OnInit {
     });
   }
 
-  getCategorias(): void {
-    this.categoriaService.getCategorias().subscribe({
+  getCategoriasActivas(): void {
+    this.categoriaService.getCategoriasActivas().subscribe({
       next:(response) => {
         this.categorias = response;
       },
@@ -87,8 +87,8 @@ export class ListarProductosComponent implements OnInit {
     })
   }
 
-  getMarcas(): void {
-    this.marcaService.getMarcas().subscribe({
+  getMarcasActivas(): void {
+    this.marcaService.getMarcasActivas().subscribe({
       next:(response) => {
         this.marcas = response;
       },
@@ -97,8 +97,8 @@ export class ListarProductosComponent implements OnInit {
     })
   }
 
-  getUnidadesMedida(): void {
-    this.unidadMedidaService.getUnidadesMedida().subscribe({
+  getUnidadesMedidaActivas(): void {
+    this.unidadMedidaService.getUnidadesMedidaActivas().subscribe({
       next:(response) => {
         this.unidadesMedida = response;
       },
@@ -107,8 +107,8 @@ export class ListarProductosComponent implements OnInit {
     })
   }
 
-  getProveedores(): void {
-    this.proveedorService.getProveedores().subscribe({
+  getProveedoresActivos(): void {
+    this.proveedorService.getProveedoresActivos().subscribe({
       next:(response) => {
         this.proveedores = response;
       },

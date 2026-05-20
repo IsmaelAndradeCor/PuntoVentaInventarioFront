@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { GenerarVentasDTO } from '../models/generar-ventas-dto';
+import { RegistrarVentaResponseDto } from '../models/dtos/responses/registrar-venta-response-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,29 +17,8 @@ export class VentaService {
   private http = inject(HttpClient);
   private urlBase = environment.apiURL + '/Venta';
 
-  private xmlDetalleVenta(detalles: DetalleVentaDto[]): string {
-    const itemsXml = detalles.map(d => `
-      <Item>
-        <IdProducto>${d.idProducto}</IdProducto>
-        <Codigo>${d.codigo}</Codigo>
-        <Nombre>${d.nombre}</Nombre>
-        <Cantidad>${d.cantidad}</Cantidad>
-        <Costo>${d.costo}</Costo>
-        <Precio>${d.precio}</Precio>
-      </Item>
-    `).join('');
-
-    return `<Items>${itemsXml}</Items>`;
-  }
-
-  public registrarVenta(venta: VentaDto): Observable<number> {
-    const detalleXml = this.xmlDetalleVenta(venta.detalles);  // Convertir a XML
-    
-    return this.http.post<number>(`${this.urlBase}/realizar_venta`, {
-      folio: venta.folio,
-      total: venta.total,
-      detalle: detalleXml
-    });
+  public registrarVenta(venta: VentaDto): Observable<RegistrarVentaResponseDto> {
+    return this.http.post<RegistrarVentaResponseDto>(`${this.urlBase}/realizar_venta`, venta);
   }
 
   public getGenerarVentas(): Observable<GenerarVentasDTO[]> {

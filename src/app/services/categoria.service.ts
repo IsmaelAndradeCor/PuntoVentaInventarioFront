@@ -15,9 +15,14 @@ export class CategoriaService {
   private http = inject(HttpClient);
   private urlBase = environment.apiURL + '/Categoria';
 
-  // Devuelve un arreglo de Categorias
-  public getCategorias() : Observable<CategoriaResponseDto[]> { 
-    return this.http.get<CategoriaResponseDto[]>(this.urlBase + '/listar_categorias');
+  // Devuelve un arreglo de Categorias activas
+  public getCategoriasActivas() : Observable<CategoriaResponseDto[]> { 
+    return this.http.get<CategoriaResponseDto[]>(this.urlBase + '/listar_categorias_activas');
+  }
+
+  // Devuelve un arreglo de Categorias activas
+  public getCategoriasInactivas() : Observable<CategoriaResponseDto[]> { 
+    return this.http.get<CategoriaResponseDto[]>(this.urlBase + '/listar_categorias_inactivas');
   }
 
   // Devuelve un objeto de Categoria
@@ -36,8 +41,12 @@ export class CategoriaService {
   }
 
   // Desactiva con soft delete apartir del idCategoria
-  public deleteCategoria(idCategoria: number): Observable<void> {
-    return this.http.delete<void>(`${this.urlBase}/eliminar_categoria/${idCategoria}`);
+  public activateCategoria(idCategoria: number): Observable<void> {
+    return this.http.put<void>(`${this.urlBase}/activar_categoria/${idCategoria}`, {});
+  }
+  // Desactiva con soft delete apartir del idCategoria
+  public deactivateCategoria(idCategoria: number): Observable<void> {
+    return this.http.delete<void>(`${this.urlBase}/desactivar_categoria/${idCategoria}`);
   }
 
 }

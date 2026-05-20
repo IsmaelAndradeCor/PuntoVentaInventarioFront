@@ -87,7 +87,7 @@ export class ActualizarProductoComponent implements OnInit {
           this.cerrar();
         },
         error: (error) => {
-          console.log(error);
+          // console.log(error);
           const errores = error?.error?.errors;
 
           if (errores) {

@@ -16,8 +16,13 @@ export class UnidadMedidaService {
   private urlBase = environment.apiURL + '/UnidadMedida';
 
   // Devuelve un arreglo de Unidades de Medida
-  public getUnidadesMedida(): Observable<UnidadMedidaResponseDto[]> {
-    return this.http.get<UnidadMedidaResponseDto[]>(this.urlBase + '/listar_unidades_medida');
+  public getUnidadesMedidaActivas(): Observable<UnidadMedidaResponseDto[]> {
+    return this.http.get<UnidadMedidaResponseDto[]>(this.urlBase + '/listar_unidades_medida_activas');
+  }
+
+  // Devuelve un arreglo de Unidades de Medida
+  public getUnidadesMedidaInactivas(): Observable<UnidadMedidaResponseDto[]> {
+    return this.http.get<UnidadMedidaResponseDto[]>(this.urlBase + '/listar_unidades_medida_inactivas');
   }
 
   // Devuelve un objeto de Unidad de Medida
@@ -36,7 +41,12 @@ export class UnidadMedidaService {
   }
 
   // Desactiva con soft delete a partir del idUnidadMedida
-  public deleteUnidadMedida(idUnidadMedida: number): Observable<void> {
-    return this.http.delete<void>(`${this.urlBase}/eliminar_unidad_medida/${idUnidadMedida}`);
+  public activateUnidadMedida(idUnidadMedida: number): Observable<void> {
+    return this.http.put<void>(`${this.urlBase}/activar_unidad_medida/${idUnidadMedida}`, {});
+  }
+  
+  // Desactiva con soft delete a partir del idUnidadMedida
+  public deactivateUnidadMedida(idUnidadMedida: number): Observable<void> {
+    return this.http.delete<void>(`${this.urlBase}/desactivar_unidad_medida/${idUnidadMedida}`);
   }
 }

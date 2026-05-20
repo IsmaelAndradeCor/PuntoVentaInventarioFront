@@ -16,8 +16,13 @@ export class ProveedorService {
   private urlBase = environment.apiURL + '/Proveedor';
 
   // Devuelve un arreglo de Proveedores
-  public getProveedores(): Observable<ProveedorResponseDto[]> {
-    return this.http.get<ProveedorResponseDto[]>(this.urlBase + '/listar_proveedores');
+  public getProveedoresActivos(): Observable<ProveedorResponseDto[]> {
+    return this.http.get<ProveedorResponseDto[]>(this.urlBase + '/listar_proveedores_activos');
+  }
+
+  // Devuelve un arreglo de Proveedores
+  public getProveedoresInactivos(): Observable<ProveedorResponseDto[]> {
+    return this.http.get<ProveedorResponseDto[]>(this.urlBase + '/listar_proveedores_inactivos');
   }
 
   // Devuelve un objeto de Proveedor
@@ -36,8 +41,12 @@ export class ProveedorService {
   }
 
   // Desactiva con soft delete a partir del idProveedor
-  public deleteProveedor(idProveedor: number): Observable<void> {
-    return this.http.delete<void>(`${this.urlBase}/eliminar_proveedor/${idProveedor}`);
+  public activateProveedor(idProveedor: number): Observable<void> {
+    return this.http.put<void>(`${this.urlBase}/activar_proveedor/${idProveedor}`, {});
+  }
+  // Desactiva con soft delete a partir del idProveedor
+  public deactivateProveedor(idProveedor: number): Observable<void> {
+    return this.http.delete<void>(`${this.urlBase}/desactivar_proveedor/${idProveedor}`);
   }
 
 }
