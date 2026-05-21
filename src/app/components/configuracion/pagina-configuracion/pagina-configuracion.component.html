@@ -1,1 +1,69 @@
-<p>pagina-configuracion works!</p>
+<div class="component-page">
+  <!-- <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h3 class="mb-0">Productos</h3>
+  </div> -->
+
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'test'" (click)="seleccionarTab('test')">
+        Test
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'usuarios.activos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'activos'" (click)="seleccionarTab('activos')">
+        Usuarios Activos
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'usuarios.inactivos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'inactivos'" (click)="seleccionarTab('inactivos')">
+        Usuarios Inactivos
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'usuarios.crear'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'crear usuario'" (click)="seleccionarTab('crear usuario')">
+        Crear Usuario
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'usuarios.permisos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'permisos usuario'" (click)="seleccionarTab('permisos usuario')">
+        Permisos Usuario
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    @if (activeTab === 'test' && puedeVerTab('test')) {
+      <div class="tab-pane fade show active">
+        <app-test-permisos></app-test-permisos>
+      </div>
+    }
+
+    @if (activeTab === 'activos' && puedeVerTab('activos')) {
+      <div class="tab-pane fade show active">
+        <app-listar-usuarios-activos></app-listar-usuarios-activos>
+      </div>
+    }
+
+    @if (activeTab === 'inactivos' && puedeVerTab('inactivos')) {
+      <div class="tab-pane fade show active">
+        <app-listar-usuarios-inactivos></app-listar-usuarios-inactivos>
+      </div>
+    }
+
+    @if (activeTab === 'crear usuario' && puedeVerTab('crear usuario')) {
+      <div class="tab-pane fade show active">
+        <app-crear-usuario></app-crear-usuario>
+      </div>
+    }
+
+    @if (activeTab === 'permisos usuario' && puedeVerTab('permisos usuario')) {
+      <div class="tab-pane fade show active">
+        <app-permisos-usuario></app-permisos-usuario>
+      </div>
+    }
+  </div>
+</div>

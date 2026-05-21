@@ -3,6 +3,7 @@ import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { ThemeService } from '../../services/theme.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/auth/auth.service';
+import { HasPermissionDirective } from '../../core/directives/has-permission.directive';
 
 interface NavItem {
   label: string;
@@ -13,7 +14,7 @@ interface NavItem {
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterLink, RouterLinkActive, CommonModule, HasPermissionDirective],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
@@ -55,8 +56,8 @@ export class NavbarComponent {
     this.router.navigate(['/login']);
   }
   
-  esAdmin(): boolean {
-    // console.log(this.authService)
-    return this.authService.hasRole('Administrador');
-  }
+  // esAdmin(): boolean {
+  //   // console.log(this.authService)
+  //   return this.authService.hasRole('Administrador');
+  // }
 }

@@ -11,14 +11,17 @@
   flex-direction: column;
 }
 
-.tab-content {
+.form-section-fill {
   flex: 1;
   min-height: 0;
+  overflow: hidden;
   display: flex;
+  flex-direction: column;
 }
 
-.tab-pane {
+.permissions-scroll {
   flex: 1;
   min-height: 0;
-  display: flex;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
