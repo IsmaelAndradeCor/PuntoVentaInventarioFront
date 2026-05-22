@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { CrearMarcaComponent } from '../crear-marca/crear-marca.component';
-import { ActualizarMarcaComponent } from '../actualizar-marca/actualizar-marca.component';
 import { MarcaService } from '../../../services/marca.service';
 import { MarcaResponseDto } from '../../../models/dtos/responses/marca-response-dto';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmarModalComponent } from '../../../modals/confirmar-modal/confirmar-modal.component';
 import { FormsModule } from '@angular/forms';
+import { HasPermissionDirective } from '../../../core/directives/has-permission.directive';
+import { ActualizarMarcaComponent } from '../actualizar-marca/actualizar-marca.component';
 
 @Component({
   selector: 'app-listar-marcas',
-  imports: [CrearMarcaComponent, ActualizarMarcaComponent, ConfirmarModalComponent, CommonModule, FormsModule],
+  imports: [ConfirmarModalComponent, ActualizarMarcaComponent, CommonModule, FormsModule, HasPermissionDirective],
   templateUrl: './listar-marcas.component.html',
   styleUrl: './listar-marcas.component.scss'
 })
@@ -52,7 +52,7 @@ export class ListarMarcasComponent implements OnInit {
         this.mostrarActualizar = true;
       },
       error: (error) => {
-        this.toastrService.error('Ocurrió un error al buscar la Marca, por favor contacte al administrador.');
+        // this.toastrService.error('Ocurrió un error al buscar la Marca, por favor contacte al administrador.');
       }
     });
   }
@@ -89,7 +89,7 @@ export class ListarMarcasComponent implements OnInit {
         this.toastrService.success('Marca desactivada con éxito');
       },
       error: (error) => {
-        this.toastrService.error('Ocurrió un error al desactivar la Marca, por favor contacte al administrador.');
+        // this.toastrService.error('Ocurrió un error al desactivar la Marca, por favor contacte al administrador.');
       }
     })
   }

@@ -1,46 +1,44 @@
 <div class="component-page">
-    <app-crear-marca
-        (objetoCreado)="marcaCreada($event)"    
-    ></app-crear-marca>
-
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2 mt-3">
-        <h3 class="mb-0">Listado de Marcas</h3>
+    @if (!marcas.length) {
+    <p>No existen Marcas inactivas</p>
+    }
+    @else if (marcas) {
+    <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
         <div class="input-group" style="max-width: 350px;">
             <input type="text" class="form-control" placeholder="Buscar por nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
             <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()"><i class="fa-solid fa-eraser"></i></button>
         </div>
     </div>
+    @if (textoBusqueda && !marcasFiltradas.length) {
+    <p>No existen Marcas con ese nombre.</p>
+    }
+    @else {
     <div class="form-section-fill">
-        @if (textoBusqueda && !marcasFiltradas.length) {
-        <p>No existen Marcas con ese nombre.</p>
-        }
-        @else if (!marcasFiltradas.length) {
-        <p>No existen Marcas cargadas</p>
-        }
-        @else if (marcasFiltradas) {
         <div class="table-scroll">
             <table class="table table-sm table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th style="width: 10%; text-align: center;">Acciones</th>
+                        <th *appHasPermission="['marcas.actualizar', 'marcas.desactivar']" style="width: 10%; text-align: center;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let i of marcasFiltradas; index as j">
                         <td>{{i.nombre}}</td>
-                        <td style="width: 10%; text-align: center;">
-                            <button class="btn btn-sm btn-warning me-3" type="button" (click)="mostrarModalActualizarPorId(i.id)"><i class="fa-solid fa-pen-to-square"></i></button>                     
-                            <button class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(i.id)"><i class="fa-solid fa-trash"></i></button> 
+                        <td *appHasPermission="['marcas.actualizar', 'marcas.desactivar']" style="width: 10%; text-align: center;">
+                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                <button *appHasPermission="'marcas.actualizar'" class="btn btn-sm btn-warning" type="button" (click)="mostrarModalActualizarPorId(i.id)"><i class="fa-solid fa-pen-to-square"></i></button>                     
+                                <button *appHasPermission="'marcas.desactivar'" class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(i.id)"><i class="fa-solid fa-trash"></i></button> 
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        }
     </div>
+    }
+    }
 </div>
-
 <app-actualizar-marca
     *ngIf="mostrarActualizar"
     [objetoActualizar]="objetoActualizar"

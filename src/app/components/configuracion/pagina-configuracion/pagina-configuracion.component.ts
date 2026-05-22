@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { TestPermisosComponent } from '../test-permisos/test-permisos.component';
 import { AuthService } from '../../../core/auth/auth.service';
 import { HasPermissionDirective } from '../../../core/directives/has-permission.directive';
 import { CrearUsuarioComponent } from '../crear-usuario/crear-usuario.component';
@@ -7,11 +6,11 @@ import { ListarUsuariosActivosComponent } from '../listar-usuarios-activos/lista
 import { ListarUsuariosInactivosComponent } from '../listar-usuarios-inactivos/listar-usuarios-inactivos.component';
 import { PermisosUsuarioComponent } from '../permisos-usuario/permisos-usuario.component';
 
-type AccionesTab = 'activos' | 'inactivos' | 'crear usuario'| 'permisos usuario'| 'test';
+type AccionesTab = 'activos' | 'inactivos' | 'crear usuario'| 'permisos usuario';
 
 @Component({
   selector: 'app-pagina-configuracion',
-  imports: [HasPermissionDirective, CrearUsuarioComponent, ListarUsuariosActivosComponent, ListarUsuariosInactivosComponent, PermisosUsuarioComponent, TestPermisosComponent],
+  imports: [HasPermissionDirective, CrearUsuarioComponent, ListarUsuariosActivosComponent, ListarUsuariosInactivosComponent, PermisosUsuarioComponent],
   templateUrl: './pagina-configuracion.component.html',
   styleUrl: './pagina-configuracion.component.scss'
 })
@@ -31,9 +30,6 @@ export class PaginaConfiguracionComponent {
 
   puedeVerTab(tab: AccionesTab): boolean {
     switch (tab) {
-      case 'test':
-        return true;
-
       case 'activos':
         return this.authService.hasPermission('usuarios.activos.ver');
 
@@ -52,7 +48,6 @@ export class PaginaConfiguracionComponent {
   }
 
   private obtenerPrimerTabDisponible(): AccionesTab {
-    if (this.puedeVerTab('test')) return 'test';
     if (this.puedeVerTab('activos')) return 'activos';
     if (this.puedeVerTab('inactivos')) return 'inactivos';
     if (this.puedeVerTab('crear usuario')) return 'crear usuario';

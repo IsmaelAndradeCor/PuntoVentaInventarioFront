@@ -40,8 +40,8 @@ export class ProductoService {
     return this.http.post<void>(this.urlBase + '/crear_producto', producto);
   }
 
-  public putProducto(producto: ProductoUpsertDto): Observable<void> {
-    return this.http.put<void>(`${this.urlBase}/actualizar_producto`, producto);
+  public putProducto(producto: ProductoUpsertDto): Observable<ProductoResponseDto> {
+    return this.http.put<ProductoResponseDto>(`${this.urlBase}/actualizar_producto`, producto);
   }
 
   public activateProducto(idProducto: number): Observable<void> {

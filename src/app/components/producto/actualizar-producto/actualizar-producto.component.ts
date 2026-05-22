@@ -32,6 +32,7 @@ export class ActualizarProductoComponent implements OnInit {
   @Input() mostrarActualizarProducto = false;
 
   @Output() cerrarModal = new EventEmitter<void>();  // ← Output correcto para cerrar
+  @Output() objetoActualizado = new EventEmitter<ProductoResponseDto>();
 
   productoUpsertDto: ProductoUpsertDto = {
     codigo: '',
@@ -79,11 +80,10 @@ export class ActualizarProductoComponent implements OnInit {
       this.productoUpsertDto.idMarca = this.productoActualizar.marca.id;
       this.productoUpsertDto.idUnidadMedida = this.productoActualizar.unidadMedida.id;
 
-
-      
       this.productoService.putProducto(this.productoUpsertDto).subscribe({
-        next: () => {
+        next: (response) => {
           this.toastrService.success('Producto actualizado correctamente.');
+          this.objetoActualizado.emit(response);
           this.cerrar();
         },
         error: (error) => {

@@ -23,13 +23,13 @@ export class NavbarComponent {
 
   navItems: NavItem[] = [
     { label: 'Inicio', route: '/home', permissions: ['home.ver'] },
-    { label: 'Venta', route: '/venta/realizar-venta', permissions: ['ventas.realizar'] },
+    { label: 'Venta', route: '/venta/pagina-ventas', permissions: ['ventas.ver'] },
     { label: 'Productos', route: '/producto/pagina-productos', permissions: ['productos.ver'] },
     { label: 'Marcas', route: '/marca/pagina-marcas', permissions: ['marcas.ver'] },
     { label: 'Categorias', route: '/categoria/pagina-categorias', permissions: ['categorias.ver'] },
     { label: 'Unidades Medida', route: '/unidadMedida/pagina-unidades-medida', permissions: ['unidadesmedida.ver'] },
     { label: 'Proveedores', route: '/proveedor/pagina-proveedores', permissions: ['proveedores.ver'] },
-    { label: 'Historial Ventas', route: '/venta/venta', permissions: ['ventas.historial.ver'] }
+    // { label: 'Historial Ventas', route: '/venta/venta', permissions: ['ventas.historial.ver'] }
   ];
 
   visibleNavItems = computed(() => {

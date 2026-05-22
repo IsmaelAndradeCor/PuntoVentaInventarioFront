@@ -4,12 +4,6 @@
   </div> -->
 
   <ul class="nav nav-tabs mb-3">
-    <li class="nav-item">
-      <button type="button" class="nav-link" [class.active]="activeTab === 'test'" (click)="seleccionarTab('test')">
-        Test
-      </button>
-    </li>
-
     <li class="nav-item" *appHasPermission="'usuarios.activos.ver'">
       <button type="button" class="nav-link" [class.active]="activeTab === 'activos'" (click)="seleccionarTab('activos')">
         Usuarios Activos
@@ -36,12 +30,6 @@
   </ul>
 
   <div class="tab-content">
-    @if (activeTab === 'test' && puedeVerTab('test')) {
-      <div class="tab-pane fade show active">
-        <app-test-permisos></app-test-permisos>
-      </div>
-    }
-
     @if (activeTab === 'activos' && puedeVerTab('activos')) {
       <div class="tab-pane fade show active">
         <app-listar-usuarios-activos></app-listar-usuarios-activos>

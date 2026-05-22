@@ -1,6 +1,6 @@
 <div class="component-page">
     @if (!categorias.length) {
-    <p>No existen Categorias Activas</p>
+    <p>No existen Categorias Inactivas</p>
     }
     @else if (categorias) {
     <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
@@ -19,17 +19,15 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th *appHasPermission="['categorias.actualizar', 'categorias.desactivar']" style="width: 10%; text-align: center;">Acciones</th>
+                        <th *appHasPermission="'categorias.activar'" style="width: 10%; text-align: center;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let i of categoriasFiltradas; index as j">
                         <td>{{i.nombre}}</td>
-                        <td *appHasPermission="['categorias.actualizar', 'categorias.desactivar']" style="width: 10%; text-align: center;">
+                        <td *appHasPermission="'categorias.activar'" style="width: 10%; text-align: center;">
                             <div class="d-flex align-items-center justify-content-center gap-3">
-
-                                <button *appHasPermission="'categorias.actualizar'" class="btn btn-sm btn-warning" type="button" (click)="mostrarModalActualizarPorId(i.id)"><i class="fa-solid fa-pen-to-square"></i></button>                     
-                                <button *appHasPermission="'categorias.desactivar'" class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(i.id)"><i class="fa-solid fa-trash"></i></button> 
+                                <button *appHasPermission="'categorias.activar'" class="btn btn-sm btn-success" type="button" (click)="mostrarModalConfirmarActivar(i.id)">Activar</button> 
                             </div>
                         </td>
                     </tr>
@@ -43,11 +41,11 @@
 </div>
 
 <app-confirmar-modal
-  *ngIf="mostrarDesactivar"
-  [mostrarConfirmar]="mostrarDesactivar"
-  [titulo]="'Confirmar desactivación de '+ nombreDesactivar"
-  [mensaje]="'¿Deseas desactivar esta Categoria?'"
-  [id]="idDesactivar!"
-  (confirmarModal)="desactivarPorId($event)"
+  *ngIf="mostrarActivar"
+  [mostrarConfirmar]="mostrarActivar"
+  [titulo]="'Confirmar activación de '+ nombreActivar"
+  [mensaje]="'¿Deseas activar esta Categoria?'"
+  [id]="idActivar!"
+  (confirmarModal)="activarPorId($event)"
   (cerrarModal)="cerrarModalConfirmar()"
 ></app-confirmar-modal>

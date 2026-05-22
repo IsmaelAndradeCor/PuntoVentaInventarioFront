@@ -7,10 +7,12 @@ import { VentaDto } from '../../../models/venta';
 import { VentaService } from '../../../services/venta.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProductoSimpleResponseDto } from '../../../models/dtos/responses/producto-simple-response-dto';
+import { RouterLink } from '@angular/router';
+import { HasPermissionDirective } from '../../../core/directives/has-permission.directive';
 
 @Component({
   selector: 'app-realizar-venta',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, HasPermissionDirective],
   templateUrl: './realizar-venta.component.html',
   styleUrl: './realizar-venta.component.scss'
 })

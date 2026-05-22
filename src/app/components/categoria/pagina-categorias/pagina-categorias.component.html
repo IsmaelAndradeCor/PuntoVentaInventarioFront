@@ -1,1 +1,45 @@
-<p>pagina-categorias works!</p>
+<div class="component-page">
+  <!-- <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h3 class="mb-0">Productos</h3>
+  </div> -->
+
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item" *appHasPermission="'productos.activos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'activos'" (click)="seleccionarTab('activos')">
+        Productos Activos
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'productos.inactivos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'inactivos'" (click)="seleccionarTab('inactivos')">
+        Productos Inactivos
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'productos.crear'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'crear'" (click)="seleccionarTab('crear')">
+        Crear Producto
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    @if (activeTab === 'activos' && puedeVerTab('activos')) {
+      <div class="tab-pane fade show active">
+        <app-listar-categorias></app-listar-categorias>
+      </div>
+    }
+
+    @if (activeTab === 'inactivos' && puedeVerTab('inactivos')) {
+      <div class="tab-pane fade show active">
+        <app-listar-categorias-inactivas></app-listar-categorias-inactivas>
+      </div>
+    }
+
+    @if (activeTab === 'crear' && puedeVerTab('crear')) {
+      <div class="tab-pane fade show active">
+        <app-crear-categoria></app-crear-categoria>
+      </div>
+    }
+  </div>
+</div>

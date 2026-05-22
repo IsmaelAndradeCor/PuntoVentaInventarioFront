@@ -82,9 +82,9 @@ export class ListarProductosComponent implements OnInit {
       next:(response) => {
         this.categorias = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Categorias, por favor contacta al Administrador.')
-    })
+      error:() => {}
+        // this.toastrService.error('Ocurrió un error al cargar las Categorias, por favor contacta al Administrador.')
+    });
   }
 
   getMarcasActivas(): void {
@@ -92,9 +92,9 @@ export class ListarProductosComponent implements OnInit {
       next:(response) => {
         this.marcas = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Marcas, por favor contacta al Administrador.')
-    })
+      error:() => {}
+        // this.toastrService.error('Ocurrió un error al cargar las Marcas, por favor contacta al Administrador.')
+    });
   }
 
   getUnidadesMedidaActivas(): void {
@@ -102,9 +102,9 @@ export class ListarProductosComponent implements OnInit {
       next:(response) => {
         this.unidadesMedida = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Unidades de Medida, por favor contacta al Administrador.')
-    })
+      error:() => {}
+        // this.toastrService.error('Ocurrió un error al cargar las Unidades de Medida, por favor contacta al Administrador.')
+    });
   }
 
   getProveedoresActivos(): void {
@@ -112,9 +112,9 @@ export class ListarProductosComponent implements OnInit {
       next:(response) => {
         this.proveedores = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar los Proveedores, por favor contacta al Administrador.')
-    })
+      error:() => {}
+        // this.toastrService.error('Ocurrió un error al cargar los Proveedores, por favor contacta al Administrador.')
+    });
   }
 
   trackByProductoId(index: number, item: ProductoResponseDto): number {
@@ -136,7 +136,7 @@ export class ListarProductosComponent implements OnInit {
         this.toastrService.success('Producto desactivado con éxito.')
       },
       error: (error) => {
-        this.toastrService.error('Ocurrió un error al desactivar el producto, por favor contacte al administrador.');
+        // this.toastrService.error('Ocurrió un error al desactivar el producto, por favor contacte al administrador.');
       }
     });
   }
@@ -150,7 +150,7 @@ export class ListarProductosComponent implements OnInit {
         this.mostrarActualizarProducto = true;
       },
       error: (error) => {
-        this.toastrService.error('Ocurrió un error al buscar el producto, por favor contacte al administrador.');
+        // this.toastrService.error('Ocurrió un error al buscar el producto, por favor contacte al administrador.');
       }
     });
   }
@@ -158,6 +158,18 @@ export class ListarProductosComponent implements OnInit {
   cerrarModalActualizar(): void {
     this.mostrarActualizarProducto = false;
     this.productoActualizar = null;
+  }
+
+  actualizarEnLista(objetoActualizado: ProductoResponseDto): void {
+    const index = this.productosDto.findIndex(m => m.id === objetoActualizado.id);
+
+    if (index !== -1) {
+      this.productosDto[index] = objetoActualizado;
+      this.productosFiltrados = [...this.productosDto];
+      this.filtrarTabla();
+    }
+
+    this.cerrarModalActualizar();
   }
 
   mostrarModalConfirmarDesactivar(id: number): void {

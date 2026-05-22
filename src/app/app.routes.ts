@@ -11,7 +11,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PaginaProductosComponent } from './components/producto/pagina-productos/pagina-productos.component';
 import { PaginaConfiguracionComponent } from './components/configuracion/pagina-configuracion/pagina-configuracion.component';
 import { PaginaMarcasComponent } from './components/marca/pagina-marcas/pagina-marcas.component';
-import { PaginaProveedoresComponent } from './components/proveedor/pagina-proveedores/pagina-proveedores.component';
+import { PaginaProveedoresComponent } from './components/Proveedor/pagina-proveedores/pagina-proveedores.component';
 import { PaginaCategoriasComponent } from './components/categoria/pagina-categorias/pagina-categorias.component';
 import { PaginaUnidadesMedidaComponent } from './components/unidadMedida/pagina-unidades-medida/pagina-unidades-medida.component';
 
@@ -32,10 +32,10 @@ export const routes: Routes = [
     data: { permissions: ['productos.ver'] }
   },
   { 
-    path: 'venta/realizar-venta',
+    path: 'venta/pagina-ventas',
     component: RealizarVentaComponent,
     canActivate: [authGuard, permissionGuard],
-    data: { permissions: ['ventas.realizar'] }
+    data: { permissions: ['ventas.ver'] }
   },
   {
     path: 'venta/venta',

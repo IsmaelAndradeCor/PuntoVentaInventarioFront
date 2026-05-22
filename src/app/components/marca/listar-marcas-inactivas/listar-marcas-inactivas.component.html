@@ -1,1 +1,50 @@
-<p>listar-marcas-inactivas works!</p>
+<div class="component-page">
+    @if (!marcas.length) {
+    <p>No existen Marcas cargadas</p>
+    }
+    @else if (marcas) {
+    <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
+        <div class="input-group" style="max-width: 350px;">
+            <input type="text" class="form-control" placeholder="Buscar por nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
+            <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()"><i class="fa-solid fa-eraser"></i></button>
+        </div>
+    </div>
+    @if (textoBusqueda && !marcasFiltradas.length) {
+    <p>No existen Marcas con ese nombre.</p>
+    }
+    @else {
+    <div class="form-section-fill">
+        <div class="table-scroll">
+            <table class="table table-sm table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th *appHasPermission="'marcas.activar'" style="width: 10%; text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let i of marcasFiltradas; index as j">
+                        <td>{{i.nombre}}</td>
+                        <td *appHasPermission="'marcas.activar'" style="width: 10%; text-align: center;">
+                            <div class="d-flex align-items-center justify-content-center gap-3">
+                                <button *appHasPermission="'marcas.activar'" class="btn btn-sm btn-success" type="button" (click)="mostrarModalConfirmarActivar(i.id)">Activar</button> 
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    }
+    }
+</div>
+
+<app-confirmar-modal
+  *ngIf="mostrarActivar"
+  [mostrarConfirmar]="mostrarActivar"
+  [titulo]="'Confirmar dactivación de '+ nombreActivar"
+  [mensaje]="'¿Deseas sactivar esta Marca?'"
+  [id]="idActivar!"
+  (confirmarModal)="activarPorId($event)"
+  (cerrarModal)="cerrarModalConfirmar()"
+></app-confirmar-modal>

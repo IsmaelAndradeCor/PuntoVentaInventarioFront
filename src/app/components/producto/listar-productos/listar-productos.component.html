@@ -1,68 +1,61 @@
 <div class="component-page">
-  <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
-    <div class="input-group" style="max-width: 350px;">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Buscar por código o nombre"
-        [(ngModel)]="textoBusqueda"
-        (input)="filtrarTabla()"
-      >
-      <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()">
-        <i class="fa-solid fa-eraser"></i>
-      </button>
-    </div>
-  </div>
-
-  <div class="form-section-fill">
-    @if (textoBusqueda && !productosFiltrados.length) {
-      <p>No existen Productos Activos con ese nombre.</p>
+    @if (!productosDto.length) {
+    <p>No existen Productos Activos</p>
     }
-    @else if (!productosFiltrados.length) {
-      <p>No existen Productos Activos</p>
+    @else if (productosDto) {
+    <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
+      <div class="input-group" style="max-width: 350px;">
+        <input type="text" class="form-control" placeholder="Buscar por código o nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
+        <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()"><i class="fa-solid fa-eraser"></i></button>
+      </div>
+    </div>
+    @if (textoBusqueda && !productosFiltrados.length) {
+    <p>No existen Productos Activos con ese nombre.</p>
     }
     @else {
-      <div class="table-scroll">
-        <table class="table table-sm table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Nombre</th>
-              <th>Costo</th>
-              <th>Precio</th>
-              <th>Ganancia</th>
-              <th>Stock</th>
-              <th>Stock Minimo</th>
-              <th>Proveedor</th>
-              <th *appHasPermission="['productos.actualizar', 'productos.desactivar']">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let i of productosFiltrados; trackBy: trackByProductoId">
-              <td>{{i.codigo}}</td>
-              <td>{{i.nombre}}</td>
-              <td>{{i.costo | currency:'USD':'symbol':'1.2-2' }}</td>
-              <td>{{i.precio | currency:'USD':'symbol':'1.2-2' }}</td>
-              <td>{{i.precio - i.costo | currency:'USD':'symbol':'1.2-2' }}</td>
-              <td [ngClass]="{'table-danger' : i.stock <= i.stockMinimo}">{{i.stock}}</td>
-              <td>{{i.stockMinimo}}</td>
-              <td>@for (p of i.proveedores; track $index) { {{p.nombre}} }</td>
-              <td *appHasPermission="['productos.actualizar', 'productos.desactivar']">
-                <div class="d-flex align-items-center justify-content-center gap-2">
-                  <button *appHasPermission="'productos.actualizar'" class="btn btn-sm btn-warning" type="button" (click)="abrirModalActualizarProductoPorCodigo(i.codigo)">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button *appHasPermission="'productos.desactivar'" class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(i.id)">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="form-section-fill">
+        <div class="table-scroll">
+          <table class="table table-sm table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Costo</th>
+                <th>Precio</th>
+                <th>Ganancia</th>
+                <th>Stock</th>
+                <th>Stock Minimo</th>
+                <th>Proveedor</th>
+                <th *appHasPermission="['productos.actualizar', 'productos.desactivar']">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i of productosFiltrados; trackBy: trackByProductoId">
+                <td>{{i.codigo}}</td>
+                <td>{{i.nombre}}</td>
+                <td>{{i.costo | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td>{{i.precio | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td>{{i.precio - i.costo | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td [ngClass]="{'table-danger' : i.stock <= i.stockMinimo}">{{i.stock}}</td>
+                <td>{{i.stockMinimo}}</td>
+                <td>@for (p of i.proveedores; track $index) { {{p.nombre}} }</td>
+                <td *appHasPermission="['productos.actualizar', 'productos.desactivar']">
+                  <div class="d-flex align-items-center justify-content-center gap-3">
+                    <button *appHasPermission="'productos.actualizar'" class="btn btn-sm btn-warning" type="button" (click)="abrirModalActualizarProductoPorCodigo(i.codigo)">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button *appHasPermission="'productos.desactivar'" class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(i.id)">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
     }
-  </div>
+    }
 </div>
 
 
@@ -75,6 +68,7 @@
   [proveedores]="proveedores"
   [mostrarActualizarProducto]="mostrarActualizarProducto"
   (cerrarModal)="cerrarModalActualizar()"
+  (objetoActualizado)="actualizarEnLista($event)"
 ></app-actualizar-producto>
 
 <app-confirmar-modal

@@ -3,14 +3,13 @@ import { CategoriaService } from '../../../services/categoria.service';
 import { CategoriaResponseDto } from '../../../models/dtos/responses/categoria-response-dto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CrearCategoriaComponent } from '../crear-categoria/crear-categoria.component';
-import { ActualizarCategoriaComponent } from '../actualizar-categoria/actualizar-categoria.component';
 import { ConfirmarModalComponent } from '../../../modals/confirmar-modal/confirmar-modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { HasPermissionDirective } from "../../../core/directives/has-permission.directive";
 
 @Component({
   selector: 'app-listar-categorias',
-  imports: [CommonModule, FormsModule, CrearCategoriaComponent, ActualizarCategoriaComponent, ConfirmarModalComponent],
+  imports: [CommonModule, FormsModule, ConfirmarModalComponent, HasPermissionDirective],
   templateUrl: './listar-categorias.component.html',
   styleUrl: './listar-categorias.component.scss'
 })
@@ -52,7 +51,7 @@ export class ListarCategoriaComponent implements OnInit {
         this.mostrarActualizar = true;
       },
       error: (error) => {
-        this.toastrService.error('Ocurrió un error al buscar la Categoria, por favor contacte al administrador.');
+        // this.toastrService.error('Ocurrió un error al buscar la Categoria, por favor contacte al administrador.');
       }
     });
   }
@@ -89,7 +88,7 @@ export class ListarCategoriaComponent implements OnInit {
         this.toastrService.success('Categoria desactivada con éxito');
       },
       error: (error) => {
-        this.toastrService.error('Ocurrió un error al desactivar la Categoria, por favor contacte al administrador.');
+        // this.toastrService.error('Ocurrió un error al desactivar la Categoria, por favor contacte al administrador.');
       }
     })
   }
