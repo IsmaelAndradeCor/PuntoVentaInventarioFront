@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmarModalComponent } from '../../../modals/confirmar-modal/confirmar-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { HasPermissionDirective } from "../../../core/directives/has-permission.directive";
+import { ActualizarCategoriaComponent } from '../actualizar-categoria/actualizar-categoria.component';
 
 @Component({
   selector: 'app-listar-categorias',
-  imports: [CommonModule, FormsModule, ConfirmarModalComponent, HasPermissionDirective],
+  imports: [CommonModule, FormsModule, ConfirmarModalComponent, HasPermissionDirective, ActualizarCategoriaComponent],
   templateUrl: './listar-categorias.component.html',
   styleUrl: './listar-categorias.component.scss'
 })

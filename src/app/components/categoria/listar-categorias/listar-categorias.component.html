@@ -42,6 +42,14 @@
 
 </div>
 
+<app-actualizar-categoria
+    *ngIf="mostrarActualizar"
+    [objetoActualizar]="objetoActualizar"
+    [mostrarActualizar]="mostrarActualizar"
+    (cerrarModal)="cerrarModalActualizar()"
+    (objetoActualizado)="actualizarEnLista($event)"
+></app-actualizar-categoria>
+
 <app-confirmar-modal
   *ngIf="mostrarDesactivar"
   [mostrarConfirmar]="mostrarDesactivar"
