@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { UnidadMedidaResponseDto } from '../models/dtos/responses/unidad-medida-response-dto';
 import { UnidadMedidaUpsertDto } from '../models/dtos/requests/unidad-medida-upsert-dto';

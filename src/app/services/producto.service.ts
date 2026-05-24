@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ProductoUpsertDto } from '../models/dtos/requests/producto-upsert-dto';
 import { ProductoResponseDto } from '../models/dtos/responses/producto-response-dto';

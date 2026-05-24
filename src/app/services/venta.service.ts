@@ -3,7 +3,7 @@ import { VentaDto } from '../models/venta';
 import { DetalleVentaDto } from '../models/detalle-venta';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { GenerarVentasDTO } from '../models/generar-ventas-dto';
 import { RegistrarVentaResponseDto } from '../models/dtos/responses/registrar-venta-response-dto';
 

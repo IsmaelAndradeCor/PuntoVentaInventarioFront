@@ -27,7 +27,6 @@
                         <td>{{i.nombre}}</td>
                         <td *appHasPermission="['categorias.actualizar', 'categorias.desactivar']" style="width: 10%; text-align: center;">
                             <div class="d-flex align-items-center justify-content-center gap-3">
-
                                 <button *appHasPermission="'categorias.actualizar'" class="btn btn-sm btn-warning" type="button" (click)="mostrarModalActualizarPorId(i.id)"><i class="fa-solid fa-pen-to-square"></i></button>                     
                                 <button *appHasPermission="'categorias.desactivar'" class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(i.id)"><i class="fa-solid fa-trash"></i></button> 
                             </div>

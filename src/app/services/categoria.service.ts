@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { CategoriaResponseDto } from '../models/dtos/responses/categoria-response-dto';
 import { Observable } from 'rxjs';
 import { CategoriaUpsertDto } from '../models/dtos/requests/categoria-upsert-dto';

@@ -56,9 +56,6 @@ export class ActualizarUnidadMedidaComponent implements OnInit {
           this.toastrService.success('Unidad de Medida actualizada correctamente!');
           this.objetoActualizado.emit(response);
           this.cerrarModal.emit();
-        },
-        error:(response) => {
-          this.toastrService.error('Ocurrió un error al actualizar la Unidad de Medida, por favor contacta al administrador.');
         }
       })
     }

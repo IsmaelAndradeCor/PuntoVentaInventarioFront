@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CrearUnidadMedidaComponent } from '../crear-unidad-medida/crear-unidad-medida.component';
 import { ActualizarUnidadMedidaComponent } from '../actualizar-unidad-medida/actualizar-unidad-medida.component';
 import { ConfirmarModalComponent } from '../../../modals/confirmar-modal/confirmar-modal.component';
 import { UnidadMedidaService } from '../../../services/unidad-medida.service';
 import { ToastrService } from 'ngx-toastr';
 import { UnidadMedidaResponseDto } from '../../../models/dtos/responses/unidad-medida-response-dto';
+import { HasPermissionDirective } from "../../../core/directives/has-permission.directive";
 
 @Component({
   selector: 'app-listar-unidades-medida',
-  imports: [CommonModule, FormsModule, CrearUnidadMedidaComponent, ActualizarUnidadMedidaComponent, ConfirmarModalComponent],
+  imports: [CommonModule, FormsModule, ActualizarUnidadMedidaComponent, ConfirmarModalComponent, HasPermissionDirective],
   templateUrl: './listar-unidades-medida.component.html',
   styleUrl: './listar-unidades-medida.component.scss'
 })
@@ -50,9 +50,6 @@ export class ListarUnidadesMedidaComponent {
       next: (response) => {
         this.objetoActualizar = response;
         this.mostrarActualizar = true;
-      },
-      error: (error) => {
-        this.toastrService.error('Ocurrió un error al buscar la Unidad de Medida, por favor contacte al administrador.');
       }
     });
   }
@@ -87,9 +84,6 @@ export class ListarUnidadesMedidaComponent {
         this.filtrarTabla();
 
         this.toastrService.success('Unidad de Medida desactivada con éxito');
-      },
-      error: (error) => {
-        this.toastrService.error('Ocurrió un error al desactivar la Unidad de Medida, por favor contacte al administrador.');
       }
     })
   }
@@ -118,8 +112,4 @@ export class ListarUnidadesMedidaComponent {
     this.filtrarTabla();
   }
 
-  unidadMedidaCreada(unidadMedidaCreada: UnidadMedidaResponseDto): void {
-    this.unidadesMedida.push(unidadMedidaCreada);
-    this.filtrarTabla();
-  }
 }

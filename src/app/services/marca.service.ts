@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { MarcaUpsertDto } from '../models/dtos/requests/marca-upsert-dto';
 import { Observable } from 'rxjs';
 import { MarcaResponseDto } from '../models/dtos/responses/marca-response-dto';
