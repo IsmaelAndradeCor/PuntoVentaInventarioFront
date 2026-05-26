@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CategoriaService } from '../../../services/categoria.service';
 import { ToastrService } from 'ngx-toastr';
 import { CategoriaResponseDto } from '../../../models/dtos/responses/categoria-response-dto';
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './actualizar-categoria.component.html',
   styleUrl: './actualizar-categoria.component.scss'
 })
-export class ActualizarCategoriaComponent {
+export class ActualizarCategoriaComponent implements OnInit {
 
   constructor(private categoriaService: CategoriaService,
               private toastrService: ToastrService
@@ -23,6 +23,10 @@ export class ActualizarCategoriaComponent {
 
   @Input() objetoActualizar: CategoriaResponseDto | null = null;
   @Input() mostrarActualizar = false;
+
+  ngOnInit(): void {
+    this.categoriaNombre = this.objetoActualizar?.nombre!;
+  }
 
   categoriaUpsert: CategoriaUpsertDto = {
     nombre: ''

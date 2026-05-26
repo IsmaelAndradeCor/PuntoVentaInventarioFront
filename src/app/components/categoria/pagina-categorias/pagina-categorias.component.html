@@ -1,20 +1,20 @@
 <div class="component-page">
   <ul class="nav nav-tabs mb-3">
-    <li class="nav-item" *appHasPermission="'productos.activos.ver'">
+    <li class="nav-item" *appHasPermission="'categorias.activos.ver'">
       <button type="button" class="nav-link" [class.active]="activeTab === 'activos'" (click)="seleccionarTab('activos')">
-        Productos Activos
+        Categorias Activos
       </button>
     </li>
 
-    <li class="nav-item" *appHasPermission="'productos.inactivos.ver'">
+    <li class="nav-item" *appHasPermission="'categorias.inactivos.ver'">
       <button type="button" class="nav-link" [class.active]="activeTab === 'inactivos'" (click)="seleccionarTab('inactivos')">
-        Productos Inactivos
+        Categorias Inactivos
       </button>
     </li>
 
-    <li class="nav-item" *appHasPermission="'productos.crear'">
+    <li class="nav-item" *appHasPermission="'categorias.crear'">
       <button type="button" class="nav-link" [class.active]="activeTab === 'crear'" (click)="seleccionarTab('crear')">
-        Crear Producto
+        Crear Categoria
       </button>
     </li>
   </ul>

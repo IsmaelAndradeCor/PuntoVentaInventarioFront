@@ -1,33 +1,136 @@
-<div class="form-section">
-    <div class="row justify-content-between">
-        <div class="col-auto"><h5>Ventas</h5></div>
-        <div class="col-auto"><h5>Ganacias del día: {{calcularTotalGanancias() | currency:'USD':'symbol':'1.2-2'}}</h5></div>
+<div class="component-page">
+    <form [formGroup]="filtroForm" (ngSubmit)="buscarVentas()" class="row g-3 mb-3">
+    <div class="col-md-3">
+        <label for="fechaInicio" class="form-label">Fecha inicio</label>
+        <input id="fechaInicio" type="date" class="form-control" formControlName="fechaInicio">
     </div>
-    @if (ventas.length) {
-    <table class="table table-sm table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Folio</th>
-                <th>Fecha Venta</th>
-                <th>Costo Total</th>
-                <th>Precio Total</th>
-                <th>Ganancias</th>
-                <th>Forma Pago</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let i of ventas; index as j">
-                <td>{{i.folio}}</td>
-                <td>{{i.fechaVenta}}</td>
-                <td>{{i.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
-                <td>{{i.total | currency:'USD':'symbol':'1.2-2' }}</td>
-                <td>{{i.ganancias | currency:'USD':'symbol':'1.2-2' }}</td>
-                <td>{{i.formaPago}}</td>
-            </tr>
-        </tbody>
-    </table>
-    }@else {
-    <p>Hoy no se han generado ventas.</p>
-    }
 
+    <div class="col-md-3">
+        <label for="fechaFin" class="form-label">Fecha fin</label>
+        <input id="fechaFin" type="date" class="form-control" formControlName="fechaFin">
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end">
+        <div class="form-check mb-2">
+        <input id="incluirDetalle" type="checkbox" class="form-check-input" formControlName="incluirDetalle">
+        <label for="incluirDetalle" class="form-check-label">
+            Incluir detalle
+        </label>
+        </div>
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Buscar</button>
+    </div>
+    </form>
+
+    <div class="row justify-content-between mb-3">
+        <div class="col-auto">
+        <h5 class="mb-0">Ventas</h5>
+        </div>
+
+        <div class="col-auto">
+        <h5 class="mb-0">
+            Ganancias del día:
+            {{ calcularTotalGanancias() | currency:'USD':'symbol':'1.2-2' }}
+        </h5>
+        </div>
+    </div>
+  <div class="form-section-fill">
+    @if (cargando) {
+      <p>Cargando ventas...</p>
+    } @else if (ventas.length) {
+      <div class="table-responsive table-scroll">
+        <table class="table table-sm table-striped table-bordered table-hover align-middle">
+          <thead>
+            <tr>
+              <th style="width: 50px;" class="text-center">Ver</th>
+              <th>Folio</th>
+              <th>Fecha Venta</th>
+              <th>Costo Total</th>
+              <th>Precio Total</th>
+              <th>Ganancias</th>
+              <th>Forma Pago</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <ng-container *ngFor="let i of ventas; trackBy: trackByVenta">
+              <tr
+                (click)="toggleDetalle(i)"
+                [class.table-active]="estaExpandida(i)"
+                [class.sin-detalle]="!filtroForm.get('incluirDetalle')?.value"
+                style="cursor: pointer;">
+                <td class="text-center fw-bold">
+                  {{ estaExpandida(i) ? '-' : '+' }}
+                </td>
+                <td>{{ i.folio }}</td>
+                <td>{{ i.fechaVenta | date:'dd/MM/yyyy HH:mm' }}</td>
+                <td>{{ i.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td>{{ i.total | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td>{{ i.ganancias | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td>{{ i.formaPago }}</td>
+              </tr>
+
+              <tr *ngIf="estaExpandida(i)">
+                <td colspan="7">
+                  <div class="p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="mb-0">Detalle de la venta</h6>
+                      <span class="text-muted">
+                        {{ i.detalles.length }} producto(s)
+                      </span>
+                    </div>
+
+                    @if (i.detalles.length) {
+                      <div class="table-responsive">
+                        <table class="table table-sm table-bordered mb-0">
+                          <thead>
+                          <!-- <thead class="table-secondary"> -->
+                            <tr>
+                              <th>Código</th>
+                              <th>Producto</th>
+                              <th>Cantidad</th>
+                              <th>Costo Unitario</th>
+                              <th>Costo Total</th>
+                              <th>Precio Unitario</th>
+                              <th>Precio Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let d of i.detalles">
+                              <td>{{ d.codigoProducto }}</td>
+                              <td>{{ d.nombreProducto }}</td>
+                              <td>{{ d.cantidad }}</td>
+                              <td>{{ d.costoUnitario | currency:'USD':'symbol':'1.2-2' }}</td>
+                              <td>{{ d.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                              <td>{{ d.precioUnitario | currency:'USD':'symbol':'1.2-2' }}</td>
+                              <td>{{ d.precioTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    } @else {
+                      <p class="mb-0 text-muted">No hay detalle disponible para esta venta.</p>
+                    }
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <th colspan="4" class="text-end">Total ventas</th>
+              <th>{{ calcularTotalVentas() | currency:'USD':'symbol':'1.2-2' }}</th>
+              <th>{{ calcularTotalGanancias() | currency:'USD':'symbol':'1.2-2' }}</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    } @else {
+      <p>No se encontraron ventas en el rango seleccionado.</p>
+    }
+  </div>
 </div>

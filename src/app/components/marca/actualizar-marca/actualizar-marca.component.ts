@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MarcaUpsertDto } from '../../../models/dtos/requests/marca-upsert-dto';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './actualizar-marca.component.html',
   styleUrl: './actualizar-marca.component.scss'
 })
-export class ActualizarMarcaComponent {
+export class ActualizarMarcaComponent implements OnInit {
 
   constructor(private marcaService: MarcaService,
               private toastrService: ToastrService
@@ -23,6 +23,10 @@ export class ActualizarMarcaComponent {
 
   @Input() objetoActualizar: MarcaResponseDto | null = null;
   @Input() mostrarActualizar = false;
+
+  ngOnInit(): void {
+    this.marcaNombre = this.objetoActualizar?.nombre!;
+  }
 
   marcaUpsert: MarcaUpsertDto = {
     nombre: ''

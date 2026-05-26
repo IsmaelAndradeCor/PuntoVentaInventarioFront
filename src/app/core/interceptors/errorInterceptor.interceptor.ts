@@ -38,8 +38,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       else if (error.status === 404) {
-        toastr.error('Recurso no encontrado.');
-      }
+        if (error.error?.mensaje) {
+          toastr.error(error.error.mensaje);
+        } else {
+          toastr.error('Recurso no encontrado.');
+        }      }
 
       else if (error.status === 409) {
         if (error.error?.mensaje) {

@@ -2,10 +2,11 @@ import { inject, Injectable } from '@angular/core';
 import { VentaDto } from '../models/venta';
 import { DetalleVentaDto } from '../models/detalle-venta';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { GenerarVentasDTO } from '../models/generar-ventas-dto';
 import { RegistrarVentaResponseDto } from '../models/dtos/responses/registrar-venta-response-dto';
+import { GenerarVentaResponseDto } from '../models/dtos/responses/generar-venta-response-dto';
+import { GenerarVentasRequestDto } from '../models/dtos/requests/generar-ventas-request-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,19 @@ export class VentaService {
     return this.http.post<RegistrarVentaResponseDto>(`${this.urlBase}/realizar_venta`, venta);
   }
 
-  public getGenerarVentas(): Observable<GenerarVentasDTO[]> {
-    return this.http.get<GenerarVentasDTO[]>(`${this.urlBase}/generar_ventas`);
+  getGenerarVentas(filtros: GenerarVentasRequestDto): Observable<GenerarVentaResponseDto[]> {
+    let params = new HttpParams();
+
+    if (filtros.fechaInicio) {
+      params = params.set('FechaInicio', filtros.fechaInicio);
+    }
+
+    if (filtros.fechaFin) {
+      params = params.set('FechaFin', filtros.fechaFin);
+    }
+
+    params = params.set('IncluirDetalle', filtros.incluirDetalle);
+
+    return this.http.get<GenerarVentaResponseDto[]>(`${this.urlBase}/generar_ventas`, { params });
   }
 }

@@ -1,0 +1,47 @@
+:host {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.component-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section-fill {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+}
+
+.table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--bs-body-bg);
+}
+
+// .table tbody tr {
+//   transition: background-color 0.2s ease;
+// }
+
+// .table tbody tr:hover {
+//   background-color: #f8f9fa;
+// }
+
+// .table tbody tr.sin-detalle {
+//   cursor: default !important;
+// }
+
+// .table tbody tr.sin-detalle:hover {
+//   background-color: inherit;
+// }

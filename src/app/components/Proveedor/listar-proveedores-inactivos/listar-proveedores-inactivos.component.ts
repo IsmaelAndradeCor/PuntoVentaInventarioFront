@@ -62,7 +62,7 @@ export class ListarProveedoresInactivosComponent {
         this.proveedores = this.proveedores.filter(x => x.id !== id);
         this.filtrarTabla();
 
-        this.toastrService.success('Proveedor desactivado con éxito.')
+        this.toastrService.success('Proveedor activado con éxito.')
       }
     });
   }

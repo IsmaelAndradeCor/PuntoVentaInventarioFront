@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { CommonModule } from '@angular/common';
-import { VentaService } from '../../services/venta.service';
-import { GenerarVentasDTO } from '../../models/generar-ventas-dto';
 import { ProductoResponseDto } from '../../models/dtos/responses/producto-response-dto';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../core/auth/auth.service';

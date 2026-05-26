@@ -29,13 +29,13 @@ export class PaginaUnidadesMedidaComponent {
   puedeVerTab(tab: AccionesTab): boolean {
     switch (tab) {
       case 'activos':
-        return this.authService.hasPermission('categorias.activos.ver');
+        return this.authService.hasPermission('unidadesmedida.activos.ver');
 
       case 'inactivos':
-        return this.authService.hasPermission('categorias.inactivos.ver');
+        return this.authService.hasPermission('unidadesmedida.inactivos.ver');
 
       case 'crear':
-        return this.authService.hasPermission('categorias.crear');
+        return this.authService.hasPermission('unidadesmedida.crear');
 
       default:
         return false;
