@@ -16,3 +16,24 @@
   min-height: 0;
   overflow: auto;
 }
+
+.item-venta {
+  min-height: 64px;
+}
+
+.item-venta .form-control,
+.item-venta .input-group-text,
+.item-venta .btn {
+  height: 38px;
+}
+
+.item-venta .fw-medium {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-venta .text-center,
+.item-venta .form-control {
+  font-size: 0.95rem;
+}

@@ -1,4 +1,111 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+    <div class="form-section form-section-fill mb-3">
+        @for (producto of carrito; track $index) {
+        <div class="row">
+            <div class=" col-sm-1 col-md-1 col-lg-1 p-0 d-flex justify-content-center align-items-center">
+                <!-- Botón eliminar (pasa el índice) -->
+                <button (click)="disminuirCantidad($index)" class="btn btn-sm btn-danger w-50"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            <div class=" col-sm-1 col-md-1 col-lg-1 p-0 d-flex align-items-center justify-content-center">
+                 <div class="input-group">
+                    <input
+                    class="form-control"
+                    type="number"
+                    [min]="producto.producto.unidadMedida.permiteDecimales ? '0.00' : '1'"
+                    [max]="obtenerMaximoPermitido(producto.producto.codigo, $index)"
+                    [step]="producto.producto.unidadMedida.permiteDecimales ? '0.05' : '1'"
+                    [ngModel]="producto.cantidad"
+                    (ngModelChange)="actualizarCantidadItem($index, $event)"
+                    >  
+                </div>
+            </div>
+            <!-- Unidades Disponibles -->
+            <div class="col d-flex align-items-center">
+                <small class="text-muted">
+                Disponible: {{ obtenerStockDisponible(producto.producto.codigo) + producto.cantidad }}
+                </small>  
+            </div>
+            <!-- Nombre del producto -->
+            <div class=" col-sm-8 col-md-6 col-lg-4 p-0 d-flex align-items-center">
+                <p class="m-2">{{producto.producto.nombre}}</p>
+            </div>
+            <!-- Precio Unitario -->
+            <div class="          col-md-2 col-lg-1 p-0 align-items-center justify-content-center d-none d-md-flex">
+                <p class="m-2">{{ producto.producto.precio | currency:'USD':'symbol':'1.2-2' }}</p>
+            </div>
+            <!-- Precio Total -->
+            <div class=" col-sm-2 col-md-2 col-lg-1 p-0 d-flex align-items-center justify-content-center">
+                <!-- <p class="m-2">{{ producto.producto.precio * producto.cantidad | currency:'USD':'symbol':'1.2-2' }}</p> -->
+            @if (producto.producto.unidadMedida.permiteDecimales) {
+                <div class="input-group input-group-sm">
+                <span class="input-group-text">$</span>
+                <input
+                    class="form-control text-end"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    [ngModel]="obtenerImporteItem($index)"
+                    (ngModelChange)="actualizarImporteItem($index, $event)"
+                    placeholder="Importe">
+                </div>
+            } @else {
+                <input
+                class="form-control form-control-sm text-end"
+                type="text"
+                [value]="producto.producto.precio * producto.cantidad | currency:'USD':'symbol':'1.2-2'"
+                disabled>
+            }
+            </div>
+        </div>
+        }
+    </div>
+
+
+
+    ????????????????????????????????????????????????????????????????
+
+        <div class="form-section form-section-fill mb-3">
+        @for (producto of carrito; track $index) {
+        <div class="row row-cols-6">
+            <div class="col p-0 d-flex justify-content-center align-items-center">
+                <!-- Botón eliminar (pasa el índice) -->
+                <button (click)="disminuirCantidad($index)" class="btn btn-sm btn-danger w-50"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            <div class="col p-0 d-flex align-items-center justify-content-center">
+                 <div class="input-group">
+                    <input class="form-control" type="number" [min]="producto.producto.unidadMedida.permiteDecimales ? '0.00' : '1'" [max]="obtenerMaximoPermitido(producto.producto.codigo, $index)" [step]="producto.producto.unidadMedida.permiteDecimales ? '0.05' : '1'" [ngModel]="producto.cantidad" (ngModelChange)="actualizarCantidadItem($index, $event)" >  
+                </div>
+            </div>
+            <!-- Unidades Disponibles -->
+            <div class="col d-flex align-items-center">
+                <small class="text-muted">Disponible: {{ obtenerStockDisponible(producto.producto.codigo) + producto.cantidad }}</small>  
+            </div>
+            <!-- Nombre del producto -->
+            <div class=" col p-0 d-flex align-items-center">
+                <p class="m-2">{{producto.producto.nombre}}</p>
+            </div>
+            <!-- Precio Unitario -->
+            <div class="col p-0 align-items-center justify-content-center d-none d-md-flex">
+                <p class="m-2">{{ producto.producto.precio | currency:'USD':'symbol':'1.2-2' }}</p>
+            </div>
+            <!-- Precio Total -->
+            <div class="col p-0 d-flex align-items-center justify-content-center">
+                <!-- <p class="m-2">{{ producto.producto.precio * producto.cantidad | currency:'USD':'symbol':'1.2-2' }}</p> -->
+            @if (producto.producto.unidadMedida.permiteDecimales) {
+                <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input class="form-control text-end" type="number" min="0" step="0.01" [ngModel]="obtenerImporteItem($index)" (ngModelChange)="actualizarImporteItem($index, $event)" placeholder="Importe">
+                </div>
+            } @else {
+                <input class="form-control text-end" type="text" [value]="producto.producto.precio * producto.cantidad | currency:'USD':'symbol':'1.2-2'" disabled>
+            }
+            </div>
+        </div>
+        }
+    </div>
+
+    ????????????????????????????????????????????????????????????????    ????????????????????????????????????????????????????????????????
+
+    import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ProductoService } from '../../../services/producto.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

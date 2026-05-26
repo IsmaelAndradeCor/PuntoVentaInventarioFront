@@ -30,7 +30,7 @@ export class PermisosUsuarioComponent {
 
   ngOnInit(): void {
     this.getCatalogoUi();
-    this.getUsuarios();
+    this.getUsuariosActivos();
   }
 
   getCatalogoUi(){
@@ -39,8 +39,8 @@ export class PermisosUsuarioComponent {
     });
   }
 
-  getUsuarios(): void {
-    this.usuarioService.getUsuarios().subscribe({
+  getUsuariosActivos(): void {
+    this.usuarioService.getUsuariosActivos().subscribe({
       next: (response) => {
         this.usuarios = response;
 

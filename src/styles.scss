@@ -110,3 +110,8 @@ app-root {
 table {
   margin-bottom: 0;
 }
+
+.toast-container .toast-ancho-custom {
+  width: 420px !important;
+  max-width: calc(100vw - 32px);
+}

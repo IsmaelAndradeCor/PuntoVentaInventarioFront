@@ -1,1 +1,58 @@
-<p>listar-proveedores-inactivos works!</p>
+<div class="component-page">
+    @if (!proveedores.length) {
+    <p>No existen Proveedores Activos</p>
+    }
+    @else if (proveedores) {
+    <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
+      <div class="input-group" style="max-width: 350px;">
+        <input type="text" class="form-control" placeholder="Buscar por código o nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
+        <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()"><i class="fa-solid fa-eraser"></i></button>
+      </div>
+    </div>
+    @if (textoBusqueda && !proveedoresFiltrados.length) {
+    <p>No existen Proveedores Activos con ese nombre.</p>
+    }
+    @else {
+    <div class="form-section-fill">
+        <div class="table-scroll">
+          <table class="table table-sm table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Contacto</th>
+                <th>Correo</th>
+                <th *appHasPermission="'proveedores.activar'">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i of proveedoresFiltrados; trackBy: trackByProveedorId">
+                <td>{{i.nombre}}</td>
+                <td>{{i.telefono}}</td>
+                <td>{{i.contacto}}</td>
+                <td>{{i.correo}}</td>
+                <td *appHasPermission="'proveedores.activar'">
+                  <div class="d-flex align-items-center justify-content-center gap-3">
+                    <button *appHasPermission="'proveedores.activar'" class="btn btn-sm btn-success" type="button" (click)="mostrarModalConfirmarActivar(i.id)">
+                        Activar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    }
+    }
+</div>
+
+<app-confirmar-modal
+  *ngIf="mostrarConfirmarActivar"
+  [mostrarConfirmar]="mostrarConfirmarActivar"
+  [titulo]="'Confirmar activación de ' + (proveedoresPorId.get(idProveedorActivar ?? 0)?.nombre ?? '')"
+  [mensaje]="'¿Deseas activar este proveedor?'"
+  [id]="idProveedorActivar ?? 0"
+  (confirmarModal)="activarProveedorPorCodigo($event)"
+  (cerrarModal)="cerrarModalConfirmar()"
+></app-confirmar-modal>

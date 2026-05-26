@@ -1,1 +1,44 @@
-<p>actualizar-proveedor works!</p>
+<div *ngIf="mostrarActualizar" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-dialog-centered" style="min-width: 95%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Proveedor - {{objetoActualizar?.nombre}}</h5>
+        <button type="button" class="btn-close" (click)="cerrar()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="objetoActualizar">
+            <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-4">
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Nuevo Nombre</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="proveedorNombre">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Nuevo Telefono</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="proveedorTelefono">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Nuevo Contacto</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="proveedorContacto">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <span class="input-group-text">Nuevo Correo</span>
+                        <input class="form-control" type="text" autocomplete="off" [(ngModel)]="proveedorCorreo">
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger me-3" (click)="cerrar()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="guardarCambios()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

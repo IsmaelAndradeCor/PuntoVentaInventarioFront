@@ -15,8 +15,6 @@ export class CrearMarcaComponent {
 
   @ViewChild('inputNombre') inputNombre!: ElementRef<HTMLInputElement>;
 
-  @Output() objetoCreado = new EventEmitter<MarcaResponseDto>();
-
   constructor(private marcaService: MarcaService,
       private toastrService: ToastrService){}
 
@@ -33,9 +31,6 @@ export class CrearMarcaComponent {
         this.marcaUpsertDto = {
           nombre : ''
         }
-
-        // Regresamos el objeto creado
-        this.objetoCreado.emit(response);
 
         //Nos posicionamos en el input
         this.enfocarInput();

@@ -12,8 +12,12 @@ export class UsuarioService {
   private http = inject(HttpClient);
   private urlBase = environment.apiURL + '/Usuarios';
 
-  public getUsuarios(): Observable<UsuarioPermisosResponseDto[]> {
-    return this.http.get<UsuarioPermisosResponseDto[]>(this.urlBase)
+  public getUsuariosActivos(): Observable<UsuarioPermisosResponseDto[]> {
+    return this.http.get<UsuarioPermisosResponseDto[]>(this.urlBase + '/activos')
+  }
+
+  public getUsuariosInactivos(): Observable<UsuarioPermisosResponseDto[]> {
+    return this.http.get<UsuarioPermisosResponseDto[]>(this.urlBase + '/inactivos')
   }
 
 }

@@ -1,1 +1,41 @@
-<p>pagina-proveedores works!</p>
+<div class="component-page">
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item" *appHasPermission="'proveedores.activos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'activos'" (click)="seleccionarTab('activos')">
+        Proveedores Activos
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'proveedores.inactivos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'inactivos'" (click)="seleccionarTab('inactivos')">
+        Proveedores Inactivos
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'proveedores.crear'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'crear'" (click)="seleccionarTab('crear')">
+        Crear Proveedor
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    @if (activeTab === 'activos' && puedeVerTab('activos')) {
+      <div class="tab-pane fade show active">
+        <app-listar-proveedores></app-listar-proveedores>
+      </div>
+    }
+
+    @if (activeTab === 'inactivos' && puedeVerTab('inactivos')) {
+      <div class="tab-pane fade show active">
+        <app-listar-proveedores-inactivos></app-listar-proveedores-inactivos>
+      </div>
+    }
+
+    @if (activeTab === 'crear' && puedeVerTab('crear')) {
+      <div class="tab-pane fade show active">
+        <app-crear-proveedor></app-crear-proveedor>
+      </div>
+    }
+  </div>
+</div>

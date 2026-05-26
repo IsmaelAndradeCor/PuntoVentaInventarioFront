@@ -1,1 +1,31 @@
-<p>crear-proveedor works!</p>
+<div class="form-section-fill">
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-5 g-3">
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Nombre</span>
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="proveedorUpsert.nombre">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Telefono</span>
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="proveedorUpsert.telefono">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Contacto</span>
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="proveedorUpsert.contacto">
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <span class="input-group-text">Correo</span>
+                <input class="form-control" type="text" autocomplete="off" [(ngModel)]="proveedorUpsert.correo">
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-success w-100" type="button" (click)="crearProveedor()">Crear Proveedor</button>
+        </div>
+    </div>
+</div>

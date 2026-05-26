@@ -18,6 +18,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([authInterceptor, loadingInterceptor, errorInterceptor])
     ),
     provideAnimations(),
-    provideToastr()
+    provideToastr({toastClass: 'ngx-toastr toast-ancho-custom'})
   ]
 };
