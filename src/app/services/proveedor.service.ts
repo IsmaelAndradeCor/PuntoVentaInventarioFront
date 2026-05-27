@@ -4,6 +4,9 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ProveedorResponseDto } from '../models/dtos/responses/proveedor-response-dto';
 import { ProveedorUpsertDto } from '../models/dtos/requests/proveedor-upsert-dto';
+import { RegistrarPagoProveedorUpsertDto } from '../models/dtos/requests/registrar-pago-proveedor-upsert-dto';
+import { RegistrarPagoProveedorResponseDto } from '../models/dtos/responses/registrar-pago-proveedor-response-dto';
+import { PagosProveedoresResponseDto } from '../models/dtos/responses/pagos-proveedores-response-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +50,14 @@ export class ProveedorService {
   // Desactiva con soft delete a partir del idProveedor
   public deactivateProveedor(idProveedor: number): Observable<void> {
     return this.http.delete<void>(`${this.urlBase}/desactivar_proveedor/${idProveedor}`);
+  }
+
+  public registrarPagoProveedor(pagoUpsert: RegistrarPagoProveedorUpsertDto): Observable<RegistrarPagoProveedorResponseDto> {
+    return this.http.post<RegistrarPagoProveedorResponseDto>(this.urlBase + '/registrar_pago_proveedor', pagoUpsert);
+  }
+
+  public getPagosProveedores(): Observable<PagosProveedoresResponseDto[]> {
+    return this.http.get<PagosProveedoresResponseDto[]>(this.urlBase + '/listar_pagos_proveedores');
   }
 
 }

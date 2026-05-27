@@ -1,0 +1,30 @@
+<div class="component-page">
+    <div class="form-section-fill">
+        <table class="table table-sm table-striped table-bordered table-scroll">
+            <thead>
+                <tr>
+                    <th>Folio</th>
+                    <th>Nombre Proveedor</th>
+                    <th>Monto</th>
+                    <th>Metodo Pago</th>
+                    <th>Referencia</th>
+                    <th>Observaciones</th>
+                    <th>Fecha de Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of pagosProveedores; track $index) {
+                    <tr>
+                        <td>{{item.folio}}</td>
+                        <td>{{item.nombreProveedor}}</td>
+                        <td>{{item.monto | currency:'USD':'symbol':'1.2-2' }}</td>
+                        <td>{{item.metodoPago}}</td>
+                        <td>{{item.referencia}}</td>
+                        <td>{{item.observaciones}}</td>
+                        <td>{{item.fechaPago | date:'dd/MM/yyyy HH:mm' }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="form-section-fill">
+    <div class="row g-3 mb-3">
+        <div class="col-12 col-md-6 col-xl-4">
+            <div class="input-group">
+                <span class="input-group-text">Proveedor</span>
+                <select class="form-select" name="selectedIdProveedor" id="selectedIdProveedor" [(ngModel)]="registrarPago.idProveedor">
+                    <option [ngValue]="0">Seleccione proveedor</option>
+                    @for (item of proveedoresActivos; track $index) {
+                    <option [ngValue]="item.id">{{item.nombre}}</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-2">
+            <div class="input-group">
+                <span class="input-group-text">Monto</span>
+                <input class="form-control" type="number" min="0" [(ngModel)]="registrarPago.monto">
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="input-group">
+                <span class="input-group-text">Método Pago</span>
+                <input class="form-control" type="text" [(ngModel)]="registrarPago.metodoPago">
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="input-group">
+                <span class="input-group-text">Referencia</span>
+                <input class="form-control" type="text" [(ngModel)]="registrarPago.referencia">
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="input-group">
+                <span class="input-group-text">Observaciones</span>
+                <textarea class="form-control" rows="3" [(ngModel)]="registrarPago.observaciones"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col d-flex justify-content-end">
+            <button class="btn btn-success px-4" type="button" (click)="postPagoProveedor()">Guardar pago</button>
+        </div>
+    </div>
+</div>

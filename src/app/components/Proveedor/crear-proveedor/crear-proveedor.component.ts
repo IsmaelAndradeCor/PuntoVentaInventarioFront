@@ -22,7 +22,7 @@ export class CrearProveedorComponent {
     telefono: '',
     contacto: '',
     correo: ''
-  }
+  };
 
   crearProveedor(): void {
     this.proveedorService.postProveedor(this.proveedorUpsert).subscribe({

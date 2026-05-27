@@ -17,6 +17,18 @@
         Crear Proveedor
       </button>
     </li>
+
+    <li class="nav-item" *appHasPermission="'proveedores.pagar'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'pagar'" (click)="seleccionarTab('pagar')">
+        Pagar a Proveedor
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'proveedores.pagos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'pagos'" (click)="seleccionarTab('pagos')">
+        Pagos a Proveedor
+      </button>
+    </li>
   </ul>
 
   <div class="tab-content">
@@ -35,6 +47,18 @@
     @if (activeTab === 'crear' && puedeVerTab('crear')) {
       <div class="tab-pane fade show active">
         <app-crear-proveedor></app-crear-proveedor>
+      </div>
+    }
+
+    @if (activeTab === 'pagar' && puedeVerTab('pagar')) {
+      <div class="tab-pane fade show active">
+        <app-pagar-proveedor></app-pagar-proveedor>
+      </div>
+    }
+
+    @if (activeTab === 'pagos' && puedeVerTab('pagos')) {
+      <div class="tab-pane fade show active">
+        <app-pagos-proveedores></app-pagos-proveedores>
       </div>
     }
   </div>
