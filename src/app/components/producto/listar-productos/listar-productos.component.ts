@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActualizarProductoComponent } from '../actualizar-producto/actualizar-producto.component';
 import { CommonModule } from '@angular/common';
 import { ProductoService } from '../../../services/producto.service';
@@ -15,6 +15,7 @@ import { UnidadMedidaResponseDto } from '../../../models/dtos/responses/unidad-m
 import { ProveedorResponseDto } from '../../../models/dtos/responses/proveedor-response-dto';
 import { FormsModule } from '@angular/forms';
 import { HasPermissionDirective } from '../../../core/directives/has-permission.directive';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-listar-productos',
@@ -23,7 +24,9 @@ import { HasPermissionDirective } from '../../../core/directives/has-permission.
   styleUrl: './listar-productos.component.scss'
 })
 
-export class ListarProductosComponent implements OnInit {
+export class ListarProductosComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('inputFiltro') inputFiltro!: ElementRef<HTMLInputElement>;
 
   constructor(
     private productoService: ProductoService,
@@ -31,7 +34,8 @@ export class ListarProductosComponent implements OnInit {
     private proveedorService: ProveedorService,
     private toastrService: ToastrService,
     private categoriaService: CategoriaService,
-    private unidadMedidaService: UnidadMedidaService
+    private unidadMedidaService: UnidadMedidaService,
+    private authService: AuthService
   ){}
 
   categorias: CategoriaResponseDto[] = [];
@@ -54,24 +58,44 @@ export class ListarProductosComponent implements OnInit {
   
   ngOnInit() {
     this.getProductosActivos();
-    this.getCategoriasActivas();
-    this.getMarcasActivas();
-    this.getUnidadesMedidaActivas();
-    this.getProveedoresActivos();
+
+    // Agregamos esta validación de revisión de permisos para actualizar porque se necesitan cargar estas listas para que no vuelva a llamar las listas en el modal de actualizar, ya se las mandamos cargadas
+    if (this.authService.hasPermission('productos.actualizar')) {
+      this.getCategoriasActivas();    
+      this.getMarcasActivas();
+      this.getUnidadesMedidaActivas();
+      this.getProveedoresActivos();  
+    }
+
   }
 
+  ngAfterViewInit(): void {
+    this.enfocarInputFiltro();
+  }
+
+  // ─── Foco ────────────────────────────────────────────────────────────────────
+  private enfocarInputFiltro(): void {
+    setTimeout(() => {
+      this.inputFiltro?.nativeElement.focus();
+      this.inputFiltro?.nativeElement.select();
+    }, 0);
+  }
 
   getProductosActivos(): void {
     // Convierte el arreglo a Map UNA SOLA VEZ al cargar
 
     this.productoService.getProductosActivos().subscribe({
       next:(prodcutosResponse) => {
-        this.productosDto = prodcutosResponse;
-        this.productosFiltrados = [...this.productosDto];
-        this.productosPorId = new Map(
-          this.productosDto.map(producto => [producto.id, producto])
-        );
-        
+
+        if (prodcutosResponse) {
+          this.productosDto = prodcutosResponse;
+          this.productosFiltrados = [...this.productosDto];
+          this.productosPorId = new Map(
+            this.productosDto.map(producto => [producto.id, producto])
+          );
+          this.enfocarInputFiltro();
+        }
+
         // console.log('Map creado con', this.productosPorId.size, 'productos');
       }
     });
@@ -142,15 +166,14 @@ export class ListarProductosComponent implements OnInit {
   }
 
   abrirModalActualizarProductoPorCodigo(codigo: string): void {
+    if (!this.authService.hasPermission('productos.actualizar')) 
+      return;
+    
     // Llama al servicio en lugar de find()
     this.productoService.getProductoPorCodigo(codigo).subscribe({
       next: (producto) => {
         this.productoActualizar = producto;
-        // console.log(producto);
         this.mostrarActualizarProducto = true;
-      },
-      error: (error) => {
-        // this.toastrService.error('Ocurrió un error al buscar el producto, por favor contacte al administrador.');
       }
     });
   }
@@ -158,6 +181,7 @@ export class ListarProductosComponent implements OnInit {
   cerrarModalActualizar(): void {
     this.mostrarActualizarProducto = false;
     this.productoActualizar = null;
+    this.enfocarInputFiltro();
   }
 
   actualizarEnLista(objetoActualizado: ProductoResponseDto): void {
@@ -169,7 +193,7 @@ export class ListarProductosComponent implements OnInit {
       this.filtrarTabla();
     }
 
-    this.cerrarModalActualizar();
+    // this.cerrarModalActualizar();
   }
 
   mostrarModalConfirmarDesactivar(id: number): void {

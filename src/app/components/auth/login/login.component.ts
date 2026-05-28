@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -12,8 +12,7 @@ import { AuthService } from '../../../core/auth/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
-
+export class LoginComponent implements OnInit {
   userName = '';
   password = '';
   cargando = false;
@@ -23,6 +22,10 @@ export class LoginComponent {
     private router: Router,
     private toastrService: ToastrService
   ) {}
+
+  ngOnInit(): void {
+    this.authService.clearSession();
+  }
 
   iniciarSesion(): void {
     if (!this.userName.trim() || !this.password.trim()) {
@@ -50,11 +53,9 @@ export class LoginComponent {
         }
 
         this.router.navigate(['/sin-acceso']);
-      }
-      ,
+      },
       error: () => {
         this.cargando = false;
-        // this.toastrService.error('Credenciales inválidas.');
       }
     });
   }

@@ -3,7 +3,7 @@
         <div class="col-md-auto">
             <div class="d-flex align-items-end gap-2 flex-wrap">
                 <h3 class="mb-0 me-2">Realizar Venta</h3>
-                <button *appHasPermission="'ventas.historial.ver'" class="btn btn-sm btn-primary" type="button" routerLink="/venta/venta">
+                <button *appHasPermission="'ventas.historial.ver'" class="btn btn-primary" type="button" routerLink="/venta/venta">
                     Historial Ventas
                 </button>
             </div>
@@ -38,9 +38,9 @@
             <div class="col-lg-1 text-center">Eliminar</div>
             <div class="col-lg-1 text-center">Cantidad</div>
             <div class="col-lg-1 text-center">Disponible</div>
-            <div class="col-lg-7">Nombre</div>
+            <div class="col-lg-6">Nombre</div>
             <div class="col-lg-1 text-center">Unitario</div>
-            <div class="col-lg-1 text-center">Total</div>
+            <div class="col-lg-2 text-center">Total</div>
         </div>
     </div>
 
@@ -65,11 +65,11 @@
 
             <div class="col-4 col-sm-3 col-lg-1 text-center">
                 <small class="text-muted d-block">
-                {{ obtenerStockDisponible(producto.producto.codigo) + producto.cantidad }}
+                {{ obtenerStockDisponible(producto.producto.codigo) + producto.cantidad + ' ' + producto.producto.unidadMedida.clave }}
                 </small>
             </div>
 
-            <div class="col-12 col-sm-7 col-lg-7">
+            <div class="col-12 col-sm-7 col-lg-6">
                 <div class="fw-medium text-truncate">
                 {{ producto.producto.nombre }}
                 </div>
@@ -80,7 +80,7 @@
                 <span>{{ producto.producto.precio | currency:'USD':'symbol':'1.2-2' }}</span>
             </div>
 
-            <div class="col-6 col-sm-4 col-lg-1">
+            <div class="col-6 col-sm-4 col-lg-2">
                 @if (producto.producto.unidadMedida.permiteDecimales) {
                 <div class="input-group">
                     <span class="input-group-text">$</span>
@@ -88,9 +88,11 @@
                     class="form-control text-end"
                     type="number"
                     min="0"
-                    step="0.01"
-                    [ngModel]="obtenerImporteItem($index)"
-                    (ngModelChange)="actualizarImporteItem($index, $event)">
+                    step="0.5"
+                    [value]="obtenerImporteInputValue($index)"
+                    (input)="onImporteInput($index, $event)"
+                    (blur)="confirmarImporte($index)"
+                    (keydown)="onImporteKeydown($index, $event)">
                 </div>
                 } @else {
                 <div class="input-group">

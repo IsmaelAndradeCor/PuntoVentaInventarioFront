@@ -39,7 +39,7 @@
                     <!-- <td style="text-align: center;">{{i.precioVenta | currency:'MXN':'symbol':'1.2-2' }}</td> -->
                     <td [ngClass]="{'table-danger' : i.stock <= i.stockMinimo}">{{i.stock}}</td>
                     <td>{{i.stockMinimo}}</td>
-                    <td>@for (p of i.proveedores; track $index) { {{p.nombre}} }</td>
+                    <td><select class="form-select" name="listaProveedores-{{i.codigo}}" id="listaProveedores-{{i.codigo}}">@for (item of i.proveedores; track $index) {<option>{{item.nombre}}</option>}</select></td>
                     <td *appHasPermission="'productos.activar'">
                         <div class="d-flex align-items-center justify-content-center gap-2">
                         <button *appHasPermission="'productos.activar'" class="btn btn-sm btn-success" type="button" (click)="mostrarModalConfirmar(i.id)">Activar</button> 

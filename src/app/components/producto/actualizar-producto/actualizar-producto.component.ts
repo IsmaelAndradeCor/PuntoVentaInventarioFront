@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';  // Para ngModel
 import { ProductoService } from '../../../services/producto.service';
@@ -18,6 +18,8 @@ import { ProveedorResponseDto } from '../../../models/dtos/responses/proveedor-r
   styleUrl: './actualizar-producto.component.scss'
 })
 export class ActualizarProductoComponent implements OnInit {
+
+  @ViewChild('inputStock') inputStock!: ElementRef<HTMLInputElement>;
 
   constructor(
     private productoService: ProductoService,
@@ -50,7 +52,8 @@ export class ActualizarProductoComponent implements OnInit {
 
   selectedProveedor: number = 0;
   proveedoresPorId: Map<number, ProveedorResponseDto> = new Map();  // ← Tu diccionario
-
+  
+  // ─── Ciclo de vida ──────────────────────────────────────────────────────────
   ngOnInit(): void {
     this.proveedoresPorId = new Map(
       this.proveedores.map(proveedor => [proveedor.id, proveedor])
@@ -60,6 +63,25 @@ export class ActualizarProductoComponent implements OnInit {
       this.productoUpsertDto.idsProveedores =
         this.productoActualizar.proveedores.map(p => p.id);
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.enfocarInputStock();
+  }
+
+  // ─── Teclado global ─────────────────────────────────────────────────────────
+  @HostListener('document:keydown.enter', ['$event'])
+  onEnter(event: Event): void {
+    event.preventDefault();
+    this.guardarCambios();
+  }
+
+  // ─── Foco ────────────────────────────────────────────────────────────────────
+  private enfocarInputStock(): void {
+    setTimeout(() => {
+      this.inputStock?.nativeElement.focus();
+      this.inputStock?.nativeElement.select();
+    }, 0);
   }
 
   cerrar() {
@@ -84,7 +106,7 @@ export class ActualizarProductoComponent implements OnInit {
         next: (response) => {
           this.toastrService.success('Producto actualizado correctamente.');
           this.objetoActualizado.emit(response);
-          this.cerrar();
+          this.cerrarModal.emit();
         },
         error: (error) => {
           // console.log(error);

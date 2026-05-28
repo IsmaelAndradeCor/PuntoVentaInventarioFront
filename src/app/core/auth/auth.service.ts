@@ -1,6 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { LoginRequestDto, LoginResponseDto, JwtPayload } from './auth-models';
 
@@ -8,26 +9,18 @@ import { LoginRequestDto, LoginResponseDto, JwtPayload } from './auth-models';
   providedIn: 'root'
 })
 export class AuthService {
-
   private readonly urlBase = `${environment.apiURL}/Auth`;
   private readonly tokenKey = 'pvi_token';
 
   private currentTokenSignal = signal<string | null>(localStorage.getItem(this.tokenKey));
   private currentUserSignal = signal<JwtPayload | null>(this.getPayloadFromStorage());
+  private logoutInProgress = false;
 
-  isAuthenticated = computed(() => {
-    const token = this.currentTokenSignal();
-    if (!token) return false;
-
-    const payload = this.currentUserSignal();
-    if (!payload?.exp) return false;
-
-    const nowInSeconds = Math.floor(Date.now() / 1000);
-    return payload.exp > nowInSeconds;
-  });
+  isAuthenticated = computed(() => !this.isTokenExpired());
 
   userName = computed(() => this.currentUserSignal()?.unique_name ?? '');
   nombreCompleto = computed(() => this.currentUserSignal()?.nombreCompleto ?? '');
+
   roles = computed<string[]>(() => {
     const payload = this.currentUserSignal();
     if (!payload) return [];
@@ -40,12 +33,12 @@ export class AuthService {
 
     return Array.isArray(roleClaim) ? roleClaim as string[] : [roleClaim as string];
   });
+
   permissions = computed<string[]>(() => {
     const payload = this.currentUserSignal();
     if (!payload) return [];
 
     const permissionClaim = payload['permission'];
-
     if (!permissionClaim) return [];
 
     return Array.isArray(permissionClaim)
@@ -53,7 +46,10 @@ export class AuthService {
       : [permissionClaim as string];
   });
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   login(dto: LoginRequestDto): Observable<LoginResponseDto> {
     return this.http.post<LoginResponseDto>(`${this.urlBase}/login`, dto).pipe(
@@ -65,6 +61,19 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     this.currentTokenSignal.set(null);
     this.currentUserSignal.set(null);
+    this.logoutInProgress = false;
+    this.router.navigate(['/login']);
+  }
+
+  forceLogoutIfExpired(): boolean {
+    if (!this.getToken()) return false;
+
+    if (this.isTokenExpired()) {
+      this.handleUnauthorized();
+      return true;
+    }
+
+    return false;
   }
 
   getToken(): string | null {
@@ -79,6 +88,16 @@ export class AuthService {
     return this.permissions().includes(permission);
   }
 
+  handleUnauthorized(): void {
+    if (this.logoutInProgress) return;
+
+    this.logoutInProgress = true;
+    localStorage.removeItem(this.tokenKey);
+    this.currentTokenSignal.set(null);
+    this.currentUserSignal.set(null);
+    this.router.navigate(['/login']);
+  }
+
   private setSession(token: string): void {
     localStorage.setItem(this.tokenKey, token);
     this.currentTokenSignal.set(token);
@@ -91,6 +110,16 @@ export class AuthService {
     return this.decodeToken(token);
   }
 
+  isTokenExpired(): boolean {
+    const token = this.currentTokenSignal();
+    const payload = this.currentUserSignal();
+
+    if (!token || !payload?.exp) return true;
+
+    const nowInSeconds = Math.floor(Date.now() / 1000);
+    return payload.exp <= nowInSeconds;
+  }
+
   private decodeToken(token: string): JwtPayload | null {
     try {
       const payloadBase64 = token.split('.')[1];
@@ -101,5 +130,12 @@ export class AuthService {
     } catch {
       return null;
     }
+  }
+
+  clearSession(): void {
+    localStorage.removeItem(this.tokenKey);
+    this.currentTokenSignal.set(null);
+    this.currentUserSignal.set(null);
+    this.logoutInProgress = false;
   }
 }
