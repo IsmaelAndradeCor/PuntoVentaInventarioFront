@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ProductoSimpleResponseDto } from '../../../models/dtos/responses/producto-simple-response-dto';
 import { RouterLink } from '@angular/router';
 import { HasPermissionDirective } from '../../../core/directives/has-permission.directive';
+import { MetodosPagoResponseDto } from '../../../models/dtos/responses/metodos-pago-response-dto';
 
 @Component({
   selector: 'app-realizar-venta',
@@ -30,10 +31,12 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
   productos: ProductoSimpleResponseDto[] = [];
   productosPorCodigo: Map<string, ProductoSimpleResponseDto> = new Map();
   stockOriginalPorCodigo: Map<string, number> = new Map();
+  metodosPago: MetodosPagoResponseDto [] = [];
 
   codigoProducto: string = '';
   dineroRecibido: number = 0;
   carrito: ItemCarrito[] = [];
+  selectedIdMetodoPago: number = 1;
 
   // ─── Estado temporal para el input de importe ───────────────────────────────
   // Clave: índice del carrito, Valor: string del importe que el usuario está escribiendo
@@ -46,6 +49,7 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
   // ─── Ciclo de vida ──────────────────────────────────────────────────────────
   ngOnInit(): void {
     this.cargarProductos();
+    this.obtenerMetodosPago();
   }
 
   ngAfterViewInit(): void {
@@ -80,6 +84,14 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
         this.stockOriginalPorCodigo = new Map(productos.map(p => [p.codigo, p.stock]));
       }
     });
+  }
+
+  private obtenerMetodosPago() {
+    this.ventaService.getMetodosPago().subscribe({
+      next:(response) => {
+        this.metodosPago = response;
+      }
+    })
   }
 
   // ─── Foco ────────────────────────────────────────────────────────────────────
@@ -316,7 +328,8 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
       detalles: this.carrito.map(item => ({
         idProducto: item.producto.id,
         cantidad: item.cantidad
-      }))
+      })),
+      idMetodoPago: this.selectedIdMetodoPago
     };
 
     this.ventaService.registrarVenta(venta).subscribe({

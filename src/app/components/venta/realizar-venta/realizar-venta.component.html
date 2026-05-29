@@ -130,7 +130,17 @@
                     <input class="form-control" type="number" min="0" [value]="calcularCambio()" disabled placeholder="Dar cambio">
                 </div>
             </div>
-            <div class="col-sm-6 col-md-3 col-lg-2 offset-lg-4">
+            <div class="col-sm-6 col-md-3 col-lg-2">
+                <div class="input-group">
+                    <span class="input-group-text">Metodo P.</span>
+                    <select class="form-select" name="selectedMetodoPago" id="selectedMetodoPago" [(ngModel)]="selectedIdMetodoPago">
+                        @for (item of metodosPago; track $index) {
+                            <option [ngValue]="item.id">{{item.nombre}}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3 col-lg-2 offset-lg-2">
                 <button class="btn btn-success w-100" type="button" (click)="finalizarVenta()">Finalizar Venta</button>
             </div>
         </div>

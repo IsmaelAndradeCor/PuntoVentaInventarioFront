@@ -22,7 +22,12 @@
         <div class="col-12 col-md-6 col-xl-3">
             <div class="input-group">
                 <span class="input-group-text">Método Pago</span>
-                <input class="form-control" type="text" [(ngModel)]="registrarPago.metodoPago">
+                <!-- <input class="form-control" type="text" [(ngModel)]="registrarPago.metodoPago"> -->
+                <select class="form-select" name="selectedMetodoPago" id="selectedMetodoPago" [(ngModel)]="registrarPago.idMetodoPago">
+                    @for (item of metodosPago; track $index) {
+                        <option [ngValue]="item.id">{{item.nombre}}</option>
+                    }
+                </select>
             </div>
         </div>
 

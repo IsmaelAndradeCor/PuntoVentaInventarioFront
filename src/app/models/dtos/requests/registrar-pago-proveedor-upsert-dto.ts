@@ -1,7 +1,7 @@
 export interface RegistrarPagoProveedorUpsertDto {
     idProveedor: number;
     monto: number;
-    metodoPago: string;
+    idMetodoPago: number;
     referencia: string;
     observaciones: string;
 }

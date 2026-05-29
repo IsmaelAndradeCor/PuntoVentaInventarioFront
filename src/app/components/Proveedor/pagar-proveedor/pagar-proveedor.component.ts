@@ -5,6 +5,8 @@ import { ProveedorService } from '../../../services/proveedor.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProveedorResponseDto } from '../../../models/dtos/responses/proveedor-response-dto';
 import { RegistrarPagoProveedorUpsertDto } from '../../../models/dtos/requests/registrar-pago-proveedor-upsert-dto';
+import { MetodosPagoResponseDto } from '../../../models/dtos/responses/metodos-pago-response-dto';
+import { VentaService } from '../../../services/venta.service';
 
 @Component({
   selector: 'app-pagar-proveedor',
@@ -14,20 +16,25 @@ import { RegistrarPagoProveedorUpsertDto } from '../../../models/dtos/requests/r
 })
 export class PagarProveedorComponent implements OnInit {
 
-  constructor(private proveedorService: ProveedorService, private toastrService: ToastrService){}
+  constructor(private proveedorService: ProveedorService, private toastrService: ToastrService,
+    private ventaService: VentaService
+  ){}
 
   proveedoresActivos: ProveedorResponseDto [] = [];
 
   registrarPago: RegistrarPagoProveedorUpsertDto = {
     idProveedor: 0,
     monto: 0,
-    metodoPago: 'Efectivo',
+    idMetodoPago: 1,
     referencia: '',
     observaciones: ''
   };
 
+  metodosPago: MetodosPagoResponseDto [] = [];
+
   ngOnInit(): void {
     this.getProveedoresActivos();
+    this.obtenerMetodosPago();
   }
 
   getProveedoresActivos() {
@@ -38,13 +45,21 @@ export class PagarProveedorComponent implements OnInit {
     })
   }
 
+  private obtenerMetodosPago() {
+    this.ventaService.getMetodosPago().subscribe({
+      next:(response) => {
+        this.metodosPago = response;
+      }
+    })
+  }
+
   postPagoProveedor() {
     this.proveedorService.registrarPagoProveedor(this.registrarPago!).subscribe({
       next:(response) => {
       this.registrarPago = {
         idProveedor: 0,
         monto: 0,
-        metodoPago: 'Efectivo',
+        idMetodoPago: 1,
         referencia: '',
         observaciones: ''
       };

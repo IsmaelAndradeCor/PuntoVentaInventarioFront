@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { RegistrarVentaResponseDto } from '../models/dtos/responses/registrar-venta-response-dto';
 import { GenerarVentaResponseDto } from '../models/dtos/responses/generar-venta-response-dto';
 import { GenerarVentasRequestDto } from '../models/dtos/requests/generar-ventas-request-dto';
+import { MetodosPagoResponseDto } from '../models/dtos/responses/metodos-pago-response-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,9 @@ export class VentaService {
     params = params.set('IncluirDetalle', filtros.incluirDetalle);
 
     return this.http.get<GenerarVentaResponseDto[]>(`${this.urlBase}/generar_ventas`, { params });
+  }
+
+  getMetodosPago(): Observable<MetodosPagoResponseDto[]> {
+    return this.http.get<MetodosPagoResponseDto[]>(this.urlBase + '/obtener-metodos-pago');
   }
 }
