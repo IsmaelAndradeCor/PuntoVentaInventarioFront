@@ -1,0 +1,20 @@
+<div *ngIf="mostrarAperturaCaja" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.8);">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Apertura de caja</h5>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3">Ingresa el monto inicial con el que comienza la caja hoy.</p>
+
+                <label class="form-label">Monto inicial</label>
+                <input type="number" class="form-control" min="0" step="0.01" [(ngModel)]="montoInicial" (keyup.enter)="guardar()">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" [disabled]="guardando" (click)="guardar()">
+                    {{ guardando ? 'Guardando...' : 'Guardar apertura' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

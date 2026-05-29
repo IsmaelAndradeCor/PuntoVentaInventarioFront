@@ -4,10 +4,12 @@ import { CommonModule } from '@angular/common';
 import { ProductoResponseDto } from '../../models/dtos/responses/producto-response-dto';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../core/auth/auth.service';
+import { CajaService } from '../../services/caja.service';
+import { AperturaCajaModalComponent } from '../../modals/apertura-caja-modal/apertura-caja-modal.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, AperturaCajaModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -15,16 +17,19 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private productoService: ProductoService,
-    public authService: AuthService,
-    private toastrService: ToastrService
+    private authService: AuthService,
+    private toastrService: ToastrService,
+    private cajaService: CajaService
   ) {}
 
   productos: ProductoResponseDto[] = [];
-  // ventas: GenerarVentasDTO [] = [];
+  usarioNombreCompleto: string = '';
+  mostrarAperturaCaja: boolean = false;
 
   ngOnInit(): void {
     this.getProductosStockMinimo();
-    // this.getGenerarVenta();
+    this.validarAperturaCaja();
+    this.usarioNombreCompleto = this.authService.nombreCompleto();
   }
 
   getProductosStockMinimo(): void {
@@ -38,19 +43,18 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // getGenerarVenta(): void {
-  //   this.ventaService.getGenerarVentas().subscribe({
-  //     next:(res) => {
-  //       this.ventas = res;
-  //     }
-  //   });
-  // }
+  private validarAperturaCaja(): void {
+    this.cajaService.obtenerAperturaHoy().subscribe({
+      next: () => {},
+      error: err => {
+        if (err.status === 404) {
+          this.mostrarAperturaCaja = true;
+        }
+      }
+    });
+  }
 
-  // calcularTotalGanancias(): number {
-  //   console.log('calcularTotalGanancias()');
-  //   return this.ventas.reduce((total, item) => 
-  //     total + (item.ganancias), 0
-  //   );
-  // }
-
+  cerrarModalAperturaCaja() {
+    this.mostrarAperturaCaja = false;
+  }
 }

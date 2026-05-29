@@ -1,5 +1,5 @@
 <div class="component-page">
-    <h3>Bienvenido, {{authService.nombreCompleto()}}!</h3>
+    <h3>Bienvenido, {{usarioNombreCompleto}}!</h3>
     <div class="component-page">
         <h5>Stock Minimo</h5>
         @if (productos.length) {
@@ -37,5 +37,10 @@
         <p>No hay productos con stock al minimo.</p>
         }
     </div>
-
 </div>
+
+<app-apertura-caja-modal
+    *ngIf="mostrarAperturaCaja"
+    [mostrarAperturaCaja]="mostrarAperturaCaja"
+    (aperturaRegistrada)="cerrarModalAperturaCaja()">  
+</app-apertura-caja-modal>
