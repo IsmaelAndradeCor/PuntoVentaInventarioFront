@@ -14,6 +14,7 @@ import { PaginaMarcasComponent } from './components/marca/pagina-marcas/pagina-m
 import { PaginaProveedoresComponent } from './components/Proveedor/pagina-proveedores/pagina-proveedores.component';
 import { PaginaCategoriasComponent } from './components/categoria/pagina-categorias/pagina-categorias.component';
 import { PaginaUnidadesMedidaComponent } from './components/unidadMedida/pagina-unidades-medida/pagina-unidades-medida.component';
+import { PaginaCorteCajaComponent } from './components/corte-caja/pagina-corte-caja/pagina-corte-caja.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -36,6 +37,12 @@ export const routes: Routes = [
     component: RealizarVentaComponent,
     canActivate: [authGuard, permissionGuard],
     data: { permissions: ['ventas.ver'] }
+  },
+  {
+    path: 'corte-caja/pagina-corte-caja',
+    component: PaginaCorteCajaComponent,
+    canActivate: [authGuard, permissionGuard],
+    data: {permissions: ['cortecaja.ver']}
   },
   {
     path: 'venta/venta',

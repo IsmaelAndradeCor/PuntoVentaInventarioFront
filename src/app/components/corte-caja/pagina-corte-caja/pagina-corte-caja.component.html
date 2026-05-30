@@ -1,1 +1,68 @@
-<p>pagina-corte-caja works!</p>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h5 class="mb-1">Corte de caja de hoy</h5>
+        <small class="text-body-secondary" *ngIf="corte">
+          {{ corte.fechaOperacion | date:'dd/MM/yyyy' }}
+        </small>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-outline-primary btn-sm"
+        [disabled]="cargando"
+        (click)="cargarCorte()">
+        {{ cargando ? 'Actualizando...' : 'Actualizar' }}
+      </button>
+    </div>
+
+    <div *ngIf="cargando" class="text-body-secondary">
+      Cargando corte de caja...
+    </div>
+
+    <ng-container *ngIf="!cargando && corte as data">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="resumen-item border rounded-3 p-3">
+            <div class="titulo text-body-secondary">Monto inicial</div>
+            <div class="valor text-primary">
+              {{ data.montoInicialCaja | currency:'MXN':'symbol':'1.2-2' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="resumen-item border rounded-3 p-3">
+            <div class="titulo text-body-secondary">Ventas</div>
+            <div class="valor text-success">
+              {{ data.montoVentas | currency:'MXN':'symbol':'1.2-2' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="resumen-item border rounded-3 p-3">
+            <div class="titulo text-body-secondary">Pago proveedores</div>
+            <div class="valor text-danger">
+              {{ data.montoPagoProveedores | currency:'MXN':'symbol':'1.2-2' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="resumen-item border rounded-3 p-3">
+            <div class="titulo text-body-secondary">Corte esperado</div>
+            <div class="valor fw-bold text-body">
+              {{ data.corteCaja | currency:'MXN':'symbol':'1.2-2' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="!cargando && !corte" class="text-body-secondary">
+      No hay información disponible del corte de caja.
+    </div>
+  </div>
+</div>

@@ -25,6 +25,7 @@ export class NavbarComponent {
     { label: 'Inicio', route: '/home', permissions: ['home.ver'] },
     { label: 'Venta', route: '/venta/pagina-ventas', permissions: ['ventas.ver'] },
     { label: 'Productos', route: '/producto/pagina-productos', permissions: ['productos.ver'] },
+    { label: 'Corte Caja', route: '/corte-caja/pagina-corte-caja', permissions: ['cortecaja.ver'] },
     { label: 'Marcas', route: '/marca/pagina-marcas', permissions: ['marcas.ver'] },
     { label: 'Categorias', route: '/categoria/pagina-categorias', permissions: ['categorias.ver'] },
     { label: 'Unidades Medida', route: '/unidadMedida/pagina-unidades-medida', permissions: ['unidadesmedida.ver'] },
