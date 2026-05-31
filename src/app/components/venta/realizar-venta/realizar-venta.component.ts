@@ -34,6 +34,7 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
   metodosPago: MetodosPagoResponseDto [] = [];
 
   codigoProducto: string = '';
+  codigoProductoNombre: string = '';
   dineroRecibido: number = 0;
   carrito: ItemCarrito[] = [];
   selectedIdMetodoPago: number = 1;
@@ -111,7 +112,14 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
 
   // ─── Agregar productos ───────────────────────────────────────────────────────
   agregarProductoPorCodigo(): void {
-    const entrada = this.codigoProducto.trim();
+    const entrada = (this.codigoProducto || this.codigoProductoNombre || '').trim();
+
+    if (!entrada) {
+      this.toastrService.error('Escanea o escribe un producto.');
+      this.limpiarInputCodigo();
+      return;
+    }
+
     let cantidad = 1;
     let codigo = entrada;
 
@@ -338,9 +346,8 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
         this.cargarProductos();
         this.carrito = [];
         this.importesTemporales.clear();
-        this.codigoProducto = '';
         this.dineroRecibido = 0;
-        this.enfocarInputCodigo();
+        this.limpiarInputCodigo();
         console.log('Venta registrada:', response.idVenta, response.folio, response.total);
       },
       error: () => {
@@ -357,6 +364,7 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
 
   private limpiarInputCodigo(): void {
     this.codigoProducto = '';
+    this.codigoProductoNombre = '';
     this.enfocarInputCodigo();
   }
 

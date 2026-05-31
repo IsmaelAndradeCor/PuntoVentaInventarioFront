@@ -21,7 +21,10 @@ export class VentaComponent implements OnInit {
   cargando = false;
 
   ngOnInit(): void {
-    const hoy = new Date().toISOString().split('T')[0];
+    const fecha = new Date();
+    fecha.setMinutes(fecha.getMinutes() - fecha.getTimezoneOffset());
+
+    const hoy = fecha.toISOString().split('T')[0];
 
     this.filtroForm = this.fb.group({
       fechaInicio: [hoy],
