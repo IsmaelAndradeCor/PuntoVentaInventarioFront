@@ -9,6 +9,6 @@ export interface GenerarVentaResponseDto {
     costoTotal: number;
     total: number;
     ganancias: number;
-    formaPago: string;
+    metodoPago: string;
     detalles: GenerarVentaDetalleResponseDto[];
 }
