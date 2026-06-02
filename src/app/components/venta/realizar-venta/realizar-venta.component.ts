@@ -83,15 +83,17 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
         this.productos = productos;
         this.productosPorCodigo = new Map(productos.map(p => [p.codigo, p]));
         this.stockOriginalPorCodigo = new Map(productos.map(p => [p.codigo, p.stock]));
-      }
+      },
+      error: () => {}          
     });
   }
 
   private obtenerMetodosPago() {
     this.ventaService.getMetodosPago().subscribe({
       next:(response) => {
-        this.metodosPago = response;
-      }
+        this.metodosPago = response.filter(m => m.nombre !== "Caja");
+      },
+      error: () => {}          
     })
   }
 
@@ -348,10 +350,14 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
         this.importesTemporales.clear();
         this.dineroRecibido = 0;
         this.limpiarInputCodigo();
-        console.log('Venta registrada:', response.idVenta, response.folio, response.total);
+
       },
-      error: () => {
+      error: (err) => {
         this.dineroRecibido = 0;
+        const codigo = err?.error?.codigo;
+        // if (codigo === 'SIN_CAJA_ACTIVA' || codigo === 'CAJA_ASIGNADA_OTRO_USUARIO') {
+        //   this.toastrService.warning(err.error.mensaje, 'Caja');
+        // }
         this.enfocarInputCodigo();
       }
     });

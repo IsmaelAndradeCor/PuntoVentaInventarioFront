@@ -68,8 +68,7 @@ export class CrearProductoComponent implements OnInit {
       next:(response) => {
         this.categorias = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Categorias, por favor contacta al Administrador.')
+      error:() => {}
     })
   }
 
@@ -78,8 +77,7 @@ export class CrearProductoComponent implements OnInit {
       next:(response) => {
         this.marcas = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Marcas, por favor contacta al Administrador.')
+      error:() => {}
     })
   }
 
@@ -88,8 +86,7 @@ export class CrearProductoComponent implements OnInit {
       next:(response) => {
         this.unidadesMedida = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Unidades de Medida, por favor contacta al Administrador.')
+      error:() => {}
     })
   }
 
@@ -102,8 +99,7 @@ export class CrearProductoComponent implements OnInit {
           this.proveedores.map(proveedor => [proveedor.id, proveedor])
         );
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar los Proveedores, por favor contacta al Administrador.')
+      error:() => {}
     })
   }
 
@@ -148,9 +144,7 @@ export class CrearProductoComponent implements OnInit {
 
           this.guardarProducto();
         },
-        error: (err) => {
-          this.toastrService.error(err.error?.mensaje || 'No se pudo crear la marca.');
-        }
+        error: () => {}        
       });
 
       return;

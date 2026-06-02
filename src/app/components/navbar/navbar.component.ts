@@ -1,5 +1,5 @@
 import { Component, computed } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from "@angular/router";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 import { ThemeService } from '../../services/theme.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/auth/auth.service';
@@ -30,7 +30,6 @@ export class NavbarComponent {
     { label: 'Categorias', route: '/categoria/pagina-categorias', permissions: ['categorias.ver'] },
     { label: 'Unidades Medida', route: '/unidadMedida/pagina-unidades-medida', permissions: ['unidadesmedida.ver'] },
     { label: 'Proveedores', route: '/proveedor/pagina-proveedores', permissions: ['proveedores.ver'] },
-    // { label: 'Historial Ventas', route: '/venta/venta', permissions: ['ventas.historial.ver'] }
   ];
 
   visibleNavItems = computed(() => {
@@ -41,12 +40,8 @@ export class NavbarComponent {
 
   constructor(
     public themeService: ThemeService,
-    public authService: AuthService,
-    private router: Router
-  ) {
-    // console.log('Roles:', this.authService.roles());
-    // console.log('Permissions:', this.authService.permissions());
-  }
+    public authService: AuthService
+  ) {}
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
@@ -54,11 +49,5 @@ export class NavbarComponent {
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
   }
-  
-  // esAdmin(): boolean {
-  //   // console.log(this.authService)
-  //   return this.authService.hasRole('Administrador');
-  // }
 }

@@ -48,9 +48,6 @@ export class ActualizarCategoriaComponent implements OnInit {
           this.toastrService.success('Categoria actualizada correctamente!');
           this.objetoActualizado.emit(response);
           this.cerrarModal.emit();
-        },
-        error:(response) => {
-          this.toastrService.error('Ocurrió un error al actualizar la Categoria, por favor contacta al administrador.');
         }
       })
     }

@@ -49,6 +49,9 @@ export class VentaComponent implements OnInit {
       next: (resp: GenerarVentaResponseDto[]) => {
         this.ventas = resp ?? [];
         this.cargando = false;
+      },
+      error: () => {
+        this.cargando = false;
       }
     });
   }

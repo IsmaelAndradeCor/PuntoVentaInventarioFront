@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { CommonModule } from '@angular/common';
 import { ProductoResponseDto } from '../../models/dtos/responses/producto-response-dto';
-import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../core/auth/auth.service';
 import { CajaService } from '../../services/caja.service';
 import { AperturaCajaModalComponent } from '../../modals/apertura-caja-modal/apertura-caja-modal.component';
@@ -18,7 +17,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private productoService: ProductoService,
     private authService: AuthService,
-    private toastrService: ToastrService,
     private cajaService: CajaService
   ) {}
 
@@ -37,9 +35,7 @@ export class HomeComponent implements OnInit {
       next:(res) => {
         this.productos = res;
       },
-      error:() => {
-        this.toastrService.error('Ocurrió un error al cargar el inventario con stock minimo, por favor contacta al Administrador.')
-      }
+      error:() => {}          
     });
   }
 

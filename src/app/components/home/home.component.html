@@ -42,5 +42,6 @@
 <app-apertura-caja-modal
     *ngIf="mostrarAperturaCaja"
     [mostrarAperturaCaja]="mostrarAperturaCaja"
-    (aperturaRegistrada)="cerrarModalAperturaCaja()">  
+    (aperturaRegistrada)="cerrarModalAperturaCaja()"
+    (cerrar)="cerrarModalAperturaCaja()">  
 </app-apertura-caja-modal>

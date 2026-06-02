@@ -72,7 +72,7 @@ export const routes: Routes = [
     path: 'proveedor/pagina-proveedores',
     component: PaginaProveedoresComponent,
     canActivate: [authGuard, permissionGuard],
-    data: { Permissions: ['proveedores.ver']}
+    data: { permissions: ['proveedores.ver']}
   },
   {
     path: 'configuracion/pagina-configuracion',

@@ -108,20 +108,7 @@ export class ActualizarProductoComponent implements OnInit {
           this.objetoActualizado.emit(response);
           this.cerrarModal.emit();
         },
-        error: (error) => {
-          // console.log(error);
-          const errores = error?.error?.errors;
-
-          if (errores) {
-            Object.keys(errores).forEach(campo => {
-              errores[campo].forEach((mensaje: string) => {
-                this.toastrService.error(mensaje);
-              });
-            });
-          } else {
-            this.toastrService.error('Ocurrió un error al actualizar');
-          }
-        }
+        error: () => {}        
       });
     }
   }

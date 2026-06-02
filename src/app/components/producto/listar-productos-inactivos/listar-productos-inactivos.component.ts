@@ -80,8 +80,7 @@ export class ListarProductosInactivosComponent implements OnInit {
       next:(response) => {
         this.categorias = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Categorias, por favor contacta al Administrador.')
+      error:() => {}
     })
   }
 
@@ -90,8 +89,7 @@ export class ListarProductosInactivosComponent implements OnInit {
       next:(response) => {
         this.marcas = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Marcas, por favor contacta al Administrador.')
+      error:() => {}
     })
   }
 
@@ -100,8 +98,7 @@ export class ListarProductosInactivosComponent implements OnInit {
       next:(response) => {
         this.unidadesMedida = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar las Unidades de Medida, por favor contacta al Administrador.')
+      error:() => {}
     })
   }
 
@@ -110,8 +107,7 @@ export class ListarProductosInactivosComponent implements OnInit {
       next:(response) => {
         this.proveedores = response;
       },
-      error:() =>
-        this.toastrService.error('Ocurrió un error al cargar los Proveedores, por favor contacta al Administrador.')
+      error:() => {}
     })
   }
 
@@ -133,9 +129,7 @@ export class ListarProductosInactivosComponent implements OnInit {
         // 3. Muesta el mensaje de exito
         this.toastrService.success('Producto activado con éxito.')
       },
-      error: (error) => {
-        this.toastrService.error('Ocurrió un error al activar el producto, por favor contacte al administrador.');
-      }
+      error: () => {}          
     });
   }
 
@@ -147,9 +141,7 @@ export class ListarProductosInactivosComponent implements OnInit {
         // console.log(producto);
         this.mostrarActualizarProducto = true;
       },
-      error: (error) => {
-        this.toastrService.error('Ocurrió un error al buscar el producto, por favor contacte al administrador.');
-      }
+      error: () => {}          
     });
   }
 

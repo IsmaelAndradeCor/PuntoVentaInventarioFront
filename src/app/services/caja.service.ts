@@ -5,6 +5,8 @@ import { environment } from '../../environments/environment';
 import { AperturaCajaResponseDto } from '../models/dtos/responses/apertura-caja-response-dto';
 import { RegistrarAperturaCajaUpsertDto } from '../models/dtos/requests/registrar-apertura-caja-upsert-dto';
 import { CorteCajaHoyResponseDto } from '../models/dtos/responses/corte-caja-hoy-response-dto';
+import { CorteCajaResponseDto } from '../models/dtos/responses/corte-caja-response-dto';
+import { RealizarCorteUpsertDto } from '../models/dtos/requests/realizar-corte-upsert-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +26,9 @@ export class CajaService {
 
   obtenerCorteHoy(): Observable<CorteCajaHoyResponseDto> {
     return this.http.get<CorteCajaHoyResponseDto>(`${this.urlBase}/obtener_corte_hoy`);
+  }
+
+  realizarCorte(request: RealizarCorteUpsertDto): Observable<CorteCajaResponseDto> {
+    return this.http.post<CorteCajaResponseDto>(`${this.urlBase}/realizar_corte`, request);
   }
 }

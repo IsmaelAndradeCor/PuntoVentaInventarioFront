@@ -49,9 +49,7 @@ export class ActualizarMarcaComponent implements OnInit {
           this.objetoActualizado.emit(response);
           this.cerrarModal.emit();
         },
-        error:(response) => {
-          this.toastrService.error('Ocurrió un error al actualizar la Marca, por favor contacta al administrador.');
-        }
+        error:() => {}        
       })
     }
   }

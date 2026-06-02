@@ -1,12 +1,55 @@
-<div class="card shadow-sm">
-  <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div>
-        <h5 class="mb-1">Corte de caja de hoy</h5>
-        <small class="text-body-secondary" *ngIf="corte">
-          {{ corte.fechaOperacion | date:'dd/MM/yyyy' }}
-        </small>
-      </div>
+<app-apertura-caja-modal
+  *ngIf="mostrarModalAperturaCaja"
+  [mostrarAperturaCaja]="mostrarModalAperturaCaja"
+  (aperturaRegistrada)="onAperturaRegistrada()"
+  (cerrar)="cerrarModalAperturaCaja()">
+</app-apertura-caja-modal>
+
+<app-corte-caja-modal
+  [mostrar]="mostrarModalCorte"
+  [montoEsperado]="corte?.corteCaja ?? 0"
+  [montoInicial]="corte?.montoInicialCaja ?? 0"
+  [montoVentas]="corte?.montoVentas ?? 0"
+  [montoPagoProveedores]="corte?.montoPagoProveedores ?? 0"
+  (corteRealizado)="onCorteRealizado($event)"
+  (cerrar)="cerrarModalCorte()">
+</app-corte-caja-modal>
+
+<div class="component-page">
+  <app-corte-caja-modal
+    [mostrar]="mostrarModalCorte"
+    [montoEsperado]="corte?.corteCaja ?? 0"
+    [montoInicial]="corte?.montoInicialCaja ?? 0"
+    [montoVentas]="corte?.montoVentas ?? 0"
+    [montoPagoProveedores]="corte?.montoPagoProveedores ?? 0"
+    (corteRealizado)="onCorteRealizado($event)"
+    (cerrar)="cerrarModalCorte()">
+  </app-corte-caja-modal>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h5 class="mb-0">Corte de caja</h5>
+      <small class="text-body-secondary" *ngIf="corte">
+        {{ corte.fechaOperacion | date:'dd/MM/yyyy' }}
+      </small>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button
+        *ngIf="!corte?.cortePendiente"
+        type="button"
+        class="btn btn-success btn-sm"
+        (click)="abrirModalAperturaCaja()">
+        Aperturar caja
+      </button>
+
+      <button
+        *ngIf="corte?.cortePendiente"
+        type="button"
+        class="btn btn-warning btn-sm"
+        (click)="abrirModalCorte()">
+        Realizar corte
+      </button>
 
       <button
         type="button"
@@ -16,53 +59,167 @@
         {{ cargando ? 'Actualizando...' : 'Actualizar' }}
       </button>
     </div>
+  </div>
 
-    <div *ngIf="cargando" class="text-body-secondary">
-      Cargando corte de caja...
-    </div>
+  <div *ngIf="cargando" class="text-body-secondary mb-2">
+    Cargando corte de caja...
+  </div>
 
-    <ng-container *ngIf="!cargando && corte as data">
-      <div class="row g-3">
-        <div class="col-md-3">
-          <div class="resumen-item border rounded-3 p-3">
-            <div class="titulo text-body-secondary">Monto inicial</div>
-            <div class="valor text-primary">
-              {{ data.montoInicialCaja | currency:'MXN':'symbol':'1.2-2' }}
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="resumen-item border rounded-3 p-3">
-            <div class="titulo text-body-secondary">Ventas</div>
-            <div class="valor text-success">
-              {{ data.montoVentas | currency:'MXN':'symbol':'1.2-2' }}
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="resumen-item border rounded-3 p-3">
-            <div class="titulo text-body-secondary">Pago proveedores</div>
-            <div class="valor text-danger">
-              {{ data.montoPagoProveedores | currency:'MXN':'symbol':'1.2-2' }}
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="resumen-item border rounded-3 p-3">
-            <div class="titulo text-body-secondary">Corte esperado</div>
-            <div class="valor fw-bold text-body">
-              {{ data.corteCaja | currency:'MXN':'symbol':'1.2-2' }}
-            </div>
+  <ng-container *ngIf="!cargando && corte as data">
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <div class="h-100 border rounded-3 p-3">
+          <small class="text-body-secondary d-block mb-1">Monto inicial</small>
+          <div class="fs-5 text-primary">
+            {{ data.montoInicialCaja | currency:'MXN':'symbol':'1.2-2' }}
           </div>
         </div>
       </div>
-    </ng-container>
 
-    <div *ngIf="!cargando && !corte" class="text-body-secondary">
-      No hay información disponible del corte de caja.
+      <div class="col-md-3">
+        <div class="h-100 border rounded-3 p-3">
+          <small class="text-body-secondary d-block mb-1">Ventas efectivo</small>
+          <div class="fs-5 text-success">
+            {{ data.montoVentas | currency:'MXN':'symbol':'1.2-2' }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="h-100 border rounded-3 p-3">
+          <small class="text-body-secondary d-block mb-1">Pago proveedores</small>
+          <div class="fs-5 text-danger">
+            {{ data.montoPagoProveedores | currency:'MXN':'symbol':'1.2-2' }}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="h-100 border rounded-3 p-3">
+          <small class="text-body-secondary d-block mb-1">Esperado en caja</small>
+          <div class="fs-5 fw-bold">
+            {{ data.corteCaja | currency:'MXN':'symbol':'1.2-2' }}
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div *ngIf="data.cortePendiente && data.nombreUsuarioActivo" class="alert alert-success py-2 mb-3">
+      Caja asignada a: <strong>{{ data.nombreUsuarioActivo }}</strong>
+    </div>
+
+    <div *ngIf="!data.cortePendiente" class="alert alert-info py-2 mb-3">
+      No hay ningun turno de caja activo. Los cortes realizados hoy se muestran abajo.
+    </div>
+
+    <div *ngIf="data.cortesRealizados.length > 0" class="form-section-fill">
+      <h6 class="mb-3">Cortes realizados hoy</h6>
+      <div class="table-scroll">
+        <div class="table-responsive">
+          <table class="table table-sm table-striped table-bordered table-hover align-middle">
+            <thead>
+              <tr>
+                <th style="width:40px" class="text-center"></th>
+                <th>Hora</th>
+                <th>Inicial</th>
+                <th>Ventas</th>
+                <th>Pagos</th>
+                <th>Esperado</th>
+                <th>Retiro</th>
+                <th>Final</th>
+                <th>Traía caja</th>
+                <th>Realizó corte</th>
+                <th>Recibe</th>
+                <th>Obs.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let c of data.cortesRealizados">
+                <tr style="cursor:pointer" (click)="toggleDetalle(c.id)" [class.table-active]="estaExpandido(c.id)">
+                  <td class="text-center fw-bold">
+                    <span *ngIf="c.ventas.length > 0 || c.pagosProveedores.length > 0">
+                      {{ estaExpandido(c.id) ? '-' : '+' }}
+                    </span>
+                  </td>
+                  <td>{{ c.fechaCorte | date:'HH:mm' }}</td>
+                  <td>{{ c.montoInicial | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td class="text-success">{{ c.montoVentasEfectivo | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td class="text-danger">{{ c.montoPagoProveedores | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td class="fw-bold">{{ c.montoEsperado | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td class="text-warning">{{ c.retiro | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td class="text-primary fw-bold">{{ c.montoFinal | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td>{{ c.nombreUsuarioPrevio }}</td>
+                  <td>{{ c.nombreUsuarioCorte }}</td>
+                  <td>
+                    <ng-container *ngIf="c.corteFinal; else recepcionBlock">
+                      <span class="badge bg-secondary">Corte final</span>
+                    </ng-container>
+                    <ng-template #recepcionBlock>
+                      {{ c.nombreUsuarioRecepcion || '-' }}
+                    </ng-template>
+                  </td>
+                  <td>{{ c.observaciones || '-' }}</td>
+                </tr>
+                <tr *ngIf="estaExpandido(c.id)">
+                  <td colspan="12" class="p-3">
+                    <div *ngIf="c.ventas.length > 0" class="mb-3">
+                      <strong class="text-success">Ventas en efectivo</strong>
+                      <table class="table table-sm table-borderless mb-0 mt-1">
+                        <thead>
+                          <tr>
+                            <th>Folio</th>
+                            <th>Hora</th>
+                            <th class="text-end">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let v of c.ventas">
+                            <td>{{ v.folio }}</td>
+                            <td>{{ v.fechaVenta | date:'HH:mm' }}</td>
+                            <td class="text-end">{{ v.total | currency:'MXN':'symbol':'1.2-2' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div *ngIf="c.pagosProveedores.length > 0">
+                      <strong class="text-danger">Pagos a proveedores (caja)</strong>
+                      <table class="table table-sm table-borderless mb-0 mt-1">
+                        <thead>
+                          <tr>
+                            <th>Folio</th>
+                            <th>Proveedor</th>
+                            <th>Hora</th>
+                            <th class="text-end">Monto</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let p of c.pagosProveedores">
+                            <td>{{ p.folio }}</td>
+                            <td>{{ p.proveedor }}</td>
+                            <td>{{ p.fechaPago | date:'HH:mm' }}</td>
+                            <td class="text-end">{{ p.monto | currency:'MXN':'symbol':'1.2-2' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div *ngIf="c.ventas.length === 0 && c.pagosProveedores.length === 0" class="text-body-secondary">
+                      No hubo movimientos en este turno.
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="data.cortesRealizados.length === 0" class="text-body-secondary mt-3">
+      No se han realizado cortes hoy.
+    </div>
+  </ng-container>
+
+  <div *ngIf="!cargando && !corte" class="text-body-secondary">
+    No hay informaci&oacute;n disponible del corte de caja.
   </div>
 </div>

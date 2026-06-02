@@ -3,6 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Apertura de caja</h5>
+                <button type="button" class="btn-close" aria-label="Cerrar" (click)="cerrarModal()"></button>
             </div>
             <div class="modal-body">
                 <p class="mb-3">Ingresa el monto inicial con el que comienza la caja hoy.</p>
@@ -11,6 +12,7 @@
                 <input type="number" class="form-control" min="0" step="0.01" [(ngModel)]="montoInicial" (keyup.enter)="guardar()">
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Continuar sin apertura</button>
                 <button class="btn btn-primary" [disabled]="guardando" (click)="guardar()">
                     {{ guardando ? 'Guardando...' : 'Guardar apertura' }}
                 </button>

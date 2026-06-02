@@ -14,10 +14,15 @@ import { CajaService } from '../../services/caja.service';
 export class AperturaCajaModalComponent {
   @Input() mostrarAperturaCaja = false;
 
-  @Output() aperturaRegistrada = new EventEmitter<void>(); 
+  @Output() aperturaRegistrada = new EventEmitter<void>();
+  @Output() cerrar = new EventEmitter<void>();
 
   montoInicial = 0;
   guardando = false;
+
+  cerrarModal(): void {
+    this.cerrar.emit();
+  }
 
   constructor(
     private cajaService: CajaService,
@@ -38,9 +43,8 @@ export class AperturaCajaModalComponent {
         this.aperturaRegistrada.emit();
         this.toastr.success('Apertura de caja registrada correctamente.');
       },
-      error: err => {
+      error: () => {
         this.guardando = false;
-        // this.toastr.error(err?.error?.mensaje ?? 'No se pudo registrar la apertura.');
       }
     });
   }

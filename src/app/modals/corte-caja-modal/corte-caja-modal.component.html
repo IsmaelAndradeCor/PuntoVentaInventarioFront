@@ -1,0 +1,103 @@
+<div *ngIf="mostrar" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Realizar corte de caja</h5>
+        <button type="button" class="btn-close" (click)="cancelar()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <div class="border rounded-3 p-3">
+              <div class="small text-body-secondary">Monto inicial</div>
+              <div class="fs-5 text-primary">{{ montoInicial | currency:'MXN':'symbol':'1.2-2' }}</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 p-3">
+              <div class="small text-body-secondary">Ventas efectivo</div>
+              <div class="fs-5 text-success">{{ montoVentas | currency:'MXN':'symbol':'1.2-2' }}</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 p-3">
+              <div class="small text-body-secondary">Pagos proveedores</div>
+              <div class="fs-5 text-danger">{{ montoPagoProveedores | currency:'MXN':'symbol':'1.2-2' }}</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 p-3">
+              <div class="small text-body-secondary">Esperado en caja</div>
+              <div class="fs-5 fw-bold">{{ montoEsperado | currency:'MXN':'symbol':'1.2-2' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Retiro (monto que retiras de la caja)</label>
+          <input
+            type="number"
+            class="form-control form-control-lg"
+            min="0"
+            step="0.01"
+            [max]="montoEsperado"
+            [(ngModel)]="retiro"
+            (input)="onRetiroChange()"
+            placeholder="0.00">
+          <div *ngIf="esCorteFinal" class="alert alert-warning mt-2 mb-0 py-2 small">
+            ⚠ Has indicado retirar todo el dinero. Este será un <strong>corte final del día</strong>.
+            No se abrirá un nuevo turno de caja.
+          </div>
+        </div>
+
+        <div *ngIf="!esCorteFinal; else finalBlock">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Entregar caja a</label>
+            <select class="form-select" [(ngModel)]="idUsuarioRecepcion" [disabled]="cargandoUsuarios">
+              <option value="" disabled>Selecciona un usuario...</option>
+              <option *ngFor="let u of usuariosFiltrados" [value]="u.id">
+                {{ u.nombreCompleto }} ({{ u.userName }})
+              </option>
+            </select>
+            <div *ngIf="cargandoUsuarios" class="small text-body-secondary mt-1">Cargando usuarios...</div>
+            <div *ngIf="!cargandoUsuarios && usuariosFiltrados.length === 0" class="small text-danger mt-1">
+              No hay usuarios activos con permisos de ventas.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Monto que quedará en caja para {{ getNombreRecepcion() }}</label>
+            <div class="form-control form-control-lg fw-bold text-primary">
+              {{ montoFinal | currency:'MXN':'symbol':'1.2-2' }}
+            </div>
+          </div>
+        </div>
+
+        <ng-template #finalBlock>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Monto final retirado</label>
+            <div class="form-control form-control-lg fw-bold text-primary">
+              {{ montoFinal | currency:'MXN':'symbol':'1.2-2' }}
+            </div>
+            <small class="text-body-secondary">Corte final — la caja queda cerrada.</small>
+          </div>
+        </ng-template>
+
+        <div class="mb-3">
+          <label class="form-label">Observaciones (opcional)</label>
+          <textarea
+            class="form-control"
+            rows="2"
+            [(ngModel)]="observaciones"
+            placeholder="Notas sobre el corte..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cancelar()" [disabled]="guardando">Cancelar</button>
+        <button class="btn btn-primary" [disabled]="guardando || (!esCorteFinal && !idUsuarioRecepcion)" (click)="guardar()">
+          {{ guardando ? 'Guardando...' : 'Realizar corte' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
