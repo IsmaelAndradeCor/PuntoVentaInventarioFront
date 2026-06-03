@@ -5,16 +5,6 @@
   (cerrar)="cerrarModalAperturaCaja()">
 </app-apertura-caja-modal>
 
-<app-corte-caja-modal
-  [mostrar]="mostrarModalCorte"
-  [montoEsperado]="corte?.corteCaja ?? 0"
-  [montoInicial]="corte?.montoInicialCaja ?? 0"
-  [montoVentas]="corte?.montoVentas ?? 0"
-  [montoPagoProveedores]="corte?.montoPagoProveedores ?? 0"
-  (corteRealizado)="onCorteRealizado($event)"
-  (cerrar)="cerrarModalCorte()">
-</app-corte-caja-modal>
-
 <div class="component-page">
   <app-corte-caja-modal
     [mostrar]="mostrarModalCorte"
