@@ -9,7 +9,7 @@
                 <p class="mb-3">Ingresa el monto inicial con el que comienza la caja hoy.</p>
 
                 <label class="form-label">Monto inicial</label>
-                <input type="number" class="form-control" min="0" step="0.01" [(ngModel)]="montoInicial" (keyup.enter)="guardar()">
+                <input #inputMontoInicial type="number" class="form-control" min="0" step="0.01" [(ngModel)]="montoInicial" (keyup.enter)="guardar()">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Continuar sin apertura</button>

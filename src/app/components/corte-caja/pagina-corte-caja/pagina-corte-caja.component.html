@@ -61,7 +61,7 @@
         <div class="h-100 border rounded-3 p-3">
           <small class="text-body-secondary d-block mb-1">Monto inicial</small>
           <div class="fs-5 text-primary">
-            {{ data.montoInicialCaja | currency:'MXN':'symbol':'1.2-2' }}
+            {{ data.montoInicialCaja | currency:'USD':'symbol':'1.2-2' }}
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
         <div class="h-100 border rounded-3 p-3">
           <small class="text-body-secondary d-block mb-1">Ventas efectivo</small>
           <div class="fs-5 text-success">
-            {{ data.montoVentas | currency:'MXN':'symbol':'1.2-2' }}
+            {{ data.montoVentas | currency:'USD':'symbol':'1.2-2' }}
           </div>
         </div>
       </div>
@@ -79,7 +79,7 @@
         <div class="h-100 border rounded-3 p-3">
           <small class="text-body-secondary d-block mb-1">Pago proveedores</small>
           <div class="fs-5 text-danger">
-            {{ data.montoPagoProveedores | currency:'MXN':'symbol':'1.2-2' }}
+            {{ data.montoPagoProveedores | currency:'USD':'symbol':'1.2-2' }}
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@
         <div class="h-100 border rounded-3 p-3">
           <small class="text-body-secondary d-block mb-1">Esperado en caja</small>
           <div class="fs-5 fw-bold">
-            {{ data.corteCaja | currency:'MXN':'symbol':'1.2-2' }}
+            {{ data.corteCaja | currency:'USD':'symbol':'1.2-2' }}
           </div>
         </div>
       </div>
@@ -109,7 +109,7 @@
           <table class="table table-sm table-striped table-bordered table-hover align-middle">
             <thead>
               <tr>
-                <th style="width:40px" class="text-center"></th>
+                <th style="width: 50px;" class="text-center">Ver</th>
                 <th>Hora</th>
                 <th>Inicial</th>
                 <th>Ventas</th>
@@ -124,20 +124,23 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let c of data.cortesRealizados">
-                <tr style="cursor:pointer" (click)="toggleDetalle(c.id)" [class.table-active]="estaExpandido(c.id)">
+              <ng-container *ngFor="let c of data.cortesRealizados; trackBy: trackByCorte">
+                <tr
+                  style="cursor: pointer;"
+                  (click)="toggleDetalle(c.id)"
+                  [class.table-active]="estaExpandido(c.id)">
                   <td class="text-center fw-bold">
                     <span *ngIf="c.ventas.length > 0 || c.pagosProveedores.length > 0">
                       {{ estaExpandido(c.id) ? '-' : '+' }}
                     </span>
                   </td>
                   <td>{{ c.fechaCorte | date:'HH:mm' }}</td>
-                  <td>{{ c.montoInicial | currency:'MXN':'symbol':'1.2-2' }}</td>
-                  <td class="text-success">{{ c.montoVentasEfectivo | currency:'MXN':'symbol':'1.2-2' }}</td>
-                  <td class="text-danger">{{ c.montoPagoProveedores | currency:'MXN':'symbol':'1.2-2' }}</td>
-                  <td class="fw-bold">{{ c.montoEsperado | currency:'MXN':'symbol':'1.2-2' }}</td>
-                  <td class="text-warning">{{ c.retiro | currency:'MXN':'symbol':'1.2-2' }}</td>
-                  <td class="text-primary fw-bold">{{ c.montoFinal | currency:'MXN':'symbol':'1.2-2' }}</td>
+                  <td>{{ c.montoInicial | currency:'USD':'symbol':'1.2-2' }}</td>
+                  <td class="text-success">{{ c.montoVentasEfectivo | currency:'USD':'symbol':'1.2-2' }}</td>
+                  <td class="text-danger">{{ c.montoPagoProveedores | currency:'USD':'symbol':'1.2-2' }}</td>
+                  <td class="fw-bold">{{ c.montoEsperado | currency:'USD':'symbol':'1.2-2' }}</td>
+                  <td class="text-warning">{{ c.retiro | currency:'USD':'symbol':'1.2-2' }}</td>
+                  <td class="text-primary fw-bold">{{ c.montoFinal | currency:'USD':'symbol':'1.2-2' }}</td>
                   <td>{{ c.nombreUsuarioPrevio }}</td>
                   <td>{{ c.nombreUsuarioCorte }}</td>
                   <td>
@@ -150,55 +153,136 @@
                   </td>
                   <td>{{ c.observaciones || '-' }}</td>
                 </tr>
+
                 <tr *ngIf="estaExpandido(c.id)">
-                  <td colspan="12" class="p-3">
-                    <div *ngIf="c.ventas.length > 0" class="mb-3">
-                      <strong class="text-success">Ventas en efectivo</strong>
-                      <table class="table table-sm table-borderless mb-0 mt-1">
-                        <thead>
-                          <tr>
-                            <th>Folio</th>
-                            <th>Hora</th>
-                            <th class="text-end">Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let v of c.ventas">
-                            <td>{{ v.folio }}</td>
-                            <td>{{ v.fechaVenta | date:'HH:mm' }}</td>
-                            <td class="text-end">{{ v.total | currency:'MXN':'symbol':'1.2-2' }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div *ngIf="c.pagosProveedores.length > 0">
-                      <strong class="text-danger">Pagos a proveedores (caja)</strong>
-                      <table class="table table-sm table-borderless mb-0 mt-1">
-                        <thead>
-                          <tr>
-                            <th>Folio</th>
-                            <th>Proveedor</th>
-                            <th>Hora</th>
-                            <th class="text-end">Monto</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let p of c.pagosProveedores">
-                            <td>{{ p.folio }}</td>
-                            <td>{{ p.proveedor }}</td>
-                            <td>{{ p.fechaPago | date:'HH:mm' }}</td>
-                            <td class="text-end">{{ p.monto | currency:'MXN':'symbol':'1.2-2' }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div *ngIf="c.ventas.length === 0 && c.pagosProveedores.length === 0" class="text-body-secondary">
-                      No hubo movimientos en este turno.
+                  <td colspan="12">
+                    <div class="p-2">
+                      <div *ngIf="c.ventas.length > 0" class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6 class="mb-0 text-success">Ventas en efectivo</h6>
+                          <span class="text-muted">
+                            {{ c.ventas.length }} venta(s)
+                          </span>
+                        </div>
+                        <div class="table-responsive">
+                          <table class="table table-sm table-striped table-bordered mb-0">
+                            <thead>
+                              <tr>
+                                <th style="width: 50px;" class="text-center">Ver</th>
+                                <th>Folio</th>
+                                <th>Hora</th>
+                                <th>Costo Total</th>
+                                <th>Precio Total</th>
+                                <th>Ganancias</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <ng-container *ngFor="let v of c.ventas; trackBy: trackByVentaCorte">
+                                <tr
+                                  style="cursor: pointer;"
+                                  (click)="toggleVentaDetalle(v.idVenta)"
+                                  [class.table-active]="estaVentaExpandida(v.idVenta)">
+                                  <td class="text-center fw-bold">
+                                    {{ estaVentaExpandida(v.idVenta) ? '-' : '+' }}
+                                  </td>
+                                  <td>{{ v.folio }}</td>
+                                  <td>{{ v.fechaVenta | date:'HH:mm' }}</td>
+                                  <td>{{ v.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                                  <td>{{ v.total | currency:'USD':'symbol':'1.2-2' }}</td>
+                                  <td>{{ v.ganancias | currency:'USD':'symbol':'1.2-2' }}</td>
+                                </tr>
+                                <tr *ngIf="estaVentaExpandida(v.idVenta)">
+                                  <td colspan="6">
+                                    <div class="p-2">
+                                      <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="mb-0">Detalle de la venta</h6>
+                                        <span class="text-muted">
+                                          {{ v.detalles.length }} producto(s)
+                                        </span>
+                                      </div>
+                                      <div *ngIf="v.detalles.length > 0" class="table-responsive">
+                                        <table class="table table-sm table-striped table-bordered mb-0">
+                                          <thead>
+                                            <tr>
+                                              <th>Código</th>
+                                              <th>Producto</th>
+                                              <th>Cantidad</th>
+                                              <th>Costo Unitario</th>
+                                              <th>Costo Total</th>
+                                              <th>Precio Unitario</th>
+                                              <th>Precio Total</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let d of v.detalles">
+                                              <td>{{ d.codigoProducto }}</td>
+                                              <td>{{ d.nombreProducto }}</td>
+                                              <td>{{ d.cantidad }}</td>
+                                              <td>{{ d.costoUnitario | currency:'USD':'symbol':'1.2-2' }}</td>
+                                              <td>{{ d.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                                              <td>{{ d.precioUnitario | currency:'USD':'symbol':'1.2-2' }}</td>
+                                              <td>{{ d.precioTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                      <div *ngIf="v.detalles.length === 0" class="text-body-secondary">
+                                        No hay detalle disponible para esta venta.
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div *ngIf="c.pagosProveedores.length > 0">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h6 class="mb-0 text-danger">Pagos a proveedores (caja)</h6>
+                          <span class="text-muted">
+                            {{ c.pagosProveedores.length }} pago(s)
+                          </span>
+                        </div>
+                        <div class="table-responsive">
+                          <table class="table table-sm table-striped table-bordered mb-0">
+                            <thead>
+                              <tr>
+                                <th>Folio</th>
+                                <th>Proveedor</th>
+                                <th>Hora</th>
+                                <th class="text-end">Monto</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let p of c.pagosProveedores">
+                                <td>{{ p.folio }}</td>
+                                <td>{{ p.proveedor }}</td>
+                                <td>{{ p.fechaPago | date:'HH:mm' }}</td>
+                                <td class="text-end">{{ p.monto | currency:'USD':'symbol':'1.2-2' }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div *ngIf="c.ventas.length === 0 && c.pagosProveedores.length === 0" class="text-body-secondary">
+                        No hubo movimientos en este turno.
+                      </div>
                     </div>
                   </td>
                 </tr>
               </ng-container>
             </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="3" class="text-end">Totales del día</th>
+                <th class="text-success">{{ calcularTotalVentasCortes() | currency:'USD':'symbol':'1.2-2' }}</th>
+                <th class="text-danger">{{ calcularTotalPagosCortes() | currency:'USD':'symbol':'1.2-2' }}</th>
+                <th colspan="7"></th>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>

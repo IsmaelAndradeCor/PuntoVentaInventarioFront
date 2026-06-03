@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CajaService } from '../../services/caja.service';
@@ -11,11 +11,13 @@ import { CajaService } from '../../services/caja.service';
   templateUrl: './apertura-caja-modal.component.html',
   styleUrl: './apertura-caja-modal.component.scss'
 })
-export class AperturaCajaModalComponent {
+export class AperturaCajaModalComponent implements OnInit {
   @Input() mostrarAperturaCaja = false;
 
   @Output() aperturaRegistrada = new EventEmitter<void>();
   @Output() cerrar = new EventEmitter<void>();
+
+  @ViewChild('inputMontoInicial') inputMontoInicial!: ElementRef<HTMLInputElement>;
 
   montoInicial = 0;
   guardando = false;
@@ -28,6 +30,10 @@ export class AperturaCajaModalComponent {
     private cajaService: CajaService,
     private toastr: ToastrService
   ) {}
+
+  ngOnInit(): void {
+    this.enfocarinputMontoInicial();
+  }
 
   guardar(): void {
     if (this.montoInicial < 0) {
@@ -47,5 +53,12 @@ export class AperturaCajaModalComponent {
         this.guardando = false;
       }
     });
+  }
+
+  private enfocarinputMontoInicial(): void {
+    setTimeout(() => {
+      this.inputMontoInicial?.nativeElement.focus();
+      this.inputMontoInicial?.nativeElement.select();
+    }, 0);
   }
 }

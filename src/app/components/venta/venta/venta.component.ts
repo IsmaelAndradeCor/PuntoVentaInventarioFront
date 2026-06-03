@@ -74,11 +74,15 @@ export class VentaComponent implements OnInit {
     return venta.idVenta;
   }
 
-  calcularTotalGanancias(): number {
-    return this.ventas.reduce((total, venta) => total + venta.ganancias, 0);
+  calcularTotalCostos(): number {
+    return this.ventas.reduce((total, venta) => total + venta.costoTotal, 0);
   }
 
   calcularTotalVentas(): number {
     return this.ventas.reduce((total, venta) => total + venta.total, 0);
+  }
+
+  calcularTotalGanancias(): number {
+    return this.ventas.reduce((total, venta) => total + venta.ganancias, 0);
   }
 }

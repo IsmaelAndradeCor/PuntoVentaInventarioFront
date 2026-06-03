@@ -36,7 +36,7 @@
                     <td>{{i.costo | currency:'USD':'symbol':'1.2-2' }}</td>
                     <td>{{i.precio | currency:'USD':'symbol':'1.2-2' }}</td>
                     <td>{{i.precio - i.costo | currency:'USD':'symbol':'1.2-2' }}</td>
-                    <!-- <td style="text-align: center;">{{i.precioVenta | currency:'MXN':'symbol':'1.2-2' }}</td> -->
+                    <!-- <td style="text-align: center;">{{i.precioVenta | currency:'USD':'symbol':'1.2-2' }}</td> -->
                     <td [ngClass]="{'table-danger' : i.stock <= i.stockMinimo}">{{i.stock}}</td>
                     <td>{{i.stockMinimo}}</td>
                     <td><select class="form-select" name="listaProveedores-{{i.codigo}}" id="listaProveedores-{{i.codigo}}">@for (item of i.proveedores; track $index) {<option>{{item.nombre}}</option>}</select></td>

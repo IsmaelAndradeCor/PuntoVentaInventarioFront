@@ -10,25 +10,25 @@
           <div class="col-md-3">
             <div class="border rounded-3 p-3">
               <div class="small text-body-secondary">Monto inicial</div>
-              <div class="fs-5 text-primary">{{ montoInicial | currency:'MXN':'symbol':'1.2-2' }}</div>
+              <div class="fs-5 text-primary">{{ montoInicial | currency:'USD':'symbol':'1.2-2' }}</div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="border rounded-3 p-3">
               <div class="small text-body-secondary">Ventas efectivo</div>
-              <div class="fs-5 text-success">{{ montoVentas | currency:'MXN':'symbol':'1.2-2' }}</div>
+              <div class="fs-5 text-success">{{ montoVentas | currency:'USD':'symbol':'1.2-2' }}</div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="border rounded-3 p-3">
               <div class="small text-body-secondary">Pagos proveedores</div>
-              <div class="fs-5 text-danger">{{ montoPagoProveedores | currency:'MXN':'symbol':'1.2-2' }}</div>
+              <div class="fs-5 text-danger">{{ montoPagoProveedores | currency:'USD':'symbol':'1.2-2' }}</div>
             </div>
           </div>
           <div class="col-md-3">
             <div class="border rounded-3 p-3">
               <div class="small text-body-secondary">Esperado en caja</div>
-              <div class="fs-5 fw-bold">{{ montoEsperado | currency:'MXN':'symbol':'1.2-2' }}</div>
+              <div class="fs-5 fw-bold">{{ montoEsperado | currency:'USD':'symbol':'1.2-2' }}</div>
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@
           <div class="mb-3">
             <label class="form-label fw-semibold">Monto que quedará en caja para {{ getNombreRecepcion() }}</label>
             <div class="form-control form-control-lg fw-bold text-primary">
-              {{ montoFinal | currency:'MXN':'symbol':'1.2-2' }}
+              {{ montoFinal | currency:'USD':'symbol':'1.2-2' }}
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@
           <div class="mb-3">
             <label class="form-label fw-semibold">Monto final retirado</label>
             <div class="form-control form-control-lg fw-bold text-primary">
-              {{ montoFinal | currency:'MXN':'symbol':'1.2-2' }}
+              {{ montoFinal | currency:'USD':'symbol':'1.2-2' }}
             </div>
             <small class="text-body-secondary">Corte final — la caja queda cerrada.</small>
           </div>

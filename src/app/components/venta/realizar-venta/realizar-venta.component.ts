@@ -349,6 +349,7 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
         this.carrito = [];
         this.importesTemporales.clear();
         this.dineroRecibido = 0;
+        this.selectedIdMetodoPago = 1;
         this.limpiarInputCodigo();
 
       },

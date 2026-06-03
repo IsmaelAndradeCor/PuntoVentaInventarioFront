@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CajaService } from '../../../services/caja.service';
-import { CorteCajaHoyResponseDto, CorteRealizadoDto } from '../../../models/dtos/responses/corte-caja-hoy-response-dto';
+import { CorteCajaHoyResponseDto, CorteRealizadoDto, CorteDetalleVentaDto } from '../../../models/dtos/responses/corte-caja-hoy-response-dto';
 import { CorteCajaResponseDto } from '../../../models/dtos/responses/corte-caja-response-dto';
 import { CorteCajaModalComponent } from '../../../modals/corte-caja-modal/corte-caja-modal.component';
 import { AperturaCajaModalComponent } from '../../../modals/apertura-caja-modal/apertura-caja-modal.component';
@@ -19,6 +19,7 @@ export class PaginaCorteCajaComponent implements OnInit {
   mostrarModalCorte = false;
   mostrarModalAperturaCaja = false;
   corteExpandidoId: number | null = null;
+  ventasExpandidasIds: Set<number> = new Set<number>();
 
   constructor(
     private cajaService: CajaService
@@ -74,5 +75,35 @@ export class PaginaCorteCajaComponent implements OnInit {
 
   estaExpandido(id: number): boolean {
     return this.corteExpandidoId === id;
+  }
+
+  trackByCorte(index: number, c: CorteRealizadoDto): number {
+    return c.id;
+  }
+
+  toggleVentaDetalle(idVenta: number): void {
+    if (this.ventasExpandidasIds.has(idVenta)) {
+      this.ventasExpandidasIds.delete(idVenta);
+    } else {
+      this.ventasExpandidasIds.add(idVenta);
+    }
+  }
+
+  estaVentaExpandida(idVenta: number): boolean {
+    return this.ventasExpandidasIds.has(idVenta);
+  }
+
+  trackByVentaCorte(index: number, v: CorteDetalleVentaDto): number {
+    return v.idVenta;
+  }
+
+  calcularTotalVentasCortes(): number {
+    if (!this.corte) return 0;
+    return this.corte.cortesRealizados.reduce((t, c) => t + c.montoVentasEfectivo, 0);
+  }
+
+  calcularTotalPagosCortes(): number {
+    if (!this.corte) return 0;
+    return this.corte.cortesRealizados.reduce((t, c) => t + c.montoPagoProveedores, 0);
   }
 }

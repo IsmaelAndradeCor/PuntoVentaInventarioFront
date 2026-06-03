@@ -1,8 +1,12 @@
+import { GenerarVentaDetalleResponseDto } from "./generar-venta-detalle-response-dto";
+import { GenerarVentaResponseDto } from "./generar-venta-response-dto";
+
 export interface CorteDetalleVentaDto {
   idVenta: number;
   folio: string;
   fechaVenta: string;
   total: number;
+  detalles: GenerarVentaDetalleResponseDto[];
 }
 
 export interface CorteDetallePagoDto {
@@ -30,7 +34,7 @@ export interface CorteRealizadoDto {
   nombreUsuarioRecepcion?: string;
   corteFinal: boolean;
   observaciones?: string;
-  ventas: CorteDetalleVentaDto[];
+  ventas: GenerarVentaResponseDto[];
   pagosProveedores: CorteDetallePagoDto[];
 }
 
