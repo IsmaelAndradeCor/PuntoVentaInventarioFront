@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-2">
           <label class="form-label fw-semibold">Retiro (monto que retiras de la caja)</label>
           <input
             type="number"
@@ -44,13 +44,31 @@
             [(ngModel)]="retiro"
             (input)="onRetiroChange()"
             placeholder="0.00">
-          <div *ngIf="esCorteFinal" class="alert alert-warning mt-2 mb-0 py-2 small">
-            ⚠ Has indicado retirar todo el dinero. Este será un <strong>corte final del día</strong>.
-            No se abrirá un nuevo turno de caja.
-          </div>
         </div>
 
-        <div *ngIf="!esCorteFinal; else finalBlock">
+        <div class="text-center text-body-secondary my-2">
+          <small>⇅ Ambos montos se calculan entre sí. Escribe en cualquiera de los dos.</small>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Monto que quedará en caja (lo que dejas para el siguiente turno)</label>
+          <input
+            type="number"
+            class="form-control form-control-lg"
+            min="0"
+            step="0.01"
+            [max]="montoEsperado"
+            [(ngModel)]="montoFinal"
+            (input)="onMontoFinalChange()"
+            placeholder="0.00">
+        </div>
+
+        <div *ngIf="esCorteFinal" class="alert alert-warning mb-3 py-2 small">
+          ⚠ Has indicado {{ montoFinal <= 0 ? 'no dejar nada en caja' : 'retirar todo el dinero' }}.
+          Este será un <strong>corte final del día</strong>. No se abrirá un nuevo turno de caja.
+        </div>
+
+        <div *ngIf="!esCorteFinal">
           <div class="mb-3">
             <label class="form-label fw-semibold">Entregar caja a</label>
             <select class="form-select" [(ngModel)]="idUsuarioRecepcion" [disabled]="cargandoUsuarios">
@@ -64,24 +82,7 @@
               No hay usuarios activos con permisos de ventas.
             </div>
           </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Monto que quedará en caja para {{ getNombreRecepcion() }}</label>
-            <div class="form-control form-control-lg fw-bold text-primary">
-              {{ montoFinal | currency:'USD':'symbol':'1.2-2' }}
-            </div>
-          </div>
         </div>
-
-        <ng-template #finalBlock>
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Monto final retirado</label>
-            <div class="form-control form-control-lg fw-bold text-primary">
-              {{ montoFinal | currency:'USD':'symbol':'1.2-2' }}
-            </div>
-            <small class="text-body-secondary">Corte final — la caja queda cerrada.</small>
-          </div>
-        </ng-template>
 
         <div class="mb-3">
           <label class="form-label">Observaciones (opcional)</label>

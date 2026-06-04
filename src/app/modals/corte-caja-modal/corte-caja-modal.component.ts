@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CajaService } from '../../services/caja.service';
@@ -15,7 +15,7 @@ import { UsuarioPermisosResponseDto } from '../../models/dtos/responses/usuario-
   templateUrl: './corte-caja-modal.component.html',
   styleUrl: './corte-caja-modal.component.scss'
 })
-export class CorteCajaModalComponent implements OnInit {
+export class CorteCajaModalComponent implements OnInit, OnChanges {
   @Input() mostrar = false;
   @Input() montoEsperado = 0;
   @Input() montoInicial = 0;
@@ -42,6 +42,25 @@ export class CorteCajaModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarUsuarios();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['mostrar']) {
+      const prev = changes['mostrar'].previousValue;
+      const curr = changes['mostrar'].currentValue;
+      if (curr && !prev) {
+        this.inicializarValores();
+      }
+    }
+  }
+
+  private inicializarValores(): void {
+    this.montoFinal = this.montoEsperado;
+    this.retiro = 0;
+    this.esCorteFinal = false;
+    this.idUsuarioRecepcion = '';
+    this.observaciones = '';
+    this.guardando = false;
   }
 
   get usuariosFiltrados(): UsuarioPermisosResponseDto[] {
@@ -75,6 +94,20 @@ export class CorteCajaModalComponent implements OnInit {
     }
     this.montoFinal = this.montoEsperado - this.retiro;
     this.esCorteFinal = this.retiro >= this.montoEsperado;
+    if (this.esCorteFinal) {
+      this.idUsuarioRecepcion = '';
+    }
+  }
+
+  onMontoFinalChange(): void {
+    if (this.montoFinal > this.montoEsperado) {
+      this.montoFinal = this.montoEsperado;
+    }
+    if (this.montoFinal < 0) {
+      this.montoFinal = 0;
+    }
+    this.retiro = this.montoEsperado - this.montoFinal;
+    this.esCorteFinal = this.montoFinal <= 0;
     if (this.esCorteFinal) {
       this.idUsuarioRecepcion = '';
     }
