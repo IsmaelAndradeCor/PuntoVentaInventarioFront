@@ -1,27 +1,27 @@
 <div class="component-page">
     <form [formGroup]="filtroForm" (ngSubmit)="buscarVentas()" class="row g-3 mb-3">
-    <div class="col-md-3">
-        <label for="fechaInicio" class="form-label">Fecha inicio</label>
-        <input id="fechaInicio" type="date" class="form-control" formControlName="fechaInicio">
-    </div>
+      <div class="col-md-3">
+          <label for="fechaInicio" class="form-label">Fecha inicio</label>
+          <input id="fechaInicio" type="date" class="form-control" formControlName="fechaInicio">
+      </div>
 
-    <div class="col-md-3">
-        <label for="fechaFin" class="form-label">Fecha fin</label>
-        <input id="fechaFin" type="date" class="form-control" formControlName="fechaFin">
-    </div>
+      <div class="col-md-3">
+          <label for="fechaFin" class="form-label">Fecha fin</label>
+          <input id="fechaFin" type="date" class="form-control" formControlName="fechaFin">
+      </div>
 
-    <div class="col-md-3 d-flex align-items-end">
-        <div class="form-check mb-2">
-        <input id="incluirDetalle" type="checkbox" class="form-check-input" formControlName="incluirDetalle">
-        <label for="incluirDetalle" class="form-check-label">
-            Incluir detalle
-        </label>
-        </div>
-    </div>
+      <div class="col-md-3 d-flex align-items-end">
+          <div class="form-check mb-2">
+          <input id="incluirDetalle" type="checkbox" class="form-check-input" formControlName="incluirDetalle">
+          <label for="incluirDetalle" class="form-check-label">
+              Incluir detalle
+          </label>
+          </div>
+      </div>
 
-    <div class="col-md-3 d-flex align-items-end">
-        <button type="submit" class="btn btn-primary w-100">Buscar</button>
-    </div>
+      <div class="col-md-3 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary w-100">Buscar</button>
+      </div>
     </form>
 
     <div class="row justify-content-between mb-3">

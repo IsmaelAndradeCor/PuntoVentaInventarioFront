@@ -1,0 +1,98 @@
+<div class="component-page">
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-text">Desde</span>
+                <input type="date" class="form-control" [(ngModel)]="fechaInicio">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group">
+                <span class="input-group-text">Hasta</span>
+                <input type="date" class="form-control" [(ngModel)]="fechaFin">
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-primary" type="button" (click)="getMermas()">
+                <i class="fa-solid fa-filter"></i>
+            </button>
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-danger" type="button" (click)="limpiarFiltros()">
+                <i class="fa-solid fa-eraser"></i>
+            </button>
+        </div>
+        <div class="col-md-4">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Buscar folio o producto" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
+                <button class="btn btn-danger" type="button" (click)="textoBusqueda=''; filtrarTabla()"><i class="fa-solid fa-eraser"></i></button>
+            </div>
+        </div>
+    </div>
+
+    @if (!mermasFiltradas.length) {
+        <p>No existen mermas registradas.</p>
+    } @else {
+        <div class="form-section-fill">
+            <div class="table-scroll">
+                <table class="table table-sm table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Fecha</th>
+                            <th>Costo Total (Pérdida)</th>
+                            <th>Observaciones</th>
+                            <th style="width: 8%; text-align: center;">Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (m of mermasFiltradas; track m.id) {
+                            <tr>
+                                <td>{{ m.folio }}</td>
+                                <td>{{ m.fechaMerma | date:'dd/MM/yyyy HH:mm' }}</td>
+                                <td>{{ m.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                                <td>{{ m.observaciones || '-' }}</td>
+                                <td style="text-align: center;">
+                                    <button class="btn btn-sm btn-info" type="button" (click)="toggleDetalle(m.id)">
+                                        <i class="fa-solid" [class.fa-chevron-down]="mermaExpandida !== m.id" [class.fa-chevron-up]="mermaExpandida === m.id"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @if (mermaExpandida === m.id) {
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="p-3">
+                                            <h6>Productos</h6>
+                                            <table class="table table-sm table-bordered mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Código</th>
+                                                        <th>Producto</th>
+                                                        <th class="text-center">Cantidad</th>
+                                                        <th class="text-center">Costo Unit.</th>
+                                                        <th class="text-center">Costo Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @for (d of m.detalles; track d.id) {
+                                                        <tr>
+                                                            <td>{{ d.codigoProducto }}</td>
+                                                            <td>{{ d.nombreProducto }}</td>
+                                                            <td class="text-center">{{ d.cantidad }}</td>
+                                                            <td class="text-center">{{ d.costoUnitario | currency:'USD':'symbol':'1.2-2' }}</td>
+                                                            <td class="text-center">{{ d.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,128 @@
+<div class="component-page">
+    <!-- <div class="row align-items-center justify-content-between mb-3">
+        <div class="col-md-auto">
+            <div class="d-flex align-items-end gap-2 flex-wrap">
+                <h3 class="mb-0 me-2">Registrar Merma</h3>
+                <button *appHasPermission="'mermas.historial.ver'" class="btn btn-primary" type="button" routerLink="/merma/historial-merma">
+                    Historial Mermas
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-auto text-md-end mt-2 mt-md-0">
+            <h3 class="mb-0">
+                Costo Total (Pérdida): {{ calcularCostoTotal() | currency:'USD':'symbol':'1.2-2' }}
+            </h3>
+        </div>
+    </div> -->
+
+    <div class="mb-3">
+        <div class="row g-2">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Escanea</span>
+                    <input
+                        #inputCodigo
+                        class="form-control"
+                        type="text"
+                        [(ngModel)]="codigoProducto"
+                        (keyup.enter)="agregarProductoPorCodigo()"
+                        placeholder="Escanear código">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Buscar</span>
+                    <input
+                        class="form-control"
+                        list="listaProductos"
+                        type="text"
+                        [(ngModel)]="codigoProductoNombre"
+                        (keyup.enter)="agregarProductoPorCodigo()"
+                        placeholder="Escribir nombre o código">
+                    <datalist id="listaProductos">
+                        @for (p of productos; track p.id) {
+                        <option [value]="p.codigo" [label]="p.nombre"></option>
+                        }
+                    </datalist>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section form-section-fill mb-3">
+        <div class="d-none d-lg-block border-bottom pb-2 mb-2">
+            <div class="row g-2 align-items-center text-muted fw-semibold small">
+                <div class="col-lg-1 text-center">Eliminar</div>
+                <div class="col-lg-1 text-center">Cantidad</div>
+                <div class="col-lg-1 text-center">Disponible</div>
+                <div class="col-lg-6">Nombre</div>
+                <div class="col-lg-1 text-center">Costo Unit.</div>
+                <div class="col-lg-2 text-center">Costo Total</div>
+            </div>
+        </div>
+
+        @for (producto of carrito; track $index) {
+            <div class="row g-2 align-items-center py-2 border-bottom item-venta">
+                <div class="col-3 col-sm-2 col-lg-1 text-center">
+                    <button (click)="eliminarItem($index)" class="btn btn-sm btn-danger w-50">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+
+                <div class="col-5 col-sm-4 col-lg-1">
+                    <input
+                        class="form-control text-center"
+                        type="number"
+                        [min]="producto.producto.unidadMedida.permiteDecimales ? '0.00' : '1'"
+                        [max]="obtenerMaximoPermitido(producto.producto.codigo, $index)"
+                        [step]="producto.producto.unidadMedida.permiteDecimales ? '0.05' : '1'"
+                        [ngModel]="producto.cantidad"
+                        (ngModelChange)="actualizarCantidadItem($index, $event)">
+                </div>
+
+                <div class="col-4 col-sm-3 col-lg-1 text-center">
+                    <small class="text-muted d-block">
+                        {{ obtenerStockDisponible(producto.producto.codigo) + producto.cantidad + ' ' + producto.producto.unidadMedida.clave }}
+                    </small>
+                </div>
+
+                <div class="col-12 col-sm-7 col-lg-6">
+                    <div class="fw-medium text-truncate">
+                        {{ producto.producto.nombre }}
+                    </div>
+                </div>
+
+                <div class="col-6 col-sm-3 col-lg-1 text-lg-center">
+                    <span class="d-lg-none text-muted small">Costo: </span>
+                    <span>{{ producto.producto.costo | currency:'USD':'symbol':'1.2-2' }}</span>
+                </div>
+
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input class="form-control text-end" type="text"
+                            [value]="producto.producto.costo * producto.cantidad | currency:'USD':'symbol':'1.2-2'" disabled>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="">
+        <div class="row g-3">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="input-group">
+                    <span class="input-group-text">Observaciones</span>
+                    <input class="form-control" type="text" [(ngModel)]="observaciones" placeholder="Motivo de la merma (opcional)">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3 col-lg-2 offset-lg-7">
+                <button class="btn btn-danger w-100" type="button" (click)="registrarMerma()">
+                    <i class="fa-solid fa-trash"></i> Registrar Merma
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

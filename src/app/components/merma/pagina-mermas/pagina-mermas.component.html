@@ -1,0 +1,29 @@
+<div class="component-page">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item" *appHasPermission="'mermas.registrar'">
+            <button type="button" class="nav-link" [class.active]="activeTab === 'registrar'" (click)="seleccionarTab('registrar')">
+                Registrar Merma
+            </button>
+        </li>
+
+        <li class="nav-item" *appHasPermission="'mermas.historial.ver'">
+            <button type="button" class="nav-link" [class.active]="activeTab === 'historial'" (click)="seleccionarTab('historial')">
+                Historial
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        @if (activeTab === 'registrar' && puedeVerTab('registrar')) {
+            <div class="tab-pane fade show active">
+                <app-registrar-merma></app-registrar-merma>
+            </div>
+        }
+
+        @if (activeTab === 'historial' && puedeVerTab('historial')) {
+            <div class="tab-pane fade show active">
+                <app-historial-merma></app-historial-merma>
+            </div>
+        }
+    </div>
+</div>

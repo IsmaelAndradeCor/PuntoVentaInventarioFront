@@ -15,6 +15,7 @@ import { PaginaProveedoresComponent } from './components/Proveedor/pagina-provee
 import { PaginaCategoriasComponent } from './components/categoria/pagina-categorias/pagina-categorias.component';
 import { PaginaUnidadesMedidaComponent } from './components/unidadMedida/pagina-unidades-medida/pagina-unidades-medida.component';
 import { PaginaCorteCajaComponent } from './components/corte-caja/pagina-corte-caja/pagina-corte-caja.component';
+import { PaginaMermasComponent } from './components/merma/pagina-mermas/pagina-mermas.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -73,6 +74,12 @@ export const routes: Routes = [
     component: PaginaProveedoresComponent,
     canActivate: [authGuard, permissionGuard],
     data: { permissions: ['proveedores.ver']}
+  },
+  {
+    path: 'merma/pagina-mermas',
+    component: PaginaMermasComponent,
+    canActivate: [authGuard, permissionGuard],
+    data: { permissions: ['mermas.ver'] }
   },
   {
     path: 'configuracion/pagina-configuracion',
