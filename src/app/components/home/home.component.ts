@@ -34,8 +34,7 @@ export class HomeComponent implements OnInit {
     this.productoService.getProductosStockMinimo().subscribe({
       next:(res) => {
         this.productos = res;
-      },
-      error:() => {}          
+      }
     });
   }
 

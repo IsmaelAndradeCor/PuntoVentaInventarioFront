@@ -83,8 +83,7 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
         this.productos = productos;
         this.productosPorCodigo = new Map(productos.map(p => [p.codigo, p]));
         this.stockOriginalPorCodigo = new Map(productos.map(p => [p.codigo, p.stock]));
-      },
-      error: () => {}          
+      }
     });
   }
 
@@ -92,8 +91,7 @@ export class RealizarVentaComponent implements OnInit, AfterViewInit {
     this.ventaService.getMetodosPago().subscribe({
       next:(response) => {
         this.metodosPago = response.filter(m => m.nombre !== "Caja");
-      },
-      error: () => {}          
+      }
     })
   }
 

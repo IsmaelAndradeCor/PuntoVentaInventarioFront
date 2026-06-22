@@ -79,8 +79,7 @@ export class ListarProductosInactivosComponent implements OnInit {
     this.categoriaService.getCategoriasActivas().subscribe({
       next:(response) => {
         this.categorias = response;
-      },
-      error:() => {}
+      }
     })
   }
 
@@ -88,8 +87,7 @@ export class ListarProductosInactivosComponent implements OnInit {
     this.marcaService.getMarcasActivas().subscribe({
       next:(response) => {
         this.marcas = response;
-      },
-      error:() => {}
+      }
     })
   }
 
@@ -97,8 +95,7 @@ export class ListarProductosInactivosComponent implements OnInit {
     this.unidadMedidaService.getUnidadesMedidaActivas().subscribe({
       next:(response) => {
         this.unidadesMedida = response;
-      },
-      error:() => {}
+      }
     })
   }
 
@@ -106,8 +103,7 @@ export class ListarProductosInactivosComponent implements OnInit {
     this.proveedorService.getProveedoresActivos().subscribe({
       next:(response) => {
         this.proveedores = response;
-      },
-      error:() => {}
+      }
     })
   }
 
@@ -128,8 +124,7 @@ export class ListarProductosInactivosComponent implements OnInit {
 
         // 3. Muesta el mensaje de exito
         this.toastrService.success('Producto activado con éxito.')
-      },
-      error: () => {}          
+      }
     });
   }
 
@@ -140,8 +135,7 @@ export class ListarProductosInactivosComponent implements OnInit {
         this.productoActualizar = producto;
         // console.log(producto);
         this.mostrarActualizarProducto = true;
-      },
-      error: () => {}          
+      }
     });
   }
 

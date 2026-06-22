@@ -1,4 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { ActualizarProductoComponent } from '../actualizar-producto/actualizar-producto.component';
 import { CommonModule } from '@angular/common';
 import { ProductoService } from '../../../services/producto.service';
@@ -24,7 +26,7 @@ import { AuthService } from '../../../core/auth/auth.service';
   styleUrl: './listar-productos.component.scss'
 })
 
-export class ListarProductosComponent implements OnInit, AfterViewInit {
+export class ListarProductosComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('inputFiltro') inputFiltro!: ElementRef<HTMLInputElement>;
 
@@ -44,7 +46,6 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
   proveedores: ProveedorResponseDto[] = [];
 
   productosDto: ProductoResponseDto[] = [];
-  productosFiltrados: ProductoResponseDto[] = [];
 
   productoActualizar: ProductoResponseDto | null = null;;
   mostrarActualizarProducto: boolean = false;
@@ -55,22 +56,44 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
   productosPorId: Map<number, ProductoResponseDto> = new Map();  // ← Tu diccionario
 
   textoBusqueda: string = '';
-  
+
+  // ─── Estado de paginación (server-side) ───────────────────────────────────────
+  page: number = 1;
+  pageSize: number = 20;
+  total: number = 0;
+  totalPages: number = 0;
+
+  private busqueda$ = new Subject<string>();
+  private destroy$ = new Subject<void>();
+
   ngOnInit() {
+    // La búsqueda se envía al servidor con debounce; cada término reinicia a la página 1
+    this.busqueda$
+      .pipe(debounceTime(350), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.page = 1;
+        this.getProductosActivos();
+      });
+
     this.getProductosActivos();
 
     // Agregamos esta validación de revisión de permisos para actualizar porque se necesitan cargar estas listas para que no vuelva a llamar las listas en el modal de actualizar, ya se las mandamos cargadas
     if (this.authService.hasPermission('productos.actualizar')) {
-      this.getCategoriasActivas();    
+      this.getCategoriasActivas();
       this.getMarcasActivas();
       this.getUnidadesMedidaActivas();
-      this.getProveedoresActivos();  
+      this.getProveedoresActivos();
     }
 
   }
 
   ngAfterViewInit(): void {
     this.enfocarInputFiltro();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   // ─── Foco ────────────────────────────────────────────────────────────────────
@@ -82,21 +105,15 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
   }
 
   getProductosActivos(): void {
-    // Convierte el arreglo a Map UNA SOLA VEZ al cargar
-
-    this.productoService.getProductosActivos().subscribe({
-      next:(prodcutosResponse) => {
-
-        if (prodcutosResponse) {
-          this.productosDto = prodcutosResponse;
-          this.productosFiltrados = [...this.productosDto];
-          this.productosPorId = new Map(
-            this.productosDto.map(producto => [producto.id, producto])
-          );
-          this.enfocarInputFiltro();
-        }
-
-        // console.log('Map creado con', this.productosPorId.size, 'productos');
+    this.productoService.getProductosActivos(this.page, this.pageSize, this.textoBusqueda).subscribe({
+      next:(resultado) => {
+        this.productosDto = resultado.items;
+        this.total = resultado.total;
+        this.totalPages = resultado.totalPages;
+        this.page = resultado.page;
+        this.productosPorId = new Map(
+          this.productosDto.map(producto => [producto.id, producto])
+        );
       }
     });
   }
@@ -105,9 +122,7 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
     this.categoriaService.getCategoriasActivas().subscribe({
       next:(response) => {
         this.categorias = response;
-      },
-      error:() => {}
-        // this.toastrService.error('Ocurrió un error al cargar las Categorias, por favor contacta al Administrador.')
+      }
     });
   }
 
@@ -115,9 +130,7 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
     this.marcaService.getMarcasActivas().subscribe({
       next:(response) => {
         this.marcas = response;
-      },
-      error:() => {}
-        // this.toastrService.error('Ocurrió un error al cargar las Marcas, por favor contacta al Administrador.')
+      }
     });
   }
 
@@ -125,9 +138,7 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
     this.unidadMedidaService.getUnidadesMedidaActivas().subscribe({
       next:(response) => {
         this.unidadesMedida = response;
-      },
-      error:() => {}
-        // this.toastrService.error('Ocurrió un error al cargar las Unidades de Medida, por favor contacta al Administrador.')
+      }
     });
   }
 
@@ -135,9 +146,7 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
     this.proveedorService.getProveedoresActivos().subscribe({
       next:(response) => {
         this.proveedores = response;
-      },
-      error:() => {}
-        // this.toastrService.error('Ocurrió un error al cargar los Proveedores, por favor contacta al Administrador.')
+      }
     });
   }
 
@@ -149,18 +158,12 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
 
     this.productoService.deactivateProducto(id).subscribe({
       next:() => {
-        // 1. Eliminar del Map (rápido)
-        this.productosPorId.delete(id);
-
-        // 2. Recrear el array sin ese producto
-        this.productosDto = this.productosDto.filter(x => x.id !== id);
-        this.filtrarTabla();
-
-        // 3. Muesta el mensaje de exito
         this.toastrService.success('Producto desactivado con éxito.')
-      },
-      error: (error) => {
-        // this.toastrService.error('Ocurrió un error al desactivar el producto, por favor contacte al administrador.');
+        // Si era el último de la página actual, retrocede una página
+        if (this.productosDto.length === 1 && this.page > 1) {
+          this.page--;
+        }
+        this.getProductosActivos();
       }
     });
   }
@@ -189,11 +192,8 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
 
     if (index !== -1) {
       this.productosDto[index] = objetoActualizado;
-      this.productosFiltrados = [...this.productosDto];
-      this.filtrarTabla();
+      this.productosPorId.set(objetoActualizado.id, objetoActualizado);
     }
-
-    // this.cerrarModalActualizar();
   }
 
   mostrarModalConfirmarDesactivar(id: number): void {
@@ -206,22 +206,37 @@ export class ListarProductosComponent implements OnInit, AfterViewInit {
     this.idProductoDesactivar = null;
   }
 
-  filtrarTabla(): void {
-    const texto = this.textoBusqueda.trim().toLowerCase();
-
-    if (!texto) {
-      this.productosFiltrados = [...this.productosDto];
-      return;
-    }
-
-    this.productosFiltrados = this.productosDto.filter(p =>
-      p.codigo.toLowerCase().includes(texto) ||
-      p.nombre.toLowerCase().includes(texto)
-    );
+  // ─── Búsqueda (server-side con debounce) ──────────────────────────────────────
+  onBuscar(): void {
+    this.busqueda$.next(this.textoBusqueda);
   }
 
   limpiarTextoBusqueda(): void {
     this.textoBusqueda = '';
-    this.filtrarTabla();
+    this.page = 1;
+    this.getProductosActivos();
+  }
+
+  // ─── Paginación ───────────────────────────────────────────────────────────────
+  irAPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.totalPages || pagina === this.page) {
+      return;
+    }
+    this.page = pagina;
+    this.getProductosActivos();
+  }
+
+  paginaAnterior(): void {
+    this.irAPagina(this.page - 1);
+  }
+
+  paginaSiguiente(): void {
+    this.irAPagina(this.page + 1);
+  }
+
+  cambiarPageSize(nuevoTamano: number): void {
+    this.pageSize = Number(nuevoTamano);
+    this.page = 1;
+    this.getProductosActivos();
   }
 }

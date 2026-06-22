@@ -48,8 +48,7 @@ export class ActualizarMarcaComponent implements OnInit {
           this.toastrService.success('Marca actualizada correctamente!');
           this.objetoActualizado.emit(response);
           this.cerrarModal.emit();
-        },
-        error:() => {}        
+        }
       })
     }
   }

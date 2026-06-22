@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ProductoUpsertDto } from '../models/dtos/requests/producto-upsert-dto';
 import { ProductoResponseDto } from '../models/dtos/responses/producto-response-dto';
 import { ProductoSimpleResponseDto } from '../models/dtos/responses/producto-simple-response-dto';
+import { PagedResultDto } from '../models/dtos/responses/paged-result-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,16 @@ export class ProductoService {
   private http = inject(HttpClient);
   private urlBase = environment.apiURL + '/Producto';
 
-  public getProductosActivos(): Observable<ProductoResponseDto[]> {
-    return this.http.get<ProductoResponseDto[]>(this.urlBase + '/listar_productos_activos');
+  public getProductosActivos(page: number = 1, pageSize: number = 20, search?: string): Observable<PagedResultDto<ProductoResponseDto>> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize);
+
+    if (search && search.trim()) {
+      params = params.set('search', search.trim());
+    }
+
+    return this.http.get<PagedResultDto<ProductoResponseDto>>(this.urlBase + '/listar_productos_activos', { params });
   }
 
   public getProductosVenta(): Observable<ProductoSimpleResponseDto[]> {

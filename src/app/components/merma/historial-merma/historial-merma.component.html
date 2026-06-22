@@ -1,29 +1,31 @@
 <div class="component-page">
-    <div class="row mb-3">
+    <div class="row g-3 mb-3">
         <div class="col-md-3">
-            <div class="input-group">
-                <span class="input-group-text">Desde</span>
-                <input type="date" class="form-control" [(ngModel)]="fechaInicio">
-            </div>
+            <label for="fechaInicio" class="form-label">Fecha inicio</label>
+            <input id="fechaInicio" type="date" class="form-control" [(ngModel)]="fechaInicio">
         </div>
+
         <div class="col-md-3">
-            <div class="input-group">
-                <span class="input-group-text">Hasta</span>
-                <input type="date" class="form-control" [(ngModel)]="fechaFin">
-            </div>
+            <label for="fechaFin" class="form-label">Fecha fin</label>
+            <input id="fechaFin" type="date" class="form-control" [(ngModel)]="fechaFin">
         </div>
-        <div class="col-md-1">
-            <button class="btn btn-primary" type="button" (click)="getMermas()">
-                <i class="fa-solid fa-filter"></i>
-            </button>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="button" class="btn btn-primary w-100" (click)="getMermas()">Buscar</button>
         </div>
-        <div class="col-md-1">
-            <button class="btn btn-danger" type="button" (click)="limpiarFiltros()">
-                <i class="fa-solid fa-eraser"></i>
-            </button>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="button" class="btn btn-danger w-100" (click)="limpiarFiltros()">Limpiar</button>
         </div>
-        <div class="col-md-4">
-            <div class="input-group">
+    </div>
+
+    <div class="row justify-content-between mb-3">
+        <div class="col-auto">
+            <h5 class="mb-0">Mermas</h5>
+        </div>
+
+        <div class="col-auto">
+            <div class="input-group" style="max-width: 350px;">
                 <input type="text" class="form-control" placeholder="Buscar folio o producto" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
                 <button class="btn btn-danger" type="button" (click)="textoBusqueda=''; filtrarTabla()"><i class="fa-solid fa-eraser"></i></button>
             </div>
@@ -35,63 +37,85 @@
     } @else {
         <div class="form-section-fill">
             <div class="table-scroll">
-                <table class="table table-sm table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Folio</th>
-                            <th>Fecha</th>
-                            <th>Costo Total (Pérdida)</th>
-                            <th>Observaciones</th>
-                            <th style="width: 8%; text-align: center;">Detalle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (m of mermasFiltradas; track m.id) {
+                <table class="table table-sm table-striped table-bordered table-hover align-middle">
+                        <thead>
                             <tr>
-                                <td>{{ m.folio }}</td>
-                                <td>{{ m.fechaMerma | date:'dd/MM/yyyy HH:mm' }}</td>
-                                <td>{{ m.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
-                                <td>{{ m.observaciones || '-' }}</td>
-                                <td style="text-align: center;">
-                                    <button class="btn btn-sm btn-info" type="button" (click)="toggleDetalle(m.id)">
-                                        <i class="fa-solid" [class.fa-chevron-down]="mermaExpandida !== m.id" [class.fa-chevron-up]="mermaExpandida === m.id"></i>
-                                    </button>
-                                </td>
+                                <th style="width: 50px;" class="text-center">Ver</th>
+                                <th>Folio</th>
+                                <th>Fecha</th>
+                                <th>Costo Total (Pérdida)</th>
+                                <th>Observaciones</th>
                             </tr>
-                            @if (mermaExpandida === m.id) {
-                                <tr>
-                                    <td colspan="5">
-                                        <div class="p-3">
-                                            <h6>Productos</h6>
-                                            <table class="table table-sm table-bordered mb-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Código</th>
-                                                        <th>Producto</th>
-                                                        <th class="text-center">Cantidad</th>
-                                                        <th class="text-center">Costo Unit.</th>
-                                                        <th class="text-center">Costo Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @for (d of m.detalles; track d.id) {
-                                                        <tr>
-                                                            <td>{{ d.codigoProducto }}</td>
-                                                            <td>{{ d.nombreProducto }}</td>
-                                                            <td class="text-center">{{ d.cantidad }}</td>
-                                                            <td class="text-center">{{ d.costoUnitario | currency:'USD':'symbol':'1.2-2' }}</td>
-                                                            <td class="text-center">{{ d.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
+                        </thead>
+                        <tbody>
+                            @for (m of mermasFiltradas; track m.id) {
+                                <tr
+                                    (click)="toggleDetalle(m.id)"
+                                    [class.table-active]="mermaExpandida === m.id"
+                                    style="cursor: pointer;">
+                                    <td class="text-center fw-bold">
+                                        {{ mermaExpandida === m.id ? '-' : '+' }}
                                     </td>
+                                    <td>{{ m.folio }}</td>
+                                    <td>{{ m.fechaMerma | date:'dd/MM/yyyy HH:mm' }}</td>
+                                    <td>{{ m.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                                    <td>{{ m.observaciones || '-' }}</td>
                                 </tr>
+
+                                @if (mermaExpandida === m.id) {
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="p-2">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="mb-0">Detalle de la merma</h6>
+                                                    <span class="text-muted">
+                                                        {{ m.detalles.length }} producto(s)
+                                                    </span>
+                                                </div>
+
+                                                @if (m.detalles.length) {
+                                                    <div class="table-responsive">
+                                                        <table class="table table-sm table-striped table-bordered mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Código</th>
+                                                                    <th>Producto</th>
+                                                                    <th>Cantidad</th>
+                                                                    <th>Costo Unitario</th>
+                                                                    <th>Costo Total</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @for (d of m.detalles; track d.id) {
+                                                                    <tr>
+                                                                        <td>{{ d.codigoProducto }}</td>
+                                                                        <td>{{ d.nombreProducto }}</td>
+                                                                        <td>{{ d.cantidad }}</td>
+                                                                        <td>{{ d.costoUnitario | currency:'USD':'symbol':'1.2-2' }}</td>
+                                                                        <td>{{ d.costoTotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                } @else {
+                                                    <p class="mb-0 text-muted">No hay detalle disponible para esta merma.</p>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" class="text-end">Total pérdida</th>
+                                <th>{{ calcularTotalPerdida() | currency:'USD':'symbol':'1.2-2' }}</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
             </div>
         </div>
     }

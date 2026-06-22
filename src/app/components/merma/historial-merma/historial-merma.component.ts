@@ -27,13 +27,17 @@ export class HistorialMermaComponent implements OnInit {
   mermaExpandida: number | null = null;
 
   ngOnInit(): void {
+    this.establecerRangoHoy();
+    this.getMermas();
+  }
+
+  private establecerRangoHoy(): void {
     const fecha = new Date();
     fecha.setMinutes(fecha.getMinutes() - fecha.getTimezoneOffset());
     const hoy = fecha.toISOString().split('T')[0];
 
     this.fechaInicio = hoy;
     this.fechaFin = hoy;
-    this.getMermas();
   }
 
   getMermas(): void {
@@ -45,8 +49,7 @@ export class HistorialMermaComponent implements OnInit {
         this.mermas = response;
         this.mermasFiltradas = [...this.mermas];
         this.mermaExpandida = null;
-      },
-      error: () => {}
+      }
     });
   }
 
@@ -65,13 +68,16 @@ export class HistorialMermaComponent implements OnInit {
   }
 
   limpiarFiltros(): void {
-    this.fechaInicio = '';
-    this.fechaFin = '';
+    this.establecerRangoHoy();
     this.textoBusqueda = '';
     this.getMermas();
   }
 
   toggleDetalle(idMerma: number): void {
     this.mermaExpandida = this.mermaExpandida === idMerma ? null : idMerma;
+  }
+
+  calcularTotalPerdida(): number {
+    return this.mermasFiltradas.reduce((total, merma) => total + merma.costoTotal, 0);
   }
 }

@@ -65,8 +65,7 @@ export class RegistrarMermaComponent implements OnInit {
         this.productos = productos;
         this.productosPorCodigo = new Map(productos.map(p => [p.codigo, p]));
         this.stockOriginalPorCodigo = new Map(productos.map(p => [p.codigo, p.stock]));
-      },
-      error: () => {}
+      }
     });
   }
 

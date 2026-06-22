@@ -107,8 +107,7 @@ export class ActualizarProductoComponent implements OnInit {
           this.toastrService.success('Producto actualizado correctamente.');
           this.objetoActualizado.emit(response);
           this.cerrarModal.emit();
-        },
-        error: () => {}        
+        }
       });
     }
   }

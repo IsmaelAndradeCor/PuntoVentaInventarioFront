@@ -1,18 +1,18 @@
 <div class="component-page">
-    @if (!productosDto.length) {
-    <p>No existen Productos Activos</p>
-    }
-    @else if (productosDto) {
     <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
       <div class="input-group" style="max-width: 350px;">
-        <input #inputFiltro type="text" class="form-control" placeholder="Buscar por código o nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()" (keyup.enter)="abrirModalActualizarProductoPorCodigo(textoBusqueda)">
+        <input #inputFiltro type="text" class="form-control" placeholder="Buscar por código o nombre" [(ngModel)]="textoBusqueda" (input)="onBuscar()" (keyup.enter)="abrirModalActualizarProductoPorCodigo(textoBusqueda)">
         <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()"><i class="fa-solid fa-eraser"></i></button>
       </div>
     </div>
-    @if (textoBusqueda && !productosFiltrados.length) {
-    <p>No existen Productos Activos con ese nombre.</p>
-    }
-    @else {
+
+    @if (!productosDto.length) {
+      @if (textoBusqueda) {
+        <p>No existen Productos Activos con ese nombre.</p>
+      } @else {
+        <p>No existen Productos Activos</p>
+      }
+    } @else {
     <div class="form-section-fill">
         <div class="table-scroll">
           <table class="table table-sm table-striped table-bordered">
@@ -30,7 +30,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let i of productosFiltrados; trackBy: trackByProductoId">
+              <tr *ngFor="let i of productosDto; trackBy: trackByProductoId">
                 <td>{{i.codigo}}</td>
                 <td>{{i.nombre}}</td>
                 <td>{{i.costo | currency:'USD':'symbol':'1.2-2' }}</td>
@@ -56,6 +56,35 @@
         </div>
     </div>
     }
+
+    <!-- ─── Controles de paginación ─── -->
+    @if (total > 0) {
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted small">Total: {{ total }} productos</span>
+        <select class="form-select form-select-sm" style="width: auto;" [ngModel]="pageSize" (ngModelChange)="cambiarPageSize($event)">
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="50">50</option>
+          <option [ngValue]="100">100</option>
+        </select>
+        <span class="text-muted small">por página</span>
+      </div>
+
+      <nav>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item" [class.disabled]="page <= 1">
+            <button class="page-link" type="button" (click)="paginaAnterior()">Anterior</button>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link">Página {{ page }} de {{ totalPages }}</span>
+          </li>
+          <li class="page-item" [class.disabled]="page >= totalPages">
+            <button class="page-link" type="button" (click)="paginaSiguiente()">Siguiente</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
     }
 </div>
 

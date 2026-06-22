@@ -67,8 +67,7 @@ export class CrearProductoComponent implements OnInit {
     this.categoriaService.getCategoriasActivas().subscribe({
       next:(response) => {
         this.categorias = response;
-      },
-      error:() => {}
+      }
     })
   }
 
@@ -76,8 +75,7 @@ export class CrearProductoComponent implements OnInit {
     this.marcaService.getMarcasActivas().subscribe({
       next:(response) => {
         this.marcas = response;
-      },
-      error:() => {}
+      }
     })
   }
 
@@ -85,8 +83,7 @@ export class CrearProductoComponent implements OnInit {
     this.unidadMedidaService.getUnidadesMedidaActivas().subscribe({
       next:(response) => {
         this.unidadesMedida = response;
-      },
-      error:() => {}
+      }
     })
   }
 
@@ -98,8 +95,7 @@ export class CrearProductoComponent implements OnInit {
         this.proveedoresPorId = new Map(
           this.proveedores.map(proveedor => [proveedor.id, proveedor])
         );
-      },
-      error:() => {}
+      }
     })
   }
 
@@ -143,8 +139,7 @@ export class CrearProductoComponent implements OnInit {
           }
 
           this.guardarProducto();
-        },
-        error: () => {}        
+        }
       });
 
       return;
