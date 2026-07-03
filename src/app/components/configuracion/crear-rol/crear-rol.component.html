@@ -1,0 +1,25 @@
+<div class="component-page">
+    <div class="form-section-fill">
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="input-group">
+                    <span class="input-group-text">Nombre</span>
+                    <input class="form-control" type="text" [(ngModel)]="upsertRol.nombre" name="nombre">
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-4">
+                <div class="form-check form-switch d-flex align-items-center h-100 pt-2">
+                    <input class="form-check-input me-2" type="checkbox" role="switch" id="esAdmin" [(ngModel)]="upsertRol.esAdmin" name="esAdmin">
+                    <label class="form-check-label" for="esAdmin">Rol administrador (bypassea permisos)</label>
+                </div>
+            </div>
+
+            <div class="col-12 d-grid d-md-flex justify-content-md-end">
+                <button class="btn btn-success px-4" type="button" (click)="postRol()">
+                    Crear Rol
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

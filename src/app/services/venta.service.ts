@@ -36,6 +36,18 @@ export class VentaService {
 
     params = params.set('IncluirDetalle', filtros.incluirDetalle);
 
+    if (filtros.idMarca) {
+      params = params.set('IdMarca', filtros.idMarca);
+    }
+
+    if (filtros.idProveedor) {
+      params = params.set('IdProveedor', filtros.idProveedor);
+    }
+
+    if (filtros.detallesFiltrados) {
+      params = params.set('DetallesFiltrados', 'true');
+    }
+
     return this.http.get<GenerarVentaResponseDto[]>(`${this.urlBase}/generar_ventas`, { params });
   }
 

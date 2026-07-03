@@ -1,0 +1,32 @@
+<div *ngIf="mostrarActualizarRol" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-dialog-centered" style="min-width: 40%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Rol</h5>
+        <button type="button" class="btn-close" (click)="cerrar()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="rolActualizar" #form="ngForm">
+          <div class="row row-cols-1 g-3">
+            <div class="col">
+              <div class="input-group">
+                <span class="input-group-text">Nombre</span>
+                <input #inputNombre class="form-control" type="text" [(ngModel)]="upsertRol.nombre" name="nombre">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-check form-switch d-flex align-items-center pt-2">
+                <input class="form-check-input me-2" type="checkbox" role="switch" id="esAdminEdit" [(ngModel)]="upsertRol.esAdmin" name="esAdmin">
+                <label class="form-check-label" for="esAdminEdit">Rol administrador (bypassea permisos)</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger me-3" (click)="cerrar()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="guardarCambios()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

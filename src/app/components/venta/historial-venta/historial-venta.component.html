@@ -1,26 +1,59 @@
 <div class="component-page">
     <form [formGroup]="filtroForm" (ngSubmit)="buscarVentas()" class="row g-3 mb-3">
-      <div class="col-md-3">
+      <div class="col-12 col-md-6 col-lg-3">
           <label for="fechaInicio" class="form-label">Fecha inicio</label>
           <input id="fechaInicio" type="date" class="form-control" formControlName="fechaInicio">
       </div>
 
-      <div class="col-md-3">
+      <div class="col-12 col-md-6 col-lg-3">
           <label for="fechaFin" class="form-label">Fecha fin</label>
           <input id="fechaFin" type="date" class="form-control" formControlName="fechaFin">
       </div>
 
-      <div class="col-md-3 d-flex align-items-end">
+      <div class="col-12 col-md-6 col-lg-3">
+          <label for="idMarca" class="form-label">Marca</label>
+          <select id="idMarca" class="form-select" formControlName="idMarca">
+              <option [ngValue]="null">Todas</option>
+              @for (m of marcas; track m.id) {
+              <option [ngValue]="m.id">{{ m.nombre }}</option>
+              }
+          </select>
+          @if (errorMarcas) {
+          <small class="text-danger">Error al cargar marcas</small>
+          }
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-3">
+          <label for="idProveedor" class="form-label">Proveedor</label>
+          <select id="idProveedor" class="form-select" formControlName="idProveedor">
+              <option [ngValue]="null">Todos</option>
+              @for (p of proveedores; track p.id) {
+              <option [ngValue]="p.id">{{ p.nombre }}</option>
+              }
+          </select>
+          @if (errorProveedores) {
+          <small class="text-danger">Error al cargar proveedores</small>
+          }
+      </div>
+
+      <div class="col-12 d-flex align-items-end gap-2 flex-wrap">
           <div class="form-check mb-2">
           <input id="incluirDetalle" type="checkbox" class="form-check-input" formControlName="incluirDetalle">
           <label for="incluirDetalle" class="form-check-label">
               Incluir detalle
           </label>
           </div>
-      </div>
 
-      <div class="col-md-3 d-flex align-items-end">
-          <button type="submit" class="btn btn-primary w-100">Buscar</button>
+          @if (tieneFiltroMarcaOProveedor) {
+          <div class="form-check mb-2">
+          <input id="detallesFiltrados" type="checkbox" class="form-check-input" formControlName="detallesFiltrados">
+          <label for="detallesFiltrados" class="form-check-label">
+              Solo productos filtrados
+          </label>
+          </div>
+          }
+
+          <button type="submit" class="btn btn-primary ms-auto">Buscar</button>
       </div>
     </form>
 
@@ -40,6 +73,12 @@
     @if (cargando) {
       <p>Cargando ventas...</p>
     } @else if (ventas.length) {
+      @if (detalleFiltradoActivo) {
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Filtro activo:</strong> mostrando solo productos que coinciden con la marca o proveedor seleccionado. Los totales mostrados corresponden únicamente a estos productos, no al ticket original completo.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+      }
       <div class="table-scroll">
           <table class="table table-sm table-striped table-bordered table-hover align-middle">
             <thead>

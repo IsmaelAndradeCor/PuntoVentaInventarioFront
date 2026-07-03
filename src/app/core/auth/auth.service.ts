@@ -21,6 +21,11 @@ export class AuthService {
   userName = computed(() => this.currentUserSignal()?.unique_name ?? '');
   nombreCompleto = computed(() => this.currentUserSignal()?.nombreCompleto ?? '');
 
+  esAdmin = computed(() => {
+    const payload = this.currentUserSignal();
+    return payload?.esAdmin === 'true';
+  });
+
   roles = computed<string[]>(() => {
     const payload = this.currentUserSignal();
     if (!payload) return [];

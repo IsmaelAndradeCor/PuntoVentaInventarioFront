@@ -37,11 +37,12 @@
             <div class="col-12 col-md-6 col-xl-2">
                 <div class="input-group">
                     <span class="input-group-text">Rol</span>
-                    <input
-                        class="form-control"
-                        type="text"
-                        [(ngModel)]="upsertUsuario.rol"
-                        name="rol">
+                    <select class="form-select" [(ngModel)]="upsertUsuario.rol" name="rol">
+                        <option [ngValue]="" disabled>Selecciona un rol</option>
+                        @for (r of roles; track r.id) {
+                        <option [ngValue]="r.nombre">{{r.nombre}}</option>
+                        }
+                    </select>
                 </div>
             </div>
 

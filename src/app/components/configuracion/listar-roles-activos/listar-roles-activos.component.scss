@@ -29,16 +29,3 @@ td {
   min-height: 0;
   overflow: auto;
 }
-
-.table-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-}
-
-.table-scroll thead th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: var(--bs-body-bg);
-}

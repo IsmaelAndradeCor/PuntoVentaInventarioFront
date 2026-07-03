@@ -15,6 +15,7 @@ export interface JwtPayload {
   sub?: string;
   unique_name?: string;
   nombreCompleto?: string;
+  esAdmin?: string;
   role?: string | string[];
   permission?: string | string[];
   exp?: number;

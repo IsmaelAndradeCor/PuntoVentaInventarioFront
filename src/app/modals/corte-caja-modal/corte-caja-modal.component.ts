@@ -66,8 +66,7 @@ export class CorteCajaModalComponent implements OnInit, OnChanges {
   get usuariosFiltrados(): UsuarioPermisosResponseDto[] {
     return this.usuarios.filter(u =>
       u.activo &&
-      (u.roles.includes('Administrador') ||
-       u.permissions.includes('ventas.ver') ||
+      (u.permissions.includes('ventas.ver') ||
        u.permissions.includes('ventas.realizar'))
     );
   }

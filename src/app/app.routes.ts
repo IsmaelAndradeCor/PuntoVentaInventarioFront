@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { RealizarVentaComponent } from './components/venta/realizar-venta/realizar-venta.component';
-import { VentaComponent } from './components/venta/venta/venta.component';
+import { HistorialVentaComponent } from './components/venta/historial-venta/historial-venta.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { authGuard } from './core/auth/auth.guard';
 import { roleGuard } from './core/auth/role.guard';
@@ -46,8 +46,8 @@ export const routes: Routes = [
     data: {permissions: ['cortecaja.ver']}
   },
   {
-    path: 'venta/venta',
-    component: VentaComponent,
+    path: 'venta/historial-venta',
+    component: HistorialVentaComponent,
     canActivate: [authGuard, permissionGuard],
     data: { permissions: ['ventas.historial.ver'] }
   },

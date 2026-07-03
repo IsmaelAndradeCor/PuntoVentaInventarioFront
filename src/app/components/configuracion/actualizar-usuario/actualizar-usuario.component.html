@@ -1,0 +1,49 @@
+<div *ngIf="mostrarActualizarUsuario" class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.8);">
+  <div class="modal-dialog modal-dialog-centered" style="min-width: 50%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Usuario</h5>
+        <button type="button" class="btn-close" (click)="cerrar()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="usuarioActualizar" #form="ngForm">
+          <div class="row row-cols-1 g-3">
+            <div class="col">
+              <div class="input-group">
+                <span class="input-group-text">Usuario</span>
+                <input class="form-control" [value]="usuarioActualizar.userName" disabled>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group">
+                <span class="input-group-text">Nombre Completo</span>
+                <input #inputNombre class="form-control" type="text" [(ngModel)]="cambiarNombreDto.nombreCompleto" name="nombreCompleto" [placeholder]="usuarioActualizar.nombreCompleto">
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group">
+                <span class="input-group-text">Rol</span>
+                <select class="form-select" [(ngModel)]="rolSeleccionado" name="rol">
+                    <option [ngValue]="">Selecciona un rol (actual: {{usuarioActualizar.roles.join(', ')}})</option>
+                    @for (r of roles; track r.id) {
+                    <option [ngValue]="r.nombre">{{r.nombre}}</option>
+                    }
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group">
+                <span class="input-group-text">Nueva Contraseña</span>
+                <input class="form-control" type="password" [(ngModel)]="cambiarPasswordDto.nuevaPassword" name="nuevaPassword" placeholder="Dejar vacío para no cambiar">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger me-3" (click)="cerrar()">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="guardarCambios()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

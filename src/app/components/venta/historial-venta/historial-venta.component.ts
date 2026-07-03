@@ -1,24 +1,44 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { VentaService } from '../../../services/venta.service';
+import { MarcaService } from '../../../services/marca.service';
+import { ProveedorService } from '../../../services/proveedor.service';
 import { GenerarVentaResponseDto } from '../../../models/dtos/responses/generar-venta-response-dto';
+import { MarcaResponseDto } from '../../../models/dtos/responses/marca-response-dto';
+import { ProveedorResponseDto } from '../../../models/dtos/responses/proveedor-response-dto';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
-
 @Component({
-  selector: 'app-venta',
+  selector: 'app-historial-venta',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './venta.component.html',
-  styleUrl: './venta.component.scss'
+  templateUrl: './historial-venta.component.html',
+  styleUrl: './historial-venta.component.scss'
 })
-export class VentaComponent implements OnInit {
+export class HistorialVentaComponent implements OnInit {
 
-  constructor(private ventaService: VentaService, private fb: FormBuilder){}
+  constructor(
+    private ventaService: VentaService,
+    private marcaService: MarcaService,
+    private proveedorService: ProveedorService,
+    private fb: FormBuilder
+  ){}
 
   filtroForm!: FormGroup;
   ventas: GenerarVentaResponseDto[] = [];
   ventaExpandidaId: number | null = null;
   cargando = false;
+  marcas: MarcaResponseDto[] = [];
+  proveedores: ProveedorResponseDto[] = [];
+  errorMarcas = false;
+  errorProveedores = false;
+
+  get tieneFiltroMarcaOProveedor(): boolean {
+    return !!this.filtroForm?.get('idMarca')?.value || !!this.filtroForm?.get('idProveedor')?.value;
+  }
+
+  get detalleFiltradoActivo(): boolean {
+    return this.tieneFiltroMarcaOProveedor && !!this.filtroForm?.get('detallesFiltrados')?.value;
+  }
 
   ngOnInit(): void {
     const fecha = new Date();
@@ -29,10 +49,39 @@ export class VentaComponent implements OnInit {
     this.filtroForm = this.fb.group({
       fechaInicio: [hoy],
       fechaFin: [hoy],
-      incluirDetalle: [true]
+      incluirDetalle: [true],
+      idMarca: [null],
+      idProveedor: [null],
+      detallesFiltrados: [false]
     });
 
+    this.cargarMarcas();
+    this.cargarProveedores();
     this.buscarVentas();
+  }
+
+  private cargarMarcas(): void {
+    this.marcaService.getMarcasActivas().subscribe({
+      next: (marcas) => {
+        this.marcas = marcas;
+        this.errorMarcas = false;
+      },
+      error: () => {
+        this.errorMarcas = true;
+      }
+    });
+  }
+
+  private cargarProveedores(): void {
+    this.proveedorService.getProveedoresActivos().subscribe({
+      next: (proveedores) => {
+        this.proveedores = proveedores;
+        this.errorProveedores = false;
+      },
+      error: () => {
+        this.errorProveedores = true;
+      }
+    });
   }
 
   buscarVentas(): void {
@@ -44,7 +93,10 @@ export class VentaComponent implements OnInit {
     this.ventaService.getGenerarVentas({
       fechaInicio: filtros.fechaInicio,
       fechaFin: filtros.fechaFin,
-      incluirDetalle: filtros.incluirDetalle
+      incluirDetalle: filtros.incluirDetalle,
+      idMarca: filtros.idMarca ?? null,
+      idProveedor: filtros.idProveedor ?? null,
+      detallesFiltrados: filtros.detallesFiltrados ?? false
     }).subscribe({
       next: (resp: GenerarVentaResponseDto[]) => {
         this.ventas = resp ?? [];

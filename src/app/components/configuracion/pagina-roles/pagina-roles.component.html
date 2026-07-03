@@ -1,0 +1,41 @@
+<div class="component-page">
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item" *appHasPermission="'roles.activos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'activos'" (click)="seleccionarTab('activos')">
+        Roles Activos
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'roles.inactivos.ver'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'inactivos'" (click)="seleccionarTab('inactivos')">
+        Roles Inactivos
+      </button>
+    </li>
+
+    <li class="nav-item" *appHasPermission="'roles.crear'">
+      <button type="button" class="nav-link" [class.active]="activeTab === 'crear'" (click)="seleccionarTab('crear')">
+        Crear Rol
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    @if (activeTab === 'activos' && puedeVerTab('activos')) {
+      <div class="tab-pane fade show active">
+        <app-listar-roles-activos></app-listar-roles-activos>
+      </div>
+    }
+
+    @if (activeTab === 'inactivos' && puedeVerTab('inactivos')) {
+      <div class="tab-pane fade show active">
+        <app-listar-roles-inactivos></app-listar-roles-inactivos>
+      </div>
+    }
+
+    @if (activeTab === 'crear' && puedeVerTab('crear')) {
+      <div class="tab-pane fade show active">
+        <app-crear-rol></app-crear-rol>
+      </div>
+    }
+  </div>
+</div>

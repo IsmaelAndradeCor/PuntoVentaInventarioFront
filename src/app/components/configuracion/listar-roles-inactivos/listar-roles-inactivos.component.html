@@ -1,40 +1,40 @@
 <div class="component-page">
-    @if (!usuariosDto.length) {
-    <p>No existen Usuarios Inactivos</p>
+    @if (!rolesDto.length) {
+    <p>No existen Roles Inactivos</p>
     }
-    @else if (usuariosDto) {
+    @else if (rolesDto) {
     <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
         <div class="input-group" style="max-width: 350px;">
-            <input type="text" class="form-control" placeholder="Buscar por usuario o nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
+            <input type="text" class="form-control" placeholder="Buscar por nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
             <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()"><i class="fa-solid fa-eraser"></i></button>
         </div>
     </div>
-    @if (textoBusqueda && !usuariosFiltrados.length) {
-    <p>No existen Usuarios Inactivos con ese nombre.</p>
+    @if (textoBusqueda && !rolesFiltrados.length) {
+    <p>No existen Roles Inactivos con ese nombre.</p>
     }
     @else {
     <div class="form-section-fill">
         <table class="table table-sm table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Usuario</th>
-                    <th>Nombre Completo</th>
-                    <th>Roles</th>
+                    <th>Nombre</th>
+                    <th>Administrador</th>
                     <th *ngIf="puedeActivar()">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let u of usuariosFiltrados; trackBy: trackByUsuarioId">
-                    <td>{{u.userName}}</td>
-                    <td>{{u.nombreCompleto}}</td>
+                <tr *ngFor="let r of rolesFiltrados; trackBy: trackByRolId">
+                    <td>{{r.nombre}}</td>
                     <td>
-                        @for (rol of u.roles; track $index) {
-                            <span class="badge bg-primary me-1">{{rol}}</span>
+                        @if (r.esAdmin) {
+                            <span class="badge bg-success">Sí</span>
+                        } @else {
+                            <span class="badge bg-secondary">No</span>
                         }
                     </td>
                     <td *ngIf="puedeActivar()">
                         <div class="d-flex align-items-center justify-content-center gap-2">
-                            <button class="btn btn-sm btn-success" type="button" (click)="mostrarModalConfirmarActivar(u.id)">Activar</button>
+                            <button class="btn btn-sm btn-success" type="button" (click)="mostrarModalConfirmarActivar(r.id)">Activar</button>
                         </div>
                     </td>
                 </tr>
@@ -48,9 +48,9 @@
 <app-confirmar-modal
   *ngIf="mostrarConfirmarActivar"
   [mostrarConfirmar]="mostrarConfirmarActivar"
-  [titulo]="'Confirmar activación de ' + (usuariosPorId.get(idUsuarioActivar ?? '')?.nombreCompleto ?? '')"
-  [mensaje]="'¿Deseas activar este usuario?'"
+  [titulo]="'Confirmar activación de ' + (rolesPorId.get(idRolActivar ?? '')?.nombre ?? '')"
+  [mensaje]="'¿Deseas activar este rol?'"
   [id]="0"
-  (confirmarModal)="activarUsuario(idUsuarioActivar ?? '')"
+  (confirmarModal)="activarRol(idRolActivar ?? '')"
   (cerrarModal)="cerrarModalConfirmar()"
 ></app-confirmar-modal>

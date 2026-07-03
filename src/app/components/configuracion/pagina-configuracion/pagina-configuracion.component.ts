@@ -5,12 +5,13 @@ import { CrearUsuarioComponent } from '../crear-usuario/crear-usuario.component'
 import { ListarUsuariosActivosComponent } from '../listar-usuarios-activos/listar-usuarios-activos.component';
 import { ListarUsuariosInactivosComponent } from '../listar-usuarios-inactivos/listar-usuarios-inactivos.component';
 import { PermisosUsuarioComponent } from '../permisos-usuario/permisos-usuario.component';
+import { PaginaRolesComponent } from '../pagina-roles/pagina-roles.component';
 
-type AccionesTab = 'activos' | 'inactivos' | 'crear usuario'| 'permisos usuario';
+type AccionesTab = 'activos' | 'inactivos' | 'crear usuario'| 'permisos usuario' | 'roles';
 
 @Component({
   selector: 'app-pagina-configuracion',
-  imports: [HasPermissionDirective, CrearUsuarioComponent, ListarUsuariosActivosComponent, ListarUsuariosInactivosComponent, PermisosUsuarioComponent],
+  imports: [HasPermissionDirective, CrearUsuarioComponent, ListarUsuariosActivosComponent, ListarUsuariosInactivosComponent, PermisosUsuarioComponent, PaginaRolesComponent],
   templateUrl: './pagina-configuracion.component.html',
   styleUrl: './pagina-configuracion.component.scss'
 })
@@ -42,6 +43,9 @@ export class PaginaConfiguracionComponent {
       case 'permisos usuario':
         return this.authService.hasPermission('usuarios.permisos.ver');
 
+      case 'roles':
+        return this.authService.hasPermission('roles.ver');
+
       default:
         return false;
     }
@@ -52,6 +56,7 @@ export class PaginaConfiguracionComponent {
     if (this.puedeVerTab('inactivos')) return 'inactivos';
     if (this.puedeVerTab('crear usuario')) return 'crear usuario';
     if (this.puedeVerTab('permisos usuario')) return 'permisos usuario';
+    if (this.puedeVerTab('roles')) return 'roles';
 
     return 'activos';
   }

@@ -1,43 +1,43 @@
 <div class="component-page">
-    @if (!usuariosDto.length) {
-    <p>No existen Usuarios Activos</p>
+    @if (!rolesDto.length) {
+    <p>No existen Roles Activos</p>
     }
-    @else if (usuariosDto) {
+    @else if (rolesDto) {
     <div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
         <div class="input-group" style="max-width: 350px;">
-            <input type="text" class="form-control" placeholder="Buscar por usuario o nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
+            <input type="text" class="form-control" placeholder="Buscar por nombre" [(ngModel)]="textoBusqueda" (input)="filtrarTabla()">
             <button class="btn btn-danger" type="button" (click)="limpiarTextoBusqueda()"><i class="fa-solid fa-eraser"></i></button>
         </div>
     </div>
-    @if (textoBusqueda && !usuariosFiltrados.length) {
-    <p>No existen Usuarios Activos con ese nombre.</p>
+    @if (textoBusqueda && !rolesFiltrados.length) {
+    <p>No existen Roles Activos con ese nombre.</p>
     }
     @else {
     <div class="form-section-fill">
         <table class="table table-sm table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Usuario</th>
-                    <th>Nombre Completo</th>
-                    <th>Roles</th>
+                    <th>Nombre</th>
+                    <th>Administrador</th>
                     <th *ngIf="puedeActualizar() || puedeDesactivar()">Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let u of usuariosFiltrados; trackBy: trackByUsuarioId">
-                    <td>{{u.userName}}</td>
-                    <td>{{u.nombreCompleto}}</td>
+                <tr *ngFor="let r of rolesFiltrados; trackBy: trackByRolId">
+                    <td>{{r.nombre}}</td>
                     <td>
-                        @for (rol of u.roles; track $index) {
-                            <span class="badge bg-primary me-1">{{rol}}</span>
+                        @if (r.esAdmin) {
+                            <span class="badge bg-success">Sí</span>
+                        } @else {
+                            <span class="badge bg-secondary">No</span>
                         }
                     </td>
                     <td *ngIf="puedeActualizar() || puedeDesactivar()">
                         <div class="d-flex align-items-center justify-content-center gap-2">
-                            <button *ngIf="puedeActualizar()" class="btn btn-sm btn-warning" type="button" (click)="abrirModalActualizar(u)">
+                            <button *ngIf="puedeActualizar()" class="btn btn-sm btn-warning" type="button" (click)="abrirModalActualizar(r)">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button *ngIf="puedeDesactivar()" class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(u.id)">
+                            <button *ngIf="puedeDesactivar()" class="btn btn-sm btn-danger" type="button" (click)="mostrarModalConfirmarDesactivar(r.id)">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -50,20 +50,20 @@
     }
 </div>
 
-<app-actualizar-usuario
-  *ngIf="mostrarActualizarUsuario"
-  [usuarioActualizar]="usuarioActualizar"
-  [mostrarActualizarUsuario]="mostrarActualizarUsuario"
+<app-actualizar-rol
+  *ngIf="mostrarActualizarRol"
+  [rolActualizar]="rolActualizar"
+  [mostrarActualizarRol]="mostrarActualizarRol"
   (cerrarModal)="cerrarModalActualizar()"
   (objetoActualizado)="actualizarEnLista($event)"
-></app-actualizar-usuario>
+></app-actualizar-rol>
 
 <app-confirmar-modal
   *ngIf="mostrarConfirmarDesactivar"
   [mostrarConfirmar]="mostrarConfirmarDesactivar"
-  [titulo]="'Confirmar desactivación de ' + (usuariosPorId.get(idUsuarioDesactivar ?? '')?.nombreCompleto ?? '')"
-  [mensaje]="'¿Deseas desactivar este usuario?'"
+  [titulo]="'Confirmar desactivación de ' + (rolesPorId.get(idRolDesactivar ?? '')?.nombre ?? '')"
+  [mensaje]="'¿Deseas desactivar este rol?'"
   [id]="0"
-  (confirmarModal)="desactivarUsuario(idUsuarioDesactivar ?? '')"
+  (confirmarModal)="desactivarRol(idRolDesactivar ?? '')"
   (cerrarModal)="cerrarModalConfirmar()"
 ></app-confirmar-modal>
